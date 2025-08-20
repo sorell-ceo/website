@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sorell - Exclusive Access</title>
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;600;700&family=Raleway:wght@300;400;500;600&family=Forum:wght@400&family=DM+Sans:wght@400&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -57,6 +58,63 @@
             align-items: center;
         }
 
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #E0E0E0;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 3px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 88px;
+            left: 0;
+            width: 100%;
+            background: #0d1222;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(224, 224, 224, 0.1);
+            transform: translateY(-100%);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            padding: 30px;
+        }
+
+        .mobile-menu.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu .nav-link {
+            display: block;
+            margin-bottom: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+
         .nav-link {
             font-family: 'Raleway', sans-serif;
             color: #E0E0E0;
@@ -104,14 +162,14 @@
 
         .hero-section {
             text-align: center;
-            padding: 150px 60px;
+            padding: 100px 60px;
         }
 
         h1 {
             font-family: 'Gabarito', sans-serif;
             color: #E0E0E0;
             font-size: clamp(3rem, 6vw, 7rem);
-            font-weight: 550;
+            font-weight: 700;
             margin-bottom: 30px;
             letter-spacing: -1px;
             line-height: 1.1;
@@ -120,7 +178,7 @@
         h2 {
             font-family: 'Raleway', sans-serif;
             color: #BBBBBB;
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-size: clamp(1.2rem, 2.5vw, 2rem);
             font-weight: 300;
             margin-bottom: 40px;
             line-height: 1.3;
@@ -137,7 +195,9 @@
         }
 
         .cta-button {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             background: #4285f4;
             color: #E0E0E0;
             padding: 18px 45px;
@@ -160,6 +220,7 @@
         .section-content {
             max-width: 900px;
             margin: 0 auto;
+            text-align: center;
         }
 
         /* Grid Layouts */
@@ -177,11 +238,18 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(224, 224, 224, 0.1);
             transition: all 0.3s ease;
+            text-align: center;
         }
 
         .feature-card:hover {
             background: rgba(224, 224, 224, 0.08);
             transform: translateY(-5px);
+        }
+
+        .feature-card .feature-icon {
+            font-size: 48px;
+            color: #4285f4;
+            margin-bottom: 20px;
         }
 
         .feature-card h3 {
@@ -199,11 +267,11 @@
             }
 
             .nav-links {
-                gap: 25px;
+                display: none;
             }
 
-            .nav-link {
-                font-size: 14px;
+            .hamburger {
+                display: flex;
             }
 
             .section {
@@ -212,7 +280,7 @@
             }
 
             .hero-section {
-                padding: 120px 30px;
+                padding: 80px 30px;
             }
 
             .body-text {
@@ -227,6 +295,24 @@
             .feature-card {
                 padding: 30px;
             }
+
+            .cta-button {
+                width: calc(50% - 10px);
+                justify-content: center;
+                text-align: center;
+            }
+
+            .final-buttons {
+                display: flex;
+                gap: 20px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .final-buttons .cta-button {
+                width: calc(50% - 10px);
+                margin: 5px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -238,26 +324,25 @@
                 font-size: 24px;
             }
 
-            .nav-links {
-                gap: 20px;
-            }
-
-            .nav-link {
-                font-size: 13px;
-            }
-
             .section {
                 padding: 60px 20px;
                 margin-bottom: 80px;
             }
 
             .hero-section {
-                padding: 100px 20px;
+                padding: 60px 20px;
             }
 
             .cta-button {
-                padding: 15px 35px;
+                padding: 15px 25px;
                 font-size: 14px;
+                width: 100%;
+                margin: 5px 0;
+            }
+
+            .final-buttons .cta-button {
+                width: 100%;
+                margin: 5px 0;
             }
         }
 
@@ -282,24 +367,38 @@
             <a href="#" class="nav-link">Inner Edge Circle</a>
             <a href="#" class="nav-link">Request Access</a>
         </div>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#" class="nav-link">Inner Edge Circle</a>
+        <a href="#" class="nav-link">Request Access</a>
+    </div>
 
     <!-- Main Content -->
     <main class="main-content">
         <!-- Hero Section -->
         <section class="hero-section fade-in">
-            <h1>The Circle Beyond.</h1>
-            <h2>High-status Network meets Real Estate</h2>
+            <h1>Beyond Exclusive</h1>
+            <h2>Where Luxury Meets Intention</h2>
             <p class="body-text">
                 Sorell represents the pinnacle of curated experiences, reserved for those who understand that true luxury lies not in possession, but in access to the extraordinary. Our invitation-only community connects visionaries, innovators, and connoisseurs who shape tomorrow's world.
             </p>
-            <a href="#" class="cta-button">Request Invitation</a>
+            <a href="#" class="cta-button">
+                <i class="fas fa-envelope"></i>
+                Request Invitation
+            </a>
         </section>
 
         <!-- About Section -->
         <section class="section fade-in">
             <div class="section-content">
-                <h1>Crafted for the Discerning Few</h1>
+                <h2>Crafted for the Discerning Few</h2>
                 <p class="body-text">
                     In a world saturated with options, Sorell stands as a beacon of selectivity. We believe that exclusivity isn't about barriers—it's about creating environments where exceptional minds can flourish. Our carefully vetted community ensures that every interaction, every opportunity, every moment within Sorell is intentionally designed to elevate your experience beyond the ordinary.
                 </p>
@@ -309,21 +408,30 @@
         <!-- Features Section -->
         <section class="section fade-in">
             <div class="section-content">
-                <h1>The Sorell Experience</h1>
+                <h2>The Sorell Experience</h2>
                 <div class="features-grid">
                     <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
                         <h3>Curated Access</h3>
                         <p class="body-text">
                             Exclusive opportunities, private events, and experiences that money alone cannot buy. Our network opens doors that remain closed to the general public.
                         </p>
                     </div>
                     <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
                         <h3>Elite Network</h3>
                         <p class="body-text">
                             Connect with industry leaders, visionaries, and changemakers who share your passion for excellence and innovation.
                         </p>
                     </div>
                     <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-concierge-bell"></i>
+                        </div>
                         <h3>Bespoke Services</h3>
                         <p class="body-text">
                             Personalized concierge services designed around your unique lifestyle and aspirations, available 24/7.
@@ -336,23 +444,34 @@
         <!-- Inner Circle Section -->
         <section class="section fade-in">
             <div class="section-content">
-                <h1>The Inner Edge Circle</h1>
+                <h2>The Inner Edge Circle</h2>
                 <p class="body-text">
                     For our most distinguished members, the Inner Edge Circle represents the ultimate tier of membership. Here, influence meets opportunity, and visionaries collaborate to shape industries, cultures, and the future itself. Membership is by invitation only, extended to those who have demonstrated exceptional achievement and alignment with our values.
                 </p>
-                <a href="#" class="cta-button">Learn More</a>
+                <a href="#" class="cta-button">
+                    <i class="fas fa-arrow-right"></i>
+                    Learn More
+                </a>
             </div>
         </section>
 
         <!-- Final CTA Section -->
         <section class="section fade-in">
             <div class="section-content" style="text-align: center;">
-                <h1>Ready to Begin Your Journey?</h1>
+                <h2>Ready to Begin Your Journey?</h2>
                 <p class="body-text">
                     Sorell membership is not purchased—it's earned. Our selection process ensures that every member contributes to the collective elevation of our community. If you believe you embody the values of excellence, discretion, and innovation that define Sorell, we invite you to begin the conversation.
                 </p>
-                <a href="#" class="cta-button">Request Access</a>
-                <a href="#" class="cta-button" style="background: transparent; border: 1px solid #4285f4; margin-left: 20px;">Contact Us</a>
+                <div class="final-buttons">
+                    <a href="#" class="cta-button">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Request Access
+                    </a>
+                    <a href="#" class="cta-button" style="background: transparent; border: 1px solid #4285f4;">
+                        <i class="fas fa-phone"></i>
+                        Contact Us
+                    </a>
+                </div>
             </div>
         </section>
     </main>
@@ -361,6 +480,22 @@
         // Navigation hide/show functionality
         let lastScrollTop = 0;
         const navbar = document.getElementById('navbar');
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Hamburger menu functionality
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on nav links
+        document.querySelectorAll('.mobile-menu .nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            });
+        });
 
         window.addEventListener('scroll', function() {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -368,6 +503,8 @@
             if (scrollTop > lastScrollTop && scrollTop > 100) {
                 // Scrolling down
                 navbar.classList.add('hidden');
+                mobileMenu.classList.remove('active');
+                hamburger.classList.remove('active');
             } else {
                 // Scrolling up
                 navbar.classList.remove('hidden');
