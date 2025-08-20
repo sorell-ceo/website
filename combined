@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorell - Exclusive Access</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;600;700&family=Raleway:wght@300;400;500;600&family=Forum:wght@400&family=DM+Sans:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #0a0f1c 0%, #1a1f2e 100%);
+            color: #E0E0E0;
+            line-height: 1.7;
+            letter-spacing: 0.5px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #0d1222;
+            z-index: 1000;
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(224, 224, 224, 0.1);
+        }
+
+        .navbar.hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        .logo {
+            font-family: 'Forum', serif;
+            font-size: 28px;
+            color: #E0E0E0;
+            text-decoration: none;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-family: 'Raleway', sans-serif;
+            color: #E0E0E0;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            padding: 10px 0;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #4285f4;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #4285f4;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 90px;
+        }
+
+        .section {
+            padding: 100px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section:not(:last-child) {
+            margin-bottom: 120px;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 150px 60px;
+        }
+
+        h1 {
+            font-family: 'Gabarito', sans-serif;
+            color: #E0E0E0;
+            font-size: clamp(3rem, 6vw, 7rem);
+            font-weight: 700;
+            margin-bottom: 30px;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-family: 'Raleway', sans-serif;
+            color: #BBBBBB;
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 300;
+            margin-bottom: 40px;
+            line-height: 1.3;
+        }
+
+        .body-text {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 18px;
+            line-height: 1.8;
+            letter-spacing: 0.5px;
+            color: #BBBBBB;
+            max-width: 800px;
+            margin: 0 auto 50px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #4285f4;
+            color: #E0E0E0;
+            padding: 18px 45px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-family: 'Raleway', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            margin: 10px;
+        }
+
+        .cta-button:hover {
+            background: #3367d6;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(66, 133, 244, 0.3);
+        }
+
+        .section-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Grid Layouts */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 60px;
+            margin-top: 80px;
+        }
+
+        .feature-card {
+            background: rgba(224, 224, 224, 0.05);
+            padding: 40px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(224, 224, 224, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            background: rgba(224, 224, 224, 0.08);
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            font-family: 'Raleway', sans-serif;
+            color: #E0E0E0;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 30px;
+            }
+
+            .nav-links {
+                gap: 25px;
+            }
+
+            .nav-link {
+                font-size: 14px;
+            }
+
+            .section {
+                padding: 80px 30px;
+                margin-bottom: 100px;
+            }
+
+            .hero-section {
+                padding: 120px 30px;
+            }
+
+            .body-text {
+                font-size: 16px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .feature-card {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 12px 20px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .nav-link {
+                font-size: 13px;
+            }
+
+            .section {
+                padding: 60px 20px;
+                margin-bottom: 80px;
+            }
+
+            .hero-section {
+                padding: 100px 20px;
+            }
+
+            .cta-button {
+                padding: 15px 35px;
+                font-size: 14px;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="logo">Sorell</a>
+        <div class="nav-links">
+            <a href="#" class="nav-link">Inner Edge Circle</a>
+            <a href="#" class="nav-link">Request Access</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section fade-in">
+            <h1>Beyond Exclusive</h1>
+            <h2>Where Luxury Meets Intention</h2>
+            <p class="body-text">
+                Sorell represents the pinnacle of curated experiences, reserved for those who understand that true luxury lies not in possession, but in access to the extraordinary. Our invitation-only community connects visionaries, innovators, and connoisseurs who shape tomorrow's world.
+            </p>
+            <a href="#" class="cta-button">Request Invitation</a>
+        </section>
+
+        <!-- About Section -->
+        <section class="section fade-in">
+            <div class="section-content">
+                <h2>Crafted for the Discerning Few</h2>
+                <p class="body-text">
+                    In a world saturated with options, Sorell stands as a beacon of selectivity. We believe that exclusivity isn't about barriers—it's about creating environments where exceptional minds can flourish. Our carefully vetted community ensures that every interaction, every opportunity, every moment within Sorell is intentionally designed to elevate your experience beyond the ordinary.
+                </p>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section fade-in">
+            <div class="section-content">
+                <h2>The Sorell Experience</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h3>Curated Access</h3>
+                        <p class="body-text">
+                            Exclusive opportunities, private events, and experiences that money alone cannot buy. Our network opens doors that remain closed to the general public.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Elite Network</h3>
+                        <p class="body-text">
+                            Connect with industry leaders, visionaries, and changemakers who share your passion for excellence and innovation.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Bespoke Services</h3>
+                        <p class="body-text">
+                            Personalized concierge services designed around your unique lifestyle and aspirations, available 24/7.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inner Circle Section -->
+        <section class="section fade-in">
+            <div class="section-content">
+                <h2>The Inner Edge Circle</h2>
+                <p class="body-text">
+                    For our most distinguished members, the Inner Edge Circle represents the ultimate tier of membership. Here, influence meets opportunity, and visionaries collaborate to shape industries, cultures, and the future itself. Membership is by invitation only, extended to those who have demonstrated exceptional achievement and alignment with our values.
+                </p>
+                <a href="#" class="cta-button">Learn More</a>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section class="section fade-in">
+            <div class="section-content" style="text-align: center;">
+                <h2>Ready to Begin Your Journey?</h2>
+                <p class="body-text">
+                    Sorell membership is not purchased—it's earned. Our selection process ensures that every member contributes to the collective elevation of our community. If you believe you embody the values of excellence, discretion, and innovation that define Sorell, we invite you to begin the conversation.
+                </p>
+                <a href="#" class="cta-button">Request Access</a>
+                <a href="#" class="cta-button" style="background: transparent; border: 1px solid #4285f4; margin-left: 20px;">Contact Us</a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Navigation hide/show functionality
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling down
+                navbar.classList.add('hidden');
+            } else {
+                // Scrolling up
+                navbar.classList.remove('hidden');
+            }
+            
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add smooth hover effects for feature cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 20px 40px rgba(66, 133, 244, 0.1)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
