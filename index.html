@@ -289,6 +289,74 @@
             margin-bottom: 20px;
         }
 
+        /* Footer */
+        .footer {
+            background: rgba(13, 18, 34, 0.95);
+            border-top: 1px solid rgba(224, 224, 224, 0.1);
+            padding: 60px 60px 40px;
+            margin-top: 100px;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Forum', serif;
+            font-size: 32px;
+            color: #E0E0E0;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(224, 224, 224, 0.05);
+            border-radius: 50%;
+            color: #BBBBBB;
+            text-decoration: none;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(224, 224, 224, 0.1);
+        }
+
+        .social-link:hover {
+            background: rgba(212, 189, 150, 0.1);
+            color: #d4bd96;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(212, 189, 150, 0.1);
+        }
+
+        .footer-text {
+            font-family: 'DM Sans', sans-serif;
+            color: #888;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .copyright {
+            font-family: 'DM Sans', sans-serif;
+            color: #666;
+            font-size: 12px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(224, 224, 224, 0.05);
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .navbar {
@@ -342,6 +410,20 @@
                 width: calc(50% - 10px);
                 margin: 5px;
             }
+
+            .footer {
+                padding: 40px 30px 30px;
+            }
+
+            .social-links {
+                gap: 20px;
+            }
+
+            .social-link {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -372,6 +454,14 @@
             .final-buttons .cta-button {
                 width: 100%;
                 margin: 5px 0;
+            }
+
+            .footer {
+                padding: 30px 20px 20px;
+            }
+
+            .footer-logo {
+                font-size: 28px;
             }
         }
 
@@ -466,6 +556,15 @@
                             Personalized concierge services designed around your unique lifestyle and aspirations, available 24/7.
                         </p>
                     </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <h3>Premium Intelligence</h3>
+                        <p class="body-text">
+                            Access to market insights, exclusive deals, and intelligence that provides you with a strategic advantage in high-value investments.
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -504,6 +603,33 @@
             </div>
         </section>
     </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">Sorell</div>
+            
+            <div class="social-links">
+                <a href="#" class="social-link" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="X (Twitter)">
+                    <i class="fab fa-x-twitter"></i>
+                </a>
+            </div>
+            
+            <p class="footer-text">
+                The Circle Beyond. Exclusive by design, exceptional by nature.
+            </p>
+            
+            <div class="copyright">
+                <p>&copy; 2025 Sorell. All rights reserved. | Registered company established 2025</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         // Navigation hide/show functionality
