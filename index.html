@@ -1,816 +1,150 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Primary Meta Tags -->
-    <title>Sorell™ - Official Website</title>
-    <meta name="title" content="Sorell - The Circle Beyond">
-    <meta name="description" content="Sorell is an exclusive, invite-only circle designed for those who move differently. Premium, private, and timeless.">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://sorell.in/">
-    <meta property="og:title" content="Sorell - The Circle Beyond">
-    <meta property="og:description" content="An exclusive, invite-only circle built for those who value premium, private connections.">
-    <meta property="og:image" content="https://sorell.in/og-image.jpg">
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://sorell.in/">
-    <meta name="twitter:title" content="Sorell - The Circle Beyond">
-    <meta name="twitter:description" content="Exclusive. Premium. Invite-only. Welcome to Sorell.">
-    <meta name="twitter:image" content="https://yoursorelldomain.com/og-image.jpg">
-
-    <!-- Favicon & App Icons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;600;700&family=Raleway:wght@300;400;500;600&family=Forum&family=DM+Sans:wght@400&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: linear-gradient(135deg, #0a0f1c 0%, #1a1f2e 100%);
-            color: #E0E0E0;
-            line-height: 1.7;
-            letter-spacing: 0.5px;
-        }
-
-        /* Navigation */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: transparent;
-            z-index: 1000;
-            padding: 20px 60px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            border-bottom: 1px solid rgba(224, 224, 224, 0.1);
-        }
-
-        .navbar.scrolled {
-            background: #0d1222;
-            backdrop-filter: blur(10px);
-        }
-
-        .navbar.hidden {
-            transform: translateY(-100%);
-            opacity: 0;
-        }
-
-        .logo {
-            font-family: 'Forum', serif;
-            font-size: 28px;
-            color: #E0E0E0;
-            text-decoration: none;
-            font-weight: 400;
-            letter-spacing: 1px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        .hamburger span {
-            width: 25px;
-            height: 3px;
-            background: #E0E0E0;
-            margin: 3px 0;
-            transition: 0.3s;
-            border-radius: 3px;
-        }
-
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(-45deg) translate(-5px, 6px);
-        }
-
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(45deg) translate(-5px, -6px);
-        }
-
-        .mobile-menu {
-            position: fixed;
-            top: 88px;
-            left: 0;
-            width: 100%;
-            background: #0d1222;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(224, 224, 224, 0.1);
-            transform: translateY(-100%);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 999;
-            padding: 30px;
-        }
-
-        .mobile-menu.active {
-            transform: translateY(0);
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .mobile-menu .nav-link {
-            display: block;
-            margin-bottom: 20px;
-            font-size: 18px;
-            text-align: center;
-        }
-
-        .nav-link {
-            font-family: 'Raleway', sans-serif;
-            color: #E0E0E0;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 400;
-            transition: all 0.3s ease;
-            padding: 10px 0;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: #ffd99a;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 5px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: #ffd99a;
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section - Cartier Style */
-        .hero-section {
-            position: relative;
-            height: 100vh;
-            width: 100%;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .hero-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('cylindrical-black-light-gold-podium-luxury-product-display-background-3d-rendering(1).bcDVHE0x.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: -2;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0));
-            z-index: -1;
-        }
-
-        .hero-content {
-            text-align: center;
-            z-index: 1;
-            padding: 0 20px;
-        }
-
-        .hero-title {
-            font-family: 'Forum', serif;
-            font-size: clamp(3rem, 7vw, 8rem);
-            color: #E0E0E0;
-            font-weight: 400;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            animation: fadeInUp 1.2s ease-out;
-        }
-
-        .hero-subtitle {
-            font-family: 'Raleway', sans-serif;
-            font-size: clamp(1rem, 2vw, 1.4rem);
-            color: #BBBBBB;
-            font-weight: 300;
-            letter-spacing: 1px;
-            margin-bottom: 50px;
-            animation: fadeInUp 1.4s ease-out;
-        }
-
-        .hero-cta {
-            font-family: 'Raleway', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #d4bd96;
-            background: transparent;
-            border: 1px solid #d4bd96;
-            padding: 15px 40px;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.4s ease;
-            animation: fadeInUp 1.6s ease-out;
-        }
-
-        .hero-cta:hover {
-            background: #d4bd96;
-            color: #0d1222;
-            transform: translateY(-2px);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Main Content */
-        .main-content {
-            /* Removed margin-top since hero is full screen */
-        }
-
-        .section {
-            padding: 100px 60px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section:not(:last-child) {
-            margin-bottom: 120px;
-        }
-
-        h1 {
-            font-family: 'Gabarito', sans-serif;
-            color: #E0E0E0;
-            font-size: clamp(3rem, 6vw, 7rem);
-            font-weight: 500;
-            margin-bottom: 30px;
-            letter-spacing: -1px;
-            line-height: 1.1;
-        }
-
-        h2 {
-            font-family: 'Raleway', sans-serif;
-            color: #BBBBBB;
-            font-size: clamp(1.2rem, 2.5vw, 2rem);
-            font-weight: 300;
-            margin-bottom: 40px;
-            line-height: 1.3;
-        }
-
-        .body-text {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 18px;
-            line-height: 1.8;
-            letter-spacing: 0.5px;
-            color: #BBBBBB;
-            max-width: 800px;
-            margin: 0 auto 50px;
-        }
-
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: #d4bd96;
-            color: #0D1222;
-            padding: 18px 45px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-family: 'Raleway', sans-serif;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            letter-spacing: 0.5px;
-            margin: 10px;
-        }
-
-        .cta-button:hover {
-            background: #ffd99a;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(66, 133, 244, 0.3);
-        }
-
-        .section-content {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        /* Grid Layouts */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 60px;
-            margin-top: 80px;
-        }
-
-        .feature-card {
-            background: rgba(224, 224, 224, 0.05);
-            padding: 40px;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(224, 224, 224, 0.1);
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .feature-card:hover {
-            background: rgba(224, 224, 224, 0.08);
-            transform: translateY(-5px);
-        }
-
-        .feature-card .feature-icon {
-            font-size: 48px;
-            color: #4285f4;
-            margin-bottom: 20px;
-        }
-
-        .feature-card h3 {
-            font-family: 'Raleway', sans-serif;
-            color: #E0E0E0;
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        /* Footer */
-        .footer {
-            background: rgba(13, 18, 34, 0.95);
-            border-top: 1px solid rgba(224, 224, 224, 0.1);
-            padding: 60px 60px 40px;
-            margin-top: 100px;
-            backdrop-filter: blur(10px);
-        }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .footer-logo {
-            font-family: 'Forum', serif;
-            font-size: 32px;
-            color: #E0E0E0;
-            margin-bottom: 30px;
-            letter-spacing: 1px;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            background: rgba(224, 224, 224, 0.05);
-            border-radius: 50%;
-            color: #BBBBBB;
-            text-decoration: none;
-            font-size: 20px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(224, 224, 224, 0.1);
-        }
-
-        .social-link:hover {
-            background: rgba(212, 189, 150, 0.1);
-            color: #d4bd96;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(212, 189, 150, 0.1);
-        }
-
-        .footer-text {
-            font-family: 'DM Sans', sans-serif;
-            color: #888;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .copyright {
-            font-family: 'DM Sans', sans-serif;
-            color: #666;
-            font-size: 12px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(224, 224, 224, 0.05);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 15px 30px;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-
-            .hero-title {
-                letter-spacing: 2px;
-            }
-
-            .hero-cta {
-                font-size: 12px;
-                padding: 12px 30px;
-            }
-
-            .section {
-                padding: 80px 30px;
-                margin-bottom: 100px;
-            }
-
-            .body-text {
-                font-size: 16px;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .feature-card {
-                padding: 30px;
-            }
-
-            .cta-button {
-                width: calc(50% - 10px);
-                justify-content: center;
-                text-align: center;
-            }
-
-            .final-buttons {
-                display: flex;
-                gap: 20px;
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-
-            .final-buttons .cta-button {
-                width: calc(50% - 10px);
-                margin: 5px;
-            }
-
-            .footer {
-                padding: 40px 30px 30px;
-            }
-
-            .social-links {
-                gap: 20px;
-            }
-
-            .social-link {
-                width: 45px;
-                height: 45px;
-                font-size: 18px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .navbar {
-                padding: 12px 20px;
-            }
-
-            .logo {
-                font-size: 24px;
-            }
-
-            .hero-title {
-                letter-spacing: 1px;
-            }
-
-            .hero-subtitle {
-                font-size: 0.9rem;
-            }
-
-            .hero-cta {
-                font-size: 11px;
-                padding: 10px 25px;
-                letter-spacing: 1px;
-            }
-
-            .section {
-                padding: 60px 20px;
-                margin-bottom: 80px;
-            }
-
-            .cta-button {
-                padding: 15px 25px;
-                font-size: 14px;
-                width: 100%;
-                margin: 5px 0;
-            }
-
-            .final-buttons .cta-button {
-                width: 100%;
-                margin: 5px 0;
-            }
-
-            .footer {
-                padding: 30px 20px 20px;
-            }
-
-            .footer-logo {
-                font-size: 28px;
-            }
-        }
-
-        /* Scroll animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+<html><head>
+<meta charset="utf-8"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Forum&amp;family=DM+Sans:wght@400;500;700&amp;family=Raleway:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<title>Sorell™</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+      :root {
+        --foreground-rgb: 255, 255, 255;
+        --background-start-rgb: 10, 10, 10;
+        --background-end-rgb: 15, 20, 30;
+      }
+      body {
+        color: rgb(var(--foreground-rgb));
+        background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+      }
+      .bg-gradient-navy-black {
+        background: linear-gradient(180deg, #0a0a0a 0%, #0f141e 100%);
+      }
+      .font-forum {
+        font-family: 'Forum', serif;
+      }
+      .font-dm-sans {
+        font-family: 'DM Sans', sans-serif;
+      }
+      .font-raleway {
+        font-family: 'Raleway', sans-serif;
+      }
+      .text-muted-gold {
+        color: #a38a6a;
+      }
+      .bg-muted-gold {
+        background-color: #a38a6a;
+      }
+      .border-muted-gold {
+        border-color: #a38a6a;
+      }
+      .hover-bg-muted-gold-darker:hover {
+        background-color: #8f7557;
+      }
     </style>
 </head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <a href="#" class="logo">Sorell</a>
-        <div class="nav-links">
-            <a href="#" class="nav-link">Inner Edge Circle</a>
-            <a href="#" class="nav-link">Request Access</a>
-        </div>
-        <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </nav>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobile-menu">
-        <a href="#" class="nav-link">Inner Edge Circle</a>
-        <a href="#" class="nav-link">Request Access</a>
-    </div>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Hero Section - Cartier Style -->
-        <section class="hero-section">
-            <div class="hero-background"></div>
-            <div class="hero-overlay"></div>
-            <div class="hero-content">
-                <h1 class="hero-title">The Circle Beyond</h1>
-                <p class="hero-subtitle">Beyond Transactions. Into Legacy.</p>
-                <a href="#" class="hero-cta">Request Invitation</a>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section class="section fade-in">
-            <div class="section-content">
-                <h1>Crafted for the Discerning Few</h1>
-                <p class="body-text">
-                    In a world saturated with options, Sorell stands as a beacon of selectivity. We believe that exclusivity isn't about barriers—it's about creating environments where exceptional minds can flourish. Our carefully vetted community ensures that every interaction, every opportunity, every moment within Sorell is intentionally designed to elevate your experience beyond the ordinary.
-                </p>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="section fade-in">
-            <div class="section-content">
-                <h1>The Sorell Experience</h1>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-key"></i>
-                        </div>
-                        <h3>Curated Access</h3>
-                        <p class="body-text">
-                            Exclusive opportunities, private events, and experiences that money alone cannot buy. Our network opens doors that remain closed to the general public.
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <h3>Elite Network</h3>
-                        <p class="body-text">
-                            Connect with industry leaders, visionaries, and changemakers who share your passion for excellence and innovation.
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-concierge-bell"></i>
-                        </div>
-                        <h3>Bespoke Services</h3>
-                        <p class="body-text">
-                            Personalized concierge services designed around your unique lifestyle and aspirations, available 24/7.
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-gem"></i>
-                        </div>
-                        <h3>Premium Intelligence</h3>
-                        <p class="body-text">
-                            Access to market insights, exclusive deals, and intelligence that provides you with a strategic advantage in high-value investments.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Inner Circle Section -->
-        <section class="section fade-in">
-            <div class="section-content">
-                <h1>The Inner Edge Circle</h1>
-                <p class="body-text">
-                    For our most distinguished members, the Inner Edge Circle represents the ultimate tier of membership. Here, influence meets opportunity, and visionaries collaborate to shape industries, cultures, and the future itself. Membership is by invitation only, extended to those who have demonstrated exceptional achievement and alignment with our values.
-                </p>
-                <a href="#" class="cta-button">
-                    <i class="fas fa-arrow-right"></i>
-                    Learn More
-                </a>
-            </div>
-        </section>
-
-        <!-- Final CTA Section -->
-        <section class="section fade-in">
-            <div class="section-content" style="text-align: center;">
-                <h1>Ready to Begin Your Journey?</h1>
-                <p class="body-text">
-                    Sorell membership is not purchased—it's earned. Our selection process ensures that every member contributes to the collective elevation of our community. If you believe you embody the values of excellence, discretion, and innovation that define Sorell, we invite you to begin the conversation.
-                </p>
-                <div class="final-buttons">
-                    <a href="#" class="cta-button">
-                        <i class="fas fa-sign-in-alt"></i>
-                        Request Access
-                    </a>
-                    <a href="#" class="cta-button" style="background: transparent; border: 1px solid #4285f4;">
-                        <i class="fas fa-phone"></i>
-                        Contact Us
-                    </a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-logo">Sorell</div>
-            
-            <div class="social-links">
-                <a href="#" class="social-link" aria-label="Instagram">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="#" class="social-link" aria-label="Facebook">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" class="social-link" aria-label="X (Twitter)">
-                    <i class="fab fa-x-twitter"></i>
-                </a>
-            </div>
-            
-            <p class="footer-text">
-                The Circle Beyond. Exclusive by design, exceptional by nature.
+<body class="bg-gradient-navy-black font-dm-sans">
+<div class="relative flex size-full min-h-screen flex-col overflow-x-hidden">
+<header class="fixed top-0 z-50 w-full bg-black/30 backdrop-blur-md">
+<nav class="container mx-auto flex items-center justify-between whitespace-nowrap px-10 py-4">
+<a class="flex items-center gap-3 text-white" href="#">
+<h2 class="font-forum text-2xl tracking-wider">SORELL™</h2>
+</a>
+<div class="hidden items-center gap-10 font-raleway text-sm uppercase tracking-widest text-white/80 md:flex">
+<a class="transition-colors hover:text-white" href="#about">About</a>
+<a class="transition-colors hover:text-white" href="#services">Services</a>
+<a class="transition-colors hover:text-white" href="#circle">Circle</a>
+<a class="transition-colors hover:text-white" href="#contact">Contact</a>
+</div>
+<a class="font-raleway rounded-sm border border-muted-gold px-6 py-2 text-sm font-bold uppercase tracking-widest text-muted-gold transition-all hover:bg-muted-gold hover:text-black" href="#">
+            Request Access
+          </a>
+</nav>
+</header>
+<main class="flex-grow">
+<section class="relative flex h-screen min-h-[600px] items-center justify-center bg-cover bg-fixed bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD7KCaANWKKyN6ZwFg-tGN5jlEQoXW8tHstfedJXHpuztnTrSWRlDtSCq25_309-UkH__j91QRkd7HlKigk27_54lB6ERlkQW2ijlSuBqglGpWrFoOQV_hd6OFTWyx1eX2wBdEaIgygxR18AWs6Eqe_Fl4wcqieG-sWHSuku9H57KcA0aIv1XmYTGJdkrRTIcERzRPaqsgtItAiHY2hmdpO6QSW8GpB9hc9xbVrsWPpyvUc3I9bJU5dmprl6PzEr9NPXlmQsptCyA");'>
+<div class="absolute inset-0 bg-black/60"></div>
+<div class="relative z-10 flex flex-col items-center gap-6 px-4 text-center">
+<h1 class="font-forum text-5xl leading-tight text-white md:text-7xl">Elegance in Automation</h1>
+<p class="max-w-2xl text-lg text-white/80 md:text-xl">
+              Sorell™ is an exclusive, invite-only AI automation agency crafting bespoke solutions for the luxury real estate market.
             </p>
-            
-            <div class="copyright">
-                <p>&copy; 2025 Sorell. All rights reserved. | Registered company established 2025</p>
-            </div>
-        </div>
-    </footer>
+<a class="mt-4 font-raleway rounded-sm bg-muted-gold px-8 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover-bg-muted-gold-darker" href="#">
+              Discover More
+            </a>
+</div>
+</section>
+<section class="py-20 md:py-32" id="about">
+<div class="container mx-auto max-w-4xl px-4 text-center">
+<h2 class="font-forum text-4xl text-white md:text-5xl">Timeless Innovation</h2>
+<div class="mx-auto mt-6 mb-8 h-px w-24 bg-muted-gold"></div>
+<p class="text-lg leading-relaxed text-white/70">
+              Sorell™ merges the art of bespoke service with the precision of artificial intelligence. We are a discreet partner to elite real estate professionals, providing a
+              decisive advantage through intelligent automation. Our philosophy is built on a foundation of exclusivity, privacy, and unparalleled performance.
+            </p>
+</div>
+</section>
+<section class="bg-black/20 py-20 md:py-32" id="services">
+<div class="container mx-auto px-4">
+<div class="text-center">
+<h2 class="font-forum text-4xl text-white md:text-5xl">Our Signature Services</h2>
+<div class="mx-auto mt-6 mb-12 h-px w-24 bg-muted-gold"></div>
+</div>
+<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+<div class="transform border border-white/10 bg-black/30 p-8 transition-transform duration-300 hover:-translate-y-2">
+<h3 class="font-forum mb-4 text-2xl text-muted-gold">AI-Powered Clientele Discovery</h3>
+<p class="text-white/70">Utilize predictive analytics to identify and engage high-net-worth individuals before they even enter the market.</p>
+</div>
+<div class="transform border border-white/10 bg-black/30 p-8 transition-transform duration-300 hover:-translate-y-2">
+<h3 class="font-forum mb-4 text-2xl text-muted-gold">Automated Estate Management</h3>
+<p class="text-white/70">Streamline the complexities of luxury property management, from maintenance scheduling to discreet tenant communications.</p>
+</div>
+<div class="transform border border-white/10 bg-black/30 p-8 transition-transform duration-300 hover:-translate-y-2">
+<h3 class="font-forum mb-4 text-2xl text-muted-gold">Market Intelligence &amp; Foresight</h3>
+<p class="text-white/70">Access proprietary market analysis and predictive modeling to inform acquisitions and optimize portfolio performance.</p>
+</div>
+<div class="transform border border-white/10 bg-black/30 p-8 transition-transform duration-300 hover:-translate-y-2">
+<h3 class="font-forum mb-4 text-2xl text-muted-gold">Bespoke Client Journeys</h3>
+<p class="text-white/70">Craft hyper-personalized client experiences that anticipate needs and foster lifelong loyalty with automated, yet human-touch, systems.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 md:py-32" id="circle">
+<div class="container mx-auto max-w-4xl px-4 text-center">
+<h2 class="font-forum text-4xl text-white md:text-5xl">The Inner Edge Circle</h2>
+<div class="mx-auto mt-6 mb-8 h-px w-24 bg-muted-gold"></div>
+<p class="mb-8 text-lg leading-relaxed text-white/70">
+              Membership in the Inner Edge Circle is extended by invitation only. It is a confluence of the most forward-thinking minds in real estate, dedicated to shaping the future
+              of the industry. Members gain access to exclusive data, private events, and a network of peers who operate at the highest echelon.
+            </p>
+</div>
+</section>
+<section class="bg-black/20 py-20 md:py-32" id="contact">
+<div class="container mx-auto px-4 text-center">
+<h2 class="font-forum text-4xl text-white md:text-5xl">An Invitation Awaits</h2>
+<p class="mt-4 mb-8 max-w-2xl mx-auto text-lg text-white/70">To maintain the integrity and exclusivity of our services, we operate on a strictly invite-only basis. If you believe your enterprise aligns with our values, we invite you to request consideration.</p>
+<a class="font-raleway inline-block rounded-sm bg-muted-gold px-10 py-4 text-sm font-bold uppercase tracking-widest text-black transition-all hover-bg-muted-gold-darker" href="#">
+              Request an Invitation
+            </a>
+</div>
+</section>
+</main>
+<footer class="bg-black/50 backdrop-blur-sm">
+<div class="container mx-auto px-10 py-8">
+<div class="my-8 h-px w-full border-t border-muted-gold/30"></div>
+<div class="flex flex-col items-center justify-between gap-6 text-center md:flex-row">
+<div class="text-center md:text-left">
+<p class="font-forum text-xl tracking-wider text-white">SORELL™</p>
+<p class="text-xs uppercase tracking-widest text-muted-gold">The Art of Automation</p>
+</div>
+<div class="flex gap-6 text-muted-gold">
+<a class="transition-colors hover:text-white" href="#"><svg fill="currentColor" height="20" viewBox="0 0 256 256" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M247.39,68.94A8,8,0,0,0,240,64H209.57A48.66,48.66,0,0,0,168.1,40a46.91,46.91,0,0,0-33.75,13.7A47.9,47.9,0,0,0,120,88v6.09C79.74,83.47,46.81,50.72,46.46,50.37a8,8,0,0,0-13.65,4.92c-4.31,47.79,9.57,79.77,22,98.18a110.93,110.93,0,0,0,21.88,24.2c-15.23,17.53-39.21,26.74-39.47,26.84a8,8,0,0,0-3.85,11.93c.75,1.12,3.75,5.05,11.08,8.72C53.51,229.7,65.48,232,80,232c70.67,0,129.72-54.42,135.75-124.44l29.91-29.9A8,8,0,0,0,247.39,68.94Zm-45,29.41a8,8,0,0,0-2.32,5.14C196,166.58,143.28,216,80,216c-10.56,0-18-1.4-23.22-3.08,11.51-6.25,27.56-17,37.88-32.48A8,8,0,0,0,92,169.08c-.47-.27-43.91-26.34-44-96,16,13,45.25,33.17,78.67,38.79A8,8,0,0,0,136,104V88a32,32,0,0,1,9.6-22.92A30.94,30.94,0,0,1,167.9,56c12.66.16,24.49,7.88,29.44,19.21A8,8,0,0,0,204.67,80h16Z"></path></svg></a>
+<a class="transition-colors hover:text-white" href="#"><svg fill="currentColor" height="20" viewBox="0 0 256 256" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z"></path></svg></a>
+</div>
+<p class="font-raleway text-xs text-white/50">© 2024 Sorell™. All Rights Reserved.</p>
+</div>
+</div>
+</footer>
+</div>
 
-    <script>
-        // Navigation hide/show functionality
-        let lastScrollTop = 0;
-        const navbar = document.getElementById('navbar');
-        const hamburger = document.getElementById('hamburger');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        // Add scrolled class to navbar when scrolling
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // Hamburger menu functionality
-        hamburger.addEventListener('click', function() {
-            hamburger.classList.toggle('active');
-            mobileMenu.classList.toggle('active');
-        });
-
-        // Close mobile menu when clicking on nav links
-        document.querySelectorAll('.mobile-menu .nav-link').forEach(link => {
-            link.addEventListener('click', function() {
-                hamburger.classList.remove('active');
-                mobileMenu.classList.remove('active');
-            });
-        });
-
-        window.addEventListener('scroll', function() {
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
-            if (scrollTop > lastScrollTop && scrollTop > 100) {
-                // Scrolling down
-                navbar.classList.add('hidden');
-                mobileMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-            } else {
-                // Scrolling up
-                navbar.classList.remove('hidden');
-            }
-            
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-        });
-
-        // Fade in animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        // Observe all fade-in elements
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Add smooth hover effects for feature cards
-        document.querySelectorAll('.feature-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.boxShadow = '0 20px 40px rgba(66, 133, 244, 0.1)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.boxShadow = 'none';
-            });
-        });
-    </script>
-</body>
-</html>
+</body></html>
