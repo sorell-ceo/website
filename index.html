@@ -7,19 +7,16 @@
 <title>Sorell - The Circle Beyond</title>
 <meta name="description" content="Sorell is an exclusive, invite-only AI automation agency crafting bespoke solutions for the luxury real estate market."/>
 
-<!-- Favicon -->
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
-<!-- Fonts -->
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Forum&family=DM+Sans:wght@400;500;700&family=Raleway:wght@400;500;700&display=swap" rel="stylesheet"/>
 
-<!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
 <style type="text/tailwindcss">
@@ -72,28 +69,47 @@
 <body class="bg-gradient-navy-black font-dm-sans">
 <div class="relative flex min-h-screen flex-col overflow-x-hidden">
 
-<!-- Header -->
 <header class="fixed top-0 z-50 w-full bg-black/30 backdrop-blur-md transition-all duration-500" id="navbar">
   <nav class="container mx-auto flex items-center justify-between whitespace-nowrap px-6 md:px-10 py-4">
-    <a href="#" class="flex items-center gap-3 text-white">
+    <a href="#" class="flex items-center gap-3 text-white z-50">
       <h2 class="font-forum text-2xl tracking-wider">SORELL</h2>
     </a>
+    
     <div class="hidden items-center gap-10 font-raleway text-sm uppercase tracking-widest text-white/80 md:flex">
       <a href="#about" class="transition-colors hover:text-white">About</a>
       <a href="#services" class="transition-colors hover:text-white">Services</a>
       <a href="#circle" class="transition-colors hover:text-white">Circle</a>
       <a href="#contact" class="transition-colors hover:text-white">Contact</a>
     </div>
-    <a href="#contact" class="font-raleway px-6 py-2 text-sm font-bold uppercase tracking-widest cta-outline">
+    <a href="#contact" class="hidden md:block font-raleway px-6 py-2 text-sm font-bold uppercase tracking-widest cta-outline">
       Request Access
     </a>
+
+    <div class="md:hidden">
+        <button id="menu-btn" type="button" class="z-50 block hamburger md:hidden focus:outline-none">
+            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path id="hamburger-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
   </nav>
+
+  <div id="mobile-menu" class="hidden md:hidden absolute top-0 left-0 w-full bg-black/90 backdrop-blur-lg pt-24 pb-8">
+      <div class="flex flex-col items-center gap-8 font-raleway text-lg uppercase tracking-widest text-white/80">
+          <a href="#about" class="menu-link transition-colors hover:text-white">About</a>
+          <a href="#services" class="menu-link transition-colors hover:text-white">Services</a>
+          <a href="#circle" class="menu-link transition-colors hover:text-white">Circle</a>
+          <a href="#contact" class="menu-link transition-colors hover:text-white">Contact</a>
+          <a href="#contact" class="menu-link mt-4 font-raleway px-6 py-2 text-sm font-bold uppercase tracking-widest cta-outline">
+            Request Access
+          </a>
+      </div>
+  </div>
 </header>
 
-<!-- Main -->
 <main class="flex-grow">
 
-<!-- Hero (Podium BG) -->
 <section class="relative flex h-screen min-h-[600px] items-center justify-center parallax" style='background-image: url("cylindrical-black-light-gold-podium-luxury-product-display-background-3d-rendering(1).bcDVHE0x.jpg");'>
   <div class="absolute inset-0 bg-black/60"></div>
   <div class="relative z-10 flex flex-col items-center gap-6 px-4 text-center fade-in">
@@ -107,7 +123,6 @@
   </div>
 </section>
 
-<!-- About -->
 <section id="about" class="py-20 md:py-32 fade-in">
   <div class="container mx-auto max-w-4xl px-4 text-center">
     <h2 class="font-forum text-4xl text-white md:text-5xl">Timeless Innovation</h2>
@@ -118,11 +133,8 @@
   </div>
 </section>
 
-<!-- Services (Smart Home Device BG) -->
-<section id="services" class="relative py-20 md:py-32 fade-in parallax" style='background-image: url("https://www.freepik.com/free-ai-image/rendering-smart-home-device_94945260.htm#fromView=search&page=5&position=16&uuid=7f4f073d-f643-4ba8-afb4-4fa1a9127600&query=3d+dark+background");'>
-  <div class="absolute inset-0 bg-black/75"></div> <!-- overlay -->
-  
-  <div class="relative container mx-auto px-4">
+<section id="services" class="relative py-20 md:py-32 fade-in parallax" style='background-image: url("https://raw.githubusercontent.com/USERNAME/REPO/main/2151039375.jpg");'>
+  <div class="absolute inset-0 bg-black/75"></div> <div class="relative container mx-auto px-4">
     <div class="text-center">
       <h2 class="font-forum text-4xl text-white md:text-5xl">Our Signature Services</h2>
       <div class="mx-auto mt-6 mb-12 h-px w-24 bg-muted-gold"></div>
@@ -148,7 +160,6 @@
   </div>
 </section>
 
-<!-- Circle -->
 <section id="circle" class="py-20 md:py-32 fade-in">
   <div class="container mx-auto max-w-4xl px-4 text-center">
     <h2 class="font-forum text-4xl text-white md:text-5xl">The Inner Edge Circle</h2>
@@ -159,7 +170,6 @@
   </div>
 </section>
 
-<!-- Contact -->
 <section id="contact" class="bg-black/20 py-20 md:py-32 fade-in text-center">
   <div class="container mx-auto px-4">
     <h2 class="font-forum text-4xl text-white md:text-5xl">An Invitation Awaits</h2>
@@ -174,7 +184,6 @@
 
 </main>
 
-<!-- Footer -->
 <footer class="bg-black/50 backdrop-blur-sm fade-in">
   <div class="container mx-auto px-6 md:px-10 py-8">
     <div class="my-8 h-px w-full border-t border-muted-gold/30"></div>
@@ -196,10 +205,34 @@
 
 </div>
 
-<!-- FontAwesome -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
 <script>
+// Mobile Menu Toggle
+const menuBtn = document.getElementById('menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+const hamburgerIcon = document.getElementById('hamburger-icon');
+const closeIcon = document.getElementById('close-icon');
+
+const toggleMenu = () => {
+  mobileMenu.classList.toggle('hidden');
+  hamburgerIcon.classList.toggle('hidden');
+  closeIcon.classList.toggle('hidden');
+};
+
+menuBtn.addEventListener('click', toggleMenu);
+
+// Close menu when a link is clicked
+const menuLinks = document.querySelectorAll('.menu-link');
+menuLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        if (!mobileMenu.classList.contains('hidden')) {
+            toggleMenu();
+        }
+    });
+});
+
+
 // Fade-in on scroll
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
