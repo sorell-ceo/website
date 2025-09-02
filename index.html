@@ -31,7 +31,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;600;700&family=Raleway:wght@300;400;500;600&family=Forum&family=DM+Sans:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Forum&family=Raleway:wght@300;400;500;600&family=DM+Sans:wght@400&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
@@ -177,7 +177,7 @@
             width: 100%;
         }
 
-        /* Hero Section - Cartier Style */
+        /* Hero Section */
         .hero-section {
             position: relative;
             height: 100vh;
@@ -229,12 +229,13 @@
         }
 
         .hero-subtitle {
-            font-family: 'Raleway', sans-serif;
+            font-family: 'Forum', serif; /* changed */
             font-size: clamp(1rem, 2vw, 1.4rem);
             color: #BBBBBB;
             font-weight: 300;
             letter-spacing: 1px;
             margin-bottom: 50px;
+            font-style: italic; /* elegant touch */
             animation: fadeInUp 1.4s ease-out;
         }
 
@@ -261,19 +262,8 @@
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Main Content */
-        .main-content {
-            /* Removed margin-top since hero is full screen */
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .section {
@@ -287,13 +277,14 @@
         }
 
         h1 {
-            font-family: 'Gabarito', sans-serif;
+            font-family: 'Forum', serif; /* changed */
             color: #E0E0E0;
             font-size: clamp(3rem, 6vw, 7rem);
-            font-weight: 500;
+            font-weight: 400;
             margin-bottom: 30px;
-            letter-spacing: -1px;
+            letter-spacing: 1px;
             line-height: 1.1;
+            text-transform: uppercase;
         }
 
         h2 {
@@ -338,49 +329,6 @@
             box-shadow: 0 10px 30px rgba(66, 133, 244, 0.3);
         }
 
-        .section-content {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        /* Grid Layouts */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 60px;
-            margin-top: 80px;
-        }
-
-        .feature-card {
-            background: rgba(224, 224, 224, 0.05);
-            padding: 40px;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(224, 224, 224, 0.1);
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .feature-card:hover {
-            background: rgba(224, 224, 224, 0.08);
-            transform: translateY(-5px);
-        }
-
-        .feature-card .feature-icon {
-            font-size: 48px;
-            color: #4285f4;
-            margin-bottom: 20px;
-        }
-
-        .feature-card h3 {
-            font-family: 'Raleway', sans-serif;
-            color: #E0E0E0;
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
         /* Footer */
         .footer {
             background: rgba(13, 18, 34, 0.95);
@@ -404,35 +352,6 @@
             letter-spacing: 1px;
         }
 
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            background: rgba(224, 224, 224, 0.05);
-            border-radius: 50%;
-            color: #BBBBBB;
-            text-decoration: none;
-            font-size: 20px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(224, 224, 224, 0.1);
-        }
-
-        .social-link:hover {
-            background: rgba(212, 189, 150, 0.1);
-            color: #d4bd96;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(212, 189, 150, 0.1);
-        }
-
         .footer-text {
             font-family: 'DM Sans', sans-serif;
             color: #888;
@@ -447,141 +366,6 @@
             font-size: 12px;
             padding-top: 20px;
             border-top: 1px solid rgba(224, 224, 224, 0.05);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 15px 30px;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-
-            .hero-title {
-                letter-spacing: 2px;
-            }
-
-            .hero-cta {
-                font-size: 12px;
-                padding: 12px 30px;
-            }
-
-            .section {
-                padding: 80px 30px;
-                margin-bottom: 100px;
-            }
-
-            .body-text {
-                font-size: 16px;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .feature-card {
-                padding: 30px;
-            }
-
-            .cta-button {
-                width: calc(50% - 10px);
-                justify-content: center;
-                text-align: center;
-            }
-
-            .final-buttons {
-                display: flex;
-                gap: 20px;
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-
-            .final-buttons .cta-button {
-                width: calc(50% - 10px);
-                margin: 5px;
-            }
-
-            .footer {
-                padding: 40px 30px 30px;
-            }
-
-            .social-links {
-                gap: 20px;
-            }
-
-            .social-link {
-                width: 45px;
-                height: 45px;
-                font-size: 18px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .navbar {
-                padding: 12px 20px;
-            }
-
-            .logo {
-                font-size: 24px;
-            }
-
-            .hero-title {
-                letter-spacing: 1px;
-            }
-
-            .hero-subtitle {
-                font-size: 0.9rem;
-            }
-
-            .hero-cta {
-                font-size: 11px;
-                padding: 10px 25px;
-                letter-spacing: 1px;
-            }
-
-            .section {
-                padding: 60px 20px;
-                margin-bottom: 80px;
-            }
-
-            .cta-button {
-                padding: 15px 25px;
-                font-size: 14px;
-                width: 100%;
-                margin: 5px 0;
-            }
-
-            .final-buttons .cta-button {
-                width: 100%;
-                margin: 5px 0;
-            }
-
-            .footer {
-                padding: 30px 20px 20px;
-            }
-
-            .footer-logo {
-                font-size: 28px;
-            }
-        }
-
-        /* Scroll animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
         }
     </style>
 </head>
@@ -600,151 +384,61 @@
         </div>
     </nav>
 
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobile-menu">
-        <a href="#" class="nav-link">Inner Edge Circle</a>
-        <a href="#" class="nav-link">Request Access</a>
-    </div>
+    <!-- Hero -->
+    <section class="hero-section">
+        <div class="hero-background"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">The Circle Beyond</h1>
+            <p class="hero-subtitle">Beyond Transactions. Into Legacy.</p>
+            <a href="#" class="hero-cta">Request Invitation</a>
+        </div>
+    </section>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Hero Section - Cartier Style -->
-        <section class="hero-section">
-            <div class="hero-background"></div>
-            <div class="hero-overlay"></div>
-            <div class="hero-content">
-                <h1 class="hero-title">The Circle Beyond</h1>
-                <p class="hero-subtitle">Beyond Transactions. Into Legacy.</p>
-                <a href="#" class="hero-cta">Request Invitation</a>
-            </div>
-        </section>
+    <!-- About -->
+    <section class="section">
+        <div class="section-content">
+            <h1>Crafted for the Discerning Few</h1>
+            <p class="body-text">
+                In a world saturated with options, Sorell stands as a beacon of selectivity. We believe that exclusivity isn't about barriers—it's about creating environments where exceptional minds can flourish.
+            </p>
+        </div>
+    </section>
 
-        <!-- About Section -->
-        <section class="section fade-in">
-            <div class="section-content">
-                <h1>Crafted for the Discerning Few</h1>
-                <p class="body-text">
-                    In a world saturated with options, Sorell stands as a beacon of selectivity. We believe that exclusivity isn't about barriers—it's about creating environments where exceptional minds can flourish. Our carefully vetted community ensures that every interaction, every opportunity, every moment within Sorell is intentionally designed to elevate your experience beyond the ordinary.
-                </p>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="section fade-in">
-            <div class="section-content">
-                <h1>The Sorell Experience</h1>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-key"></i>
-                        </div>
-                        <h3>Curated Access</h3>
-                        <p class="body-text">
-                            Exclusive opportunities, private events, and experiences that money alone cannot buy. Our network opens doors that remain closed to the general public.
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <h3>Elite Network</h3>
-                        <p class="body-text">
-                            Connect with industry leaders, visionaries, and changemakers who share your passion for excellence and innovation.
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-concierge-bell"></i>
-                        </div>
-                        <h3>Bespoke Services</h3>
-                        <p class="body-text">
-                            Personalized concierge services designed around your unique lifestyle and aspirations, available 24/7.
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-gem"></i>
-                        </div>
-                        <h3>Premium Intelligence</h3>
-                        <p class="body-text">
-                            Access to market insights, exclusive deals, and intelligence that provides you with a strategic advantage in high-value investments.
-                        </p>
-                    </div>
+    <!-- Features -->
+    <section class="section">
+        <div class="section-content">
+            <h1>The Sorell Experience</h1>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-key"></i></div>
+                    <h3>Curated Access</h3>
+                    <p class="body-text">Exclusive opportunities, private events, and experiences that money alone cannot buy.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-users"></i></div>
+                    <h3>Elite Network</h3>
+                    <p class="body-text">Connect with industry leaders, visionaries, and changemakers who share your passion for excellence.</p>
                 </div>
             </div>
-        </section>
-
-        <!-- Inner Circle Section -->
-        <section class="section fade-in">
-            <div class="section-content">
-                <h1>The Inner Edge Circle</h1>
-                <p class="body-text">
-                    For our most distinguished members, the Inner Edge Circle represents the ultimate tier of membership. Here, influence meets opportunity, and visionaries collaborate to shape industries, cultures, and the future itself. Membership is by invitation only, extended to those who have demonstrated exceptional achievement and alignment with our values.
-                </p>
-                <a href="#" class="cta-button">
-                    <i class="fas fa-arrow-right"></i>
-                    Learn More
-                </a>
-            </div>
-        </section>
-
-        <!-- Final CTA Section -->
-        <section class="section fade-in">
-            <div class="section-content" style="text-align: center;">
-                <h1>Ready to Begin Your Journey?</h1>
-                <p class="body-text">
-                    Sorell membership is not purchased—it's earned. Our selection process ensures that every member contributes to the collective elevation of our community. If you believe you embody the values of excellence, discretion, and innovation that define Sorell, we invite you to begin the conversation.
-                </p>
-                <div class="final-buttons">
-                    <a href="#" class="cta-button">
-                        <i class="fas fa-sign-in-alt"></i>
-                        Request Access
-                    </a>
-                    <a href="#" class="cta-button" style="background: transparent; border: 1px solid #4285f4;">
-                        <i class="fas fa-phone"></i>
-                        Contact Us
-                    </a>
-                </div>
-            </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">Sorell</div>
-            
-            <div class="social-links">
-                <a href="#" class="social-link" aria-label="Instagram">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="#" class="social-link" aria-label="Facebook">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" class="social-link" aria-label="X (Twitter)">
-                    <i class="fab fa-x-twitter"></i>
-                </a>
-            </div>
-            
-            <p class="footer-text">
-                The Circle Beyond. Exclusive by design, exceptional by nature.
-            </p>
-            
+            <p class="footer-text">The Circle Beyond. Exclusive by design, exceptional by nature.</p>
             <div class="copyright">
-                <p>&copy; 2025 Sorell. All rights reserved. | Registered company established 2025</p>
+                <p>&copy; 2025 Sorell. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Navigation hide/show functionality
-        let lastScrollTop = 0;
+        // Navbar scroll behavior
         const navbar = document.getElementById('navbar');
-        const hamburger = document.getElementById('hamburger');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        // Add scrolled class to navbar when scrolling
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
                 navbar.classList.add('scrolled');
             } else {
@@ -752,64 +446,12 @@
             }
         });
 
-        // Hamburger menu functionality
-        hamburger.addEventListener('click', function() {
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+        hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             mobileMenu.classList.toggle('active');
-        });
-
-        // Close mobile menu when clicking on nav links
-        document.querySelectorAll('.mobile-menu .nav-link').forEach(link => {
-            link.addEventListener('click', function() {
-                hamburger.classList.remove('active');
-                mobileMenu.classList.remove('active');
-            });
-        });
-
-        window.addEventListener('scroll', function() {
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
-            if (scrollTop > lastScrollTop && scrollTop > 100) {
-                // Scrolling down
-                navbar.classList.add('hidden');
-                mobileMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-            } else {
-                // Scrolling up
-                navbar.classList.remove('hidden');
-            }
-            
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-        });
-
-        // Fade in animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        // Observe all fade-in elements
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Add smooth hover effects for feature cards
-        document.querySelectorAll('.feature-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.boxShadow = '0 20px 40px rgba(66, 133, 244, 0.1)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.boxShadow = 'none';
-            });
         });
     </script>
 </body>
