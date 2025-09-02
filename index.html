@@ -82,7 +82,7 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-radius: 0rem; /* 👈 NO curves */
+    border-radius: 0rem; /* no curves */
     transition: all 0.4s ease;
   }
   .glass-card:hover {
@@ -90,7 +90,7 @@
     box-shadow: 0 8px 32px rgba(0,0,0,0.5);
   }
 
-  /* Video background fix */
+  /* Video background */
   .video-bg {
     position: absolute;
     top: 0;
@@ -115,6 +115,7 @@
 <body class="bg-gradient-navy-black font-dm-sans">
 <div class="relative flex min-h-screen flex-col overflow-x-hidden">
 
+<!-- NAVBAR -->
 <header class="fixed top-0 z-50 w-full bg-black/30 backdrop-blur-md transition-all duration-500" id="navbar">
   <nav class="container mx-auto flex items-center justify-between whitespace-nowrap px-6 md:px-10 py-4">
     <a href="#" class="flex items-center gap-3 text-white z-50">
@@ -156,10 +157,10 @@
 
 <main class="flex-grow">
 
-<!-- HERO with parallax -->
-<section class="relative flex h-screen min-h-[600px] items-center justify-center">
-  <div class="absolute inset-0 parallax" style='background-image: url("cylindrical-black-light-gold-podium-luxury-product-display-background-3d-rendering(1).bcDVHE0x.jpg");'></div>
-  <div class="absolute inset-0 bg-black/60"></div>
+<!-- HERO -->
+<section class="relative flex h-screen min-h-[600px] items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 parallax z-[-2]" style='background-image: url("cylindrical-black-light-gold-podium-luxury-product-display-background-3d-rendering(1).bcDVHE0x.jpg");'></div>
+  <div class="absolute inset-0 bg-black/60 z-[-1]"></div>
   <div class="relative z-10 flex flex-col items-center gap-6 px-4 text-center fade-in">
     <h1 class="font-forum text-5xl leading-tight text-white md:text-7xl">The Circle Beyond</h1>
     <p class="max-w-2xl text-lg text-white/80 md:text-xl">
@@ -182,11 +183,11 @@
   </div>
 </section>
 
-<!-- SIGNATURE SERVICES with VIDEO BG -->
-<section id="services" class="relative min-h-screen flex items-center py-20 md:py-32 fade-in">
+<!-- SERVICES with VIDEO BG -->
+<section id="services" class="relative min-h-screen flex items-center py-20 md:py-32 fade-in overflow-hidden">
   <!-- Video BG -->
   <video autoplay muted loop playsinline class="video-bg">
-    <source src="12421540_1920_1080_30fps.mp4" type="video/mp4">
+    <source src="12421437_1920_1080_30fps.mp4" type="video/mp4">
   </video>
   <div class="video-overlay"></div>
 
