@@ -39,7 +39,6 @@
   .font-dm-sans { font-family: 'DM Sans', sans-serif; }
   .font-raleway { font-family: 'Raleway', sans-serif; }
   .text-muted-gold { color: #a38a6a; }
-  .bg-muted-gold { background-color: #a38a6a; }
   .border-muted-gold { border-color: #a38a6a; }
   .cta-outline {
     border: 1px solid #a38a6a;
@@ -50,6 +49,7 @@
   .cta-outline:hover {
     background: #a38a6a;
     color: #0a0a0a !important;
+    box-shadow: 0 0 20px rgba(163,138,106,0.4);
   }
   .fade-in {
     opacity: 0;
@@ -64,6 +64,7 @@
     background-attachment: fixed;
     background-position: center;
     background-size: cover;
+    background-repeat: no-repeat;
   }
 </style>
 </head>
@@ -93,7 +94,7 @@
 <main class="flex-grow">
 
 <!-- Hero -->
-<section class="relative flex h-screen min-h-[600px] items-center justify-center parallax" style='background-image: url("cylindrical-black-light-gold-podium-luxury-product-display-background-3d-rendering(1).bcDVHE0x.jpg");'>
+<section class="relative flex h-screen min-h-[600px] items-center justify-center parallax" style='background-image: url("rendering-smart-home-device.jpg");'>
   <div class="absolute inset-0 bg-black/60"></div>
   <div class="relative z-10 flex flex-col items-center gap-6 px-4 text-center fade-in">
     <h1 class="font-forum text-5xl leading-tight text-white md:text-7xl">The Circle Beyond</h1>
@@ -117,27 +118,29 @@
   </div>
 </section>
 
-<!-- Services -->
-<section id="services" class="bg-black/20 py-20 md:py-32 fade-in">
-  <div class="container mx-auto px-4">
+<!-- Services with AI Pods Image -->
+<section id="services" class="relative py-20 md:py-32 fade-in parallax" style='background-image: url("rendering-smart-home-device.jpg");'>
+  <div class="absolute inset-0 bg-black/75"></div> <!-- overlay -->
+  
+  <div class="relative container mx-auto px-4">
     <div class="text-center">
       <h2 class="font-forum text-4xl text-white md:text-5xl">Our Signature Services</h2>
       <div class="mx-auto mt-6 mb-12 h-px w-24 bg-muted-gold"></div>
     </div>
     <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-      <div class="transform border border-white/10 bg-black/30 p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
+      <div class="transform border border-white/10 bg-black/40 p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
         <h3 class="font-forum mb-4 text-2xl text-muted-gold">AI-Powered Clientele Discovery</h3>
         <p class="text-white/70">Predictive analytics to identify and engage high-net-worth individuals before they even enter the market.</p>
       </div>
-      <div class="transform border border-white/10 bg-black/30 p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
+      <div class="transform border border-white/10 bg-black/40 p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
         <h3 class="font-forum mb-4 text-2xl text-muted-gold">Automated Estate Management</h3>
         <p class="text-white/70">Streamline luxury property management — from maintenance to discreet tenant communications.</p>
       </div>
-      <div class="transform border border-white/10 bg-black/30 p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
+      <div class="transform border border-white/10 bg-black/40 p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
         <h3 class="font-forum mb-4 text-2xl text-muted-gold">Market Intelligence &amp; Foresight</h3>
         <p class="text-white/70">Access proprietary analysis & predictive modeling to inform acquisitions and optimize portfolios.</p>
       </div>
-      <div class="transform border border-white/10 bg-black/30 p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
+      <div class="transform border border-white/10 bg-black/40 p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
         <h3 class="font-forum mb-4 text-2xl text-muted-gold">Bespoke Client Journeys</h3>
         <p class="text-white/70">Hyper-personalized experiences that anticipate needs and foster lifelong loyalty.</p>
       </div>
