@@ -41,8 +41,14 @@
   .text-muted-gold { color: #a38a6a; }
   .bg-muted-gold { background-color: #a38a6a; }
   .border-muted-gold { border-color: #a38a6a; }
-  .hover-bg-muted-gold-darker:hover {
-    background-color: #cbb387;
+  .cta-outline {
+    border: 1px solid #a38a6a;
+    color: #a38a6a;
+    background: transparent;
+    transition: all 0.3s ease;
+  }
+  .cta-outline:hover {
+    background: #a38a6a;
     color: #0a0a0a !important;
   }
   .fade-in {
@@ -77,7 +83,7 @@
       <a href="#circle" class="transition-colors hover:text-white">Circle</a>
       <a href="#contact" class="transition-colors hover:text-white">Contact</a>
     </div>
-    <a href="#contact" class="font-raleway border border-muted-gold px-6 py-2 text-sm font-bold uppercase tracking-widest text-muted-gold transition-all hover-bg-muted-gold-darker">
+    <a href="#contact" class="font-raleway px-6 py-2 text-sm font-bold uppercase tracking-widest cta-outline">
       Request Access
     </a>
   </nav>
@@ -87,14 +93,14 @@
 <main class="flex-grow">
 
 <!-- Hero -->
-<section class="relative flex h-screen min-h-[600px] items-center justify-center parallax" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD7KCaANWKKyN6ZwFg-tGN5jlEQoXW8tHstfedJXHpuztnTrSWRlDtSCq25_309-UkH__j91QRkd7HlKigk27_54lB6ERlkQW2ijlSuBqglGpWrFoOQV_hd6OFTWyx1eX2wBdEaIgygxR18AWs6Eqe_Fl4wcqieG-sWHSuku9H57KcA0aIv1XmYTGJdkrRTIcERzRPaqsgtItAiHY2hmdpO6QSW8GpB9hc9xbVrsWPpyvUc3I9bJU5dmprl6PzEr9NPXlmQsptCyA");'>
+<section class="relative flex h-screen min-h-[600px] items-center justify-center parallax" style='background-image: url("cylindrical-black-light-gold-podium-luxury-product-display-background-3d-rendering(1).bcDVHE0x.jpg");'>
   <div class="absolute inset-0 bg-black/60"></div>
   <div class="relative z-10 flex flex-col items-center gap-6 px-4 text-center fade-in">
     <h1 class="font-forum text-5xl leading-tight text-white md:text-7xl">The Circle Beyond</h1>
     <p class="max-w-2xl text-lg text-white/80 md:text-xl">
       Beyond automation. Into legacy. Sorell redefines exclusivity in AI for real estate visionaries.
     </p>
-    <a href="#about" class="mt-4 font-raleway bg-muted-gold px-8 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover-bg-muted-gold-darker">
+    <a href="#about" class="mt-4 font-raleway px-8 py-3 text-sm font-bold uppercase tracking-widest cta-outline">
       Discover More
     </a>
   </div>
@@ -151,13 +157,13 @@
 </section>
 
 <!-- Contact -->
-<section id="contact" class="bg-black/20 py-20 md:py-32 fade-in">
-  <div class="container mx-auto px-4 text-center">
+<section id="contact" class="bg-black/20 py-20 md:py-32 fade-in text-center">
+  <div class="container mx-auto px-4">
     <h2 class="font-forum text-4xl text-white md:text-5xl">An Invitation Awaits</h2>
     <p class="mt-4 mb-8 max-w-2xl mx-auto text-lg text-white/70">
       To maintain exclusivity, we operate invite-only. If your enterprise aligns with our values, request consideration.
     </p>
-    <a href="#" class="font-raleway inline-block bg-muted-gold px-10 py-4 text-sm font-bold uppercase tracking-widest text-black transition-all hover-bg-muted-gold-darker">
+    <a href="#" class="inline-block font-raleway px-10 py-4 text-sm font-bold uppercase tracking-widest cta-outline">
       Request an Invitation
     </a>
   </div>
