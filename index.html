@@ -22,27 +22,24 @@
 <style type="text/tailwindcss">
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 10, 10, 10;
-    --background-end-rgb: 15, 20, 30;
+    --background-dark: #0c0c0c;
+    --gold: #a38a6a;
   }
   body {
     color: rgb(var(--foreground-rgb));
-    background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
-  }
-  .bg-gradient-navy-black {
-    background: linear-gradient(180deg, #0a0a0a 0%, #0f141e 100%);
+    background: var(--background-dark);
   }
   .font-forum { font-family: 'Forum', serif; }
   .font-dm-sans { font-family: 'DM Sans', sans-serif; }
   .font-raleway { font-family: 'Raleway', sans-serif; }
-  .text-muted-gold { color: #a38a6a; }
-  .border-muted-gold { border-color: #a38a6a; }
+  .text-muted-gold { color: var(--gold); }
+  .border-muted-gold { border-color: var(--gold); }
 
   /* CTA outline with slide-in fill */
   .cta-outline {
     position: relative;
-    border: 1px solid #a38a6a;
-    color: #a38a6a;
+    border: 1px solid var(--gold);
+    color: var(--gold);
     background: transparent;
     overflow: hidden;
     z-index: 1;
@@ -54,27 +51,12 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: #a38a6a;
+    background: var(--gold);
     z-index: -1;
     transition: all 0.3s ease;
   }
-  .cta-outline:hover::before {
-    left: 0;
-  }
-  .cta-outline:hover {
-    color: #0a0a0a !important;
-  }
-
-  /* Fade-in effect */
-  .fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease-out;
-  }
-  .fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  .cta-outline:hover::before { left: 0; }
+  .cta-outline:hover { color: #0a0a0a !important; }
 
   /* Glassmorphism cards */
   .glass-card {
@@ -82,7 +64,7 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-radius: 0rem; /* sharp corners */
+    border-radius: 0rem;
     transition: all 0.4s ease;
   }
   .glass-card:hover {
@@ -93,28 +75,52 @@
   /* Background video */
   .video-bg {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     object-fit: cover;
     z-index: -2;
   }
   .video-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background: rgba(0,0,0,0.75);
     z-index: -1;
   }
 
-  section { position: relative; overflow: hidden; }
+  /* Parallax */
+  .parallax-bg {
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* Section defaults */
+  section { 
+    position: relative; 
+    overflow: hidden; 
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 4rem 1rem;
+  }
+
+  /* Divider SVG */
+  .section-divider {
+    width: 100%;
+    height: 120px;
+    background: transparent;
+  }
+  .section-divider svg line {
+    stroke: var(--gold);
+    opacity: 0.3;
+  }
 </style>
 </head>
 
-<body class="bg-gradient-navy-black font-dm-sans">
+<body class="bg-[#0c0c0c] font-dm-sans">
 <div class="relative flex min-h-screen flex-col overflow-x-hidden">
 
 <!-- NAVBAR -->
@@ -136,9 +142,9 @@
 
     <div class="md:hidden">
         <button id="menu-btn" type="button" class="z-50 block hamburger md:hidden focus:outline-none">
-            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path id="hamburger-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="#a38a6a">
+                <path id="hamburger-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M4 6h16M4 12h16m-7 6h7" />
+                <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" stroke="#a38a6a" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
     </div>
@@ -159,11 +165,10 @@
 
 <main class="flex-grow">
 
-<!-- HERO full-screen -->
-<section class="flex h-screen items-center justify-center">
-  <div class="absolute inset-0 z-[-2]" style='background-image: url("cylindrical-black-light-gold-podium-luxury-product-display-background-3d-rendering(1).bcDVHE0x.jpg"); background-size: cover; background-position: center;'></div>
+<!-- HERO -->
+<section class="h-screen parallax-bg" style='background-image: url("cylindrical-black-light-gold-podium-luxury-product-display-background-3d-rendering(1).bcDVHE0x.jpg");'>
   <div class="absolute inset-0 bg-black/60 z-[-1]"></div>
-  <div class="relative z-10 flex flex-col items-center gap-6 px-4 text-center fade-in">
+  <div class="relative z-10 flex flex-col items-center gap-6 px-4 text-center">
     <h1 class="font-forum text-5xl leading-tight text-white md:text-7xl">The Circle Beyond</h1>
     <p class="max-w-2xl text-lg text-white/80 md:text-xl">
       Beyond automation. Into legacy. Sorell redefines exclusivity in AI for real estate visionaries.
@@ -174,82 +179,103 @@
   </div>
 </section>
 
+<div class="section-divider">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none" class="w-full h-full">
+    <line x1="0" y1="60" x2="1440" y2="60" stroke-width="1.5"/>
+    <line x1="200" y1="0" x2="1240" y2="120" stroke-width="1"/>
+    <line x1="720" y1="0" x2="720" y2="120" stroke-width="2"/>
+  </svg>
+</div>
+
 <!-- ABOUT -->
-<section id="about" class="py-16 md:py-24 fade-in">
-  <div class="container mx-auto max-w-4xl px-4 text-center">
-    <h2 class="font-forum text-4xl text-white md:text-5xl">Timeless Innovation</h2>
-    <div class="mx-auto mt-6 mb-8 h-px w-24 bg-muted-gold"></div>
-    <p class="text-lg leading-relaxed text-white/70">
-      Sorell merges bespoke service with the precision of artificial intelligence. We are the discreet partner for elite real estate professionals, delivering a decisive advantage through intelligent automation.
-    </p>
-  </div>
+<section id="about" class="bg-[#0c0c0c] text-center">
+  <h2 class="font-forum text-5xl md:text-7xl text-white">Timeless Innovation</h2>
+  <div class="mx-auto mt-6 mb-8 h-px w-24 bg-muted-gold"></div>
+  <p class="max-w-2xl text-lg leading-relaxed text-white/70">
+    Sorell merges bespoke service with the precision of artificial intelligence. We are the discreet partner for elite real estate professionals, delivering a decisive advantage through intelligent automation.
+  </p>
 </section>
 
+<div class="section-divider">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none" class="w-full h-full">
+    <line x1="0" y1="60" x2="1440" y2="60" stroke-width="1.5"/>
+    <line x1="300" y1="0" x2="1140" y2="120" stroke-width="1"/>
+    <line x1="720" y1="0" x2="720" y2="120" stroke-width="2"/>
+  </svg>
+</div>
+
 <!-- SERVICES -->
-<section id="services" class="py-16 md:py-24 fade-in">
+<section id="services" class="relative text-center">
   <video autoplay muted loop playsinline class="video-bg">
     <source src="12421437_1920_1080_30fps.mp4" type="video/mp4">
   </video>
   <div class="video-overlay"></div>
-
-  <div class="relative container mx-auto px-4">
-    <div class="text-center">
-      <h2 class="font-forum text-4xl text-white md:text-5xl">Our Signature Services</h2>
-      <div class="mx-auto mt-6 mb-12 h-px w-24 bg-muted-gold"></div>
+  <h2 class="font-forum text-5xl md:text-7xl text-white">Our Signature Services</h2>
+  <div class="mx-auto mt-6 mb-12 h-px w-24 bg-muted-gold"></div>
+  <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 px-4">
+    <div class="glass-card p-8">
+      <h3 class="font-forum mb-4 text-2xl text-muted-gold">AI-Powered Clientele Discovery</h3>
+      <p class="text-white/80">Predictive analytics to identify and engage high-net-worth individuals before they even enter the market.</p>
     </div>
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-      <div class="glass-card p-8">
-        <h3 class="font-forum mb-4 text-2xl text-muted-gold">AI-Powered Clientele Discovery</h3>
-        <p class="text-white/80">Predictive analytics to identify and engage high-net-worth individuals before they even enter the market.</p>
-      </div>
-      <div class="glass-card p-8">
-        <h3 class="font-forum mb-4 text-2xl text-muted-gold">Automated Estate Management</h3>
-        <p class="text-white/80">Streamline luxury property management — from maintenance to discreet tenant communications.</p>
-      </div>
-      <div class="glass-card p-8">
-        <h3 class="font-forum mb-4 text-2xl text-muted-gold">Market Intelligence &amp; Foresight</h3>
-        <p class="text-white/80">Access proprietary analysis & predictive modeling to inform acquisitions and optimize portfolios.</p>
-      </div>
-      <div class="glass-card p-8">
-        <h3 class="font-forum mb-4 text-2xl text-muted-gold">Bespoke Client Journeys</h3>
-        <p class="text-white/80">Hyper-personalized experiences that anticipate needs and foster lifelong loyalty.</p>
-      </div>
+    <div class="glass-card p-8">
+      <h3 class="font-forum mb-4 text-2xl text-muted-gold">Automated Estate Management</h3>
+      <p class="text-white/80">Streamline luxury property management — from maintenance to discreet tenant communications.</p>
+    </div>
+    <div class="glass-card p-8">
+      <h3 class="font-forum mb-4 text-2xl text-muted-gold">Market Intelligence &amp; Foresight</h3>
+      <p class="text-white/80">Access proprietary analysis & predictive modeling to inform acquisitions and optimize portfolios.</p>
+    </div>
+    <div class="glass-card p-8">
+      <h3 class="font-forum mb-4 text-2xl text-muted-gold">Bespoke Client Journeys</h3>
+      <p class="text-white/80">Hyper-personalized experiences that anticipate needs and foster lifelong loyalty.</p>
     </div>
   </div>
 </section>
+
+<div class="section-divider">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none" class="w-full h-full">
+    <line x1="0" y1="60" x2="1440" y2="60" stroke-width="1.5"/>
+    <line x1="500" y1="0" x2="940" y2="120" stroke-width="1"/>
+    <line x1="720" y1="0" x2="720" y2="120" stroke-width="2"/>
+  </svg>
+</div>
 
 <!-- CIRCLE -->
-<section id="circle" class="py-16 md:py-24 fade-in">
-  <div class="container mx-auto max-w-4xl px-4 text-center">
-    <h2 class="font-forum text-4xl text-white md:text-5xl">The Inner Edge Circle</h2>
-    <div class="mx-auto mt-6 mb-8 h-px w-24 bg-muted-gold"></div>
-    <p class="mb-8 text-lg leading-relaxed text-white/70">
-      Membership in the Inner Edge Circle is extended by invitation only. It is a confluence of the most forward-thinking minds in real estate. Members gain access to exclusive data, private events, and peers at the highest echelon.
-    </p>
-  </div>
+<section id="circle" class="bg-[#0c0c0c] text-center">
+  <h2 class="font-forum text-5xl md:text-7xl text-white">The Inner Edge Circle</h2>
+  <div class="mx-auto mt-6 mb-8 h-px w-24 bg-muted-gold"></div>
+  <p class="max-w-2xl mb-8 text-lg leading-relaxed text-white/70">
+    Membership in the Inner Edge Circle is extended by invitation only. It is a confluence of the most forward-thinking minds in real estate. Members gain access to exclusive data, private events, and peers at the highest echelon.
+  </p>
 </section>
 
+<div class="section-divider">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none" class="w-full h-full">
+    <line x1="0" y1="60" x2="1440" y2="60" stroke-width="1.5"/>
+    <line x1="400" y1="0" x2="1040" y2="120" stroke-width="1"/>
+    <line x1="720" y1="0" x2="720" y2="120" stroke-width="2"/>
+  </svg>
+</div>
+
 <!-- CONTACT -->
-<section id="contact" class="bg-black/20 py-16 md:py-24 fade-in text-center">
-  <div class="container mx-auto px-4">
-    <h2 class="font-forum text-4xl text-white md:text-5xl">An Invitation Awaits</h2>
-    <p class="mt-4 mb-8 max-w-2xl mx-auto text-lg text-white/70">
-      To maintain exclusivity, we operate invite-only. If your enterprise aligns with our values, request consideration.
-    </p>
-    <a href="#" class="inline-block font-raleway px-10 py-4 text-sm font-bold uppercase tracking-widest cta-outline">
-      Request an Invitation
-    </a>
-  </div>
+<section id="contact" class="bg-[#0c0c0c] text-center">
+  <h2 class="font-forum text-5xl md:text-7xl text-white">An Invitation Awaits</h2>
+  <p class="mt-4 mb-8 max-w-2xl mx-auto text-lg text-white/70">
+    To maintain exclusivity, we operate invite-only. If your enterprise aligns with our values, request consideration.
+  </p>
+  <a href="#" class="inline-block font-raleway px-10 py-4 text-sm font-bold uppercase tracking-widest cta-outline">
+    Request an Invitation
+  </a>
 </section>
 
 </main>
 
 <!-- FOOTER -->
-<footer class="bg-black/50 backdrop-blur-sm fade-in">
-  <div class="container mx-auto px-6 md:px-10 py-8">
+<footer class="bg-[#0c0c0c]">
+  <div class="container mx-auto px-6 md:px-10 py-8 text-center md:text-left">
     <div class="my-8 h-px w-full border-t border-muted-gold/30"></div>
-    <div class="flex flex-col items-center justify-between gap-6 text-center md:flex-row">
-      <div class="text-center md:text-left">
+    <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
+      <div>
         <p class="font-forum text-xl tracking-wider text-white">SORELL</p>
         <p class="text-xs uppercase tracking-widest text-muted-gold">The Art of Automation</p>
       </div>
@@ -284,24 +310,11 @@ const toggleMenu = () => {
 menuBtn.addEventListener('click', toggleMenu);
 
 // Close menu when a link is clicked
-const menuLinks = document.querySelectorAll('.menu-link');
-menuLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        if (!mobileMenu.classList.contains('hidden')) {
-            toggleMenu();
-        }
-    });
-});
-
-// Fade-in on scroll
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
+document.querySelectorAll('.menu-link').forEach(link => {
+  link.addEventListener('click', () => {
+    if (!mobileMenu.classList.contains('hidden')) toggleMenu();
   });
-}, { threshold: 0.2 });
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+});
 
 // Navbar hide on scroll down
 let lastScrollTop = 0;
