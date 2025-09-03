@@ -83,6 +83,14 @@
     background: rgba(0,0,0,0.75);
     z-index: -1;
   }
+  
+  #spotlight {
+  background: radial-gradient(
+    circle 100px at center,
+    rgba(163, 138, 106, 0.15),
+    transparent 200px
+  );
+}
 
   /* Parallax */
   .parallax-bg {
@@ -200,29 +208,30 @@
 
 <div class="divider-line"></div>
 <!-- SERVICES -->
-<section id="services" class="relative text-center">
-  <video autoplay muted loop playsinline class="video-bg">
-    <source src="12421437_1920_1080_30fps.mp4" type="video/mp4">
-  </video>
-  <div class="video-overlay"></div>
-  <h2 class="section-heading text-white">Our Signature Services</h2>
-  <div class="mx-auto mt-6 mb-12 h-px w-24 bg-muted-gold"></div>
-  <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 px-4">
-    <div class="glass-card p-8">
-      <h3 class="font-forum mb-4 text-2xl text-muted-gold">AI-Powered Clientele Discovery</h3>
-      <p class="text-white/80">Predictive analytics to identify and engage high-net-worth individuals before they even enter the market.</p>
-    </div>
-    <div class="glass-card p-8">
-      <h3 class="font-forum mb-4 text-2xl text-muted-gold">Automated Estate Management</h3>
-      <p class="text-white/80">Streamline luxury property management — from maintenance to discreet tenant communications.</p>
-    </div>
-    <div class="glass-card p-8">
-      <h3 class="font-forum mb-4 text-2xl text-muted-gold">Market Intelligence &amp; Foresight</h3>
-      <p class="text-white/80">Access proprietary analysis & predictive modeling to inform acquisitions and optimize portfolios.</p>
-    </div>
-    <div class="glass-card p-8">
-      <h3 class="font-forum mb-4 text-2xl text-muted-gold">Bespoke Client Journeys</h3>
-      <p class="text-white/80">Hyper-personalized experiences that anticipate needs and foster lifelong loyalty.</p>
+<section id="services" class="relative text-center overflow-hidden bg-[#0c0c0c]">
+  <!-- spotlight layer -->
+  <div id="spotlight" class="pointer-events-none absolute inset-0 z-0"></div>
+
+  <div class="relative z-10">
+    <h2 class="section-heading text-white">Our Signature Services</h2>
+    <div class="mx-auto mt-6 mb-12 h-px w-24 bg-muted-gold"></div>
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 px-4">
+      <div class="glass-card p-8">
+        <h3 class="font-forum mb-4 text-3xl text-muted-gold">AI-Powered Clientele Discovery</h3>
+        <p class="text-white/80">Predictive analytics to identify and engage high-net-worth individuals before they even enter the market.</p>
+      </div>
+      <div class="glass-card p-8">
+        <h3 class="font-forum mb-4 text-3xl text-muted-gold">Automated Estate Management</h3>
+        <p class="text-white/80">Streamline luxury property management — from maintenance to discreet tenant communications.</p>
+      </div>
+      <div class="glass-card p-8">
+        <h3 class="font-forum mb-4 text-3xl text-muted-gold">Market Intelligence &amp; Foresight</h3>
+        <p class="text-white/80">Access proprietary analysis & predictive modeling to inform acquisitions and optimize portfolios.</p>
+      </div>
+      <div class="glass-card p-8">
+        <h3 class="font-forum mb-4 text-3xl text-muted-gold">Bespoke Client Journeys</h3>
+        <p class="text-white/80">Hyper-personalized experiences that anticipate needs and foster lifelong loyalty.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -312,5 +321,21 @@ window.addEventListener("scroll", function(){
   lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 });
 </script>
+  <script>
+  const spotlight = document.getElementById("spotlight");
+
+  document.addEventListener("mousemove", (e) => {
+    const { clientX: x, clientY: y } = e;
+    spotlight.style.background = `
+      radial-gradient(
+        circle 60px at ${x}px ${y}px,
+        rgba(163, 138, 106, 0.45),
+        rgba(163, 138, 106, 0.15) 120px,
+        transparent 200px
+      )
+    `;
+  });
+</script>
+
 </body>
 </html>
