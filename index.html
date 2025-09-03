@@ -321,16 +321,30 @@ window.addEventListener("scroll", function(){
   lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 });
 </script>
-  <script>
+<script>
   const spotlight = document.getElementById("spotlight");
+  const services = document.getElementById("services");
 
-  document.addEventListener("mousemove", (e) => {
-    const { clientX: x, clientY: y } = e;
+  services.addEventListener("mousemove", (e) => {
+    const rect = services.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
     spotlight.style.background = `
       radial-gradient(
         circle 60px at ${x}px ${y}px,
         rgba(163, 138, 106, 0.45),
         rgba(163, 138, 106, 0.15) 120px,
+        transparent 200px
+      )
+    `;
+  });
+
+  services.addEventListener("mouseleave", () => {
+    spotlight.style.background = `
+      radial-gradient(
+        circle 100px at center,
+        rgba(163, 138, 106, 0.15),
         transparent 200px
       )
     `;
