@@ -116,8 +116,24 @@
   font-weight: 400;
   line-height: 1.2;
   text-align: center;
-}
+ }
 
+ /* Sticky About section */
+ .about-wrapper {
+    position: relative;
+    height: 200vh; /* taller so sticky can hold */
+ }
+ .about-inner {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    background: #0c0c0c;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+ }
 </style>
 </head>
 
@@ -182,18 +198,20 @@
 
 <div class="divider-line"></div>
 
-<!-- ABOUT -->
-<section id="about" class="bg-[#0c0c0c] text-center">
-  <h2 class="section-heading text-white">Timeless Innovation</h2>
-  <div class="mx-auto mt-6 mb-8 h-px w-24 bg-muted-gold"></div>
-  <p class="max-w-2xl text-lg leading-relaxed text-white/70">
-    Sorell merges bespoke service with the precision of artificial intelligence. We are the discreet partner for elite real estate professionals, delivering a decisive advantage through intelligent automation.
-  </p>
+<!-- ABOUT (Sticky Section) -->
+<section id="about" class="about-wrapper">
+  <div class="about-inner">
+    <h2 class="section-heading text-white">Timeless Innovation</h2>
+    <div class="mx-auto mt-6 mb-8 h-px w-24 bg-muted-gold"></div>
+    <p class="max-w-2xl text-lg leading-relaxed text-white/70">
+      Sorell merges bespoke service with the precision of artificial intelligence. We are the discreet partner for elite real estate professionals, delivering a decisive advantage through intelligent automation.
+    </p>
+  </div>
 </section>
 
 <div class="divider-line"></div>
 
-<!-- SERVICES -->
+<!-- SERVICES (will overlay About) -->
 <section id="services" class="relative text-center">
   <video autoplay muted loop playsinline class="video-bg">
     <source src="12421437_1920_1080_30fps.mp4" type="video/mp4">
