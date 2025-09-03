@@ -15,7 +15,7 @@
 
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Forum&family=DM+Sans:wght@400;500;700&family=Raleway:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
 
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
@@ -31,9 +31,7 @@
   }
   .font-forum { font-family: 'Forum', serif; }
   .font-dm-sans { font-family: 'DM Sans', sans-serif; }
-  .font-raleway { font-family: 'Raleway', sans-serif; }
   .text-muted-gold { color: var(--gold); }
-  .border-muted-gold { border-color: var(--gold); }
 
   /* CTA outline with slide-in fill */
   .cta-outline {
@@ -47,10 +45,8 @@
   .cta-outline::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
     background: var(--gold);
     z-index: -1;
     transition: all 0.3s ease;
@@ -107,15 +103,20 @@
     padding: 4rem 1rem;
   }
 
-  /* Divider SVG */
-  .section-divider {
-    width: 100%;
-    height: 120px;
-    background: transparent;
+  /* Divider Line */
+  .divider-line {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 1px 0;
   }
-  .section-divider svg line {
-    stroke: var(--gold);
-    opacity: 0.3;
+
+  /* Headings */
+  .section-heading {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 65px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
   }
 </style>
 </head>
@@ -125,16 +126,16 @@
 
 <!-- NAVBAR -->
 <header class="fixed top-0 z-50 w-full bg-black/30 backdrop-blur-md transition-all duration-500" id="navbar">
-  <nav class="container mx-auto flex items-center justify-between whitespace-nowrap px-6 md:px-10 py-4">
+  <nav class="container mx-auto flex items-center justify-between px-6 md:px-10 py-4">
     <a href="#" class="flex items-center gap-3 text-white z-50">
       <h2 class="font-forum text-2xl tracking-wider">SORELL</h2>
     </a>
     
     <div class="hidden items-center gap-10 font-raleway text-sm uppercase tracking-widest text-white/80 md:flex">
-      <a href="#about" class="transition-colors hover:text-white">About</a>
-      <a href="#services" class="transition-colors hover:text-white">Services</a>
-      <a href="#circle" class="transition-colors hover:text-white">Circle</a>
-      <a href="#contact" class="transition-colors hover:text-white">Contact</a>
+      <a href="#about" class="hover:text-white">About</a>
+      <a href="#services" class="hover:text-white">Services</a>
+      <a href="#circle" class="hover:text-white">Circle</a>
+      <a href="#contact" class="hover:text-white">Contact</a>
     </div>
     <a href="#contact" class="hidden md:block font-raleway px-6 py-2 text-sm font-bold uppercase tracking-widest cta-outline">
       Request Access
@@ -152,10 +153,10 @@
 
   <div id="mobile-menu" class="hidden md:hidden absolute top-0 left-0 w-full bg-black/90 backdrop-blur-lg pt-24 pb-8">
       <div class="flex flex-col items-center gap-8 font-raleway text-lg uppercase tracking-widest text-white/80">
-          <a href="#about" class="menu-link transition-colors hover:text-white">About</a>
-          <a href="#services" class="menu-link transition-colors hover:text-white">Services</a>
-          <a href="#circle" class="menu-link transition-colors hover:text-white">Circle</a>
-          <a href="#contact" class="menu-link transition-colors hover:text-white">Contact</a>
+          <a href="#about" class="menu-link hover:text-white">About</a>
+          <a href="#services" class="menu-link hover:text-white">Services</a>
+          <a href="#circle" class="menu-link hover:text-white">Circle</a>
+          <a href="#contact" class="menu-link hover:text-white">Contact</a>
           <a href="#contact" class="menu-link mt-4 font-raleway px-6 py-2 text-sm font-bold uppercase tracking-widest cta-outline">
             Request Access
           </a>
@@ -169,7 +170,7 @@
 <section class="h-screen parallax-bg" style='background-image: url("cylindrical-black-light-gold-podium-luxury-product-display-background-3d-rendering(1).bcDVHE0x.jpg");'>
   <div class="absolute inset-0 bg-black/60 z-[-1]"></div>
   <div class="relative z-10 flex flex-col items-center gap-6 px-4 text-center">
-    <h1 class="font-forum text-5xl leading-tight text-white md:text-7xl">The Circle Beyond</h1>
+    <h1 class="font-forum text-5xl md:text-7xl text-white">The Circle Beyond</h1>
     <p class="max-w-2xl text-lg text-white/80 md:text-xl">
       Beyond automation. Into legacy. Sorell redefines exclusivity in AI for real estate visionaries.
     </p>
@@ -179,30 +180,18 @@
   </div>
 </section>
 
-<div class="section-divider">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none" class="w-full h-full">
-    <line x1="0" y1="60" x2="1440" y2="60" stroke-width="1.5"/>
-    <line x1="200" y1="0" x2="1240" y2="120" stroke-width="1"/>
-    <line x1="720" y1="0" x2="720" y2="120" stroke-width="2"/>
-  </svg>
-</div>
+<div class="divider-line"></div>
 
 <!-- ABOUT -->
 <section id="about" class="bg-[#0c0c0c] text-center">
-  <h2 class="font-forum text-5xl md:text-7xl text-white">Timeless Innovation</h2>
+  <h2 class="section-heading text-white">Timeless Innovation</h2>
   <div class="mx-auto mt-6 mb-8 h-px w-24 bg-muted-gold"></div>
   <p class="max-w-2xl text-lg leading-relaxed text-white/70">
     Sorell merges bespoke service with the precision of artificial intelligence. We are the discreet partner for elite real estate professionals, delivering a decisive advantage through intelligent automation.
   </p>
 </section>
 
-<div class="section-divider">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none" class="w-full h-full">
-    <line x1="0" y1="60" x2="1440" y2="60" stroke-width="1.5"/>
-    <line x1="300" y1="0" x2="1140" y2="120" stroke-width="1"/>
-    <line x1="720" y1="0" x2="720" y2="120" stroke-width="2"/>
-  </svg>
-</div>
+<div class="divider-line"></div>
 
 <!-- SERVICES -->
 <section id="services" class="relative text-center">
@@ -210,7 +199,7 @@
     <source src="12421437_1920_1080_30fps.mp4" type="video/mp4">
   </video>
   <div class="video-overlay"></div>
-  <h2 class="font-forum text-5xl md:text-7xl text-white">Our Signature Services</h2>
+  <h2 class="section-heading text-white">Our Signature Services</h2>
   <div class="mx-auto mt-6 mb-12 h-px w-24 bg-muted-gold"></div>
   <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 px-4">
     <div class="glass-card p-8">
@@ -232,34 +221,22 @@
   </div>
 </section>
 
-<div class="section-divider">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none" class="w-full h-full">
-    <line x1="0" y1="60" x2="1440" y2="60" stroke-width="1.5"/>
-    <line x1="500" y1="0" x2="940" y2="120" stroke-width="1"/>
-    <line x1="720" y1="0" x2="720" y2="120" stroke-width="2"/>
-  </svg>
-</div>
+<div class="divider-line"></div>
 
 <!-- CIRCLE -->
 <section id="circle" class="bg-[#0c0c0c] text-center">
-  <h2 class="font-forum text-5xl md:text-7xl text-white">The Inner Edge Circle</h2>
+  <h2 class="section-heading text-white">The Inner Edge Circle</h2>
   <div class="mx-auto mt-6 mb-8 h-px w-24 bg-muted-gold"></div>
   <p class="max-w-2xl mb-8 text-lg leading-relaxed text-white/70">
     Membership in the Inner Edge Circle is extended by invitation only. It is a confluence of the most forward-thinking minds in real estate. Members gain access to exclusive data, private events, and peers at the highest echelon.
   </p>
 </section>
 
-<div class="section-divider">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none" class="w-full h-full">
-    <line x1="0" y1="60" x2="1440" y2="60" stroke-width="1.5"/>
-    <line x1="400" y1="0" x2="1040" y2="120" stroke-width="1"/>
-    <line x1="720" y1="0" x2="720" y2="120" stroke-width="2"/>
-  </svg>
-</div>
+<div class="divider-line"></div>
 
 <!-- CONTACT -->
 <section id="contact" class="bg-[#0c0c0c] text-center">
-  <h2 class="font-forum text-5xl md:text-7xl text-white">An Invitation Awaits</h2>
+  <h2 class="section-heading text-white">An Invitation Awaits</h2>
   <p class="mt-4 mb-8 max-w-2xl mx-auto text-lg text-white/70">
     To maintain exclusivity, we operate invite-only. If your enterprise aligns with our values, request consideration.
   </p>
@@ -280,10 +257,10 @@
         <p class="text-xs uppercase tracking-widest text-muted-gold">The Art of Automation</p>
       </div>
       <div class="flex gap-6 text-muted-gold">
-        <a href="#" aria-label="Instagram" class="transition-colors hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
-        <a href="#" aria-label="Facebook" class="transition-colors hover:text-white"><i class="fab fa-facebook-f text-xl"></i></a>
-        <a href="#" aria-label="X" class="transition-colors hover:text-white"><i class="fab fa-x-twitter text-xl"></i></a>
-        <a href="#" aria-label="LinkedIn" class="transition-colors hover:text-white"><i class="fab fa-linkedin-in text-xl"></i></a>
+        <a href="#" aria-label="Instagram" class="hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
+        <a href="#" aria-label="Facebook" class="hover:text-white"><i class="fab fa-facebook-f text-xl"></i></a>
+        <a href="#" aria-label="X" class="hover:text-white"><i class="fab fa-x-twitter text-xl"></i></a>
+        <a href="#" aria-label="LinkedIn" class="hover:text-white"><i class="fab fa-linkedin-in text-xl"></i></a>
       </div>
       <p class="font-raleway text-xs text-white/50">© 2025 Sorell. All Rights Reserved.</p>
     </div>
