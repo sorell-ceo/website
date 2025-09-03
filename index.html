@@ -18,7 +18,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Forum&family=DM+Sans:wght@400;500;700&family=Raleway:wght@400;500;700&display=swap" rel="stylesheet"/>
 
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
 <style type="text/tailwindcss">
   :root {
     --foreground-rgb: 255, 255, 255;
@@ -29,21 +28,19 @@
     color: rgb(var(--foreground-rgb));
     background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
   }
-  .bg-gradient-navy-black {
-    background: linear-gradient(180deg, #0a0a0a 0%, #0f141e 100%);
-  }
   .font-forum { font-family: 'Forum', serif; }
   .font-dm-sans { font-family: 'DM Sans', sans-serif; }
   .font-raleway { font-family: 'Raleway', sans-serif; }
   .text-muted-gold { color: #a38a6a; }
   .border-muted-gold { border-color: #a38a6a; }
 
-  /* CTA outline with slide-in fill */
+  /* CTA outline */
   .cta-outline {
     position: relative;
     border: 1px solid #a38a6a;
     color: #a38a6a;
     background: transparent;
+    font-family: 'Raleway', sans-serif;
     overflow: hidden;
     z-index: 1;
   }
@@ -58,56 +55,61 @@
     z-index: -1;
     transition: all 0.3s ease;
   }
-  .cta-outline:hover::before {
-    left: 0;
-  }
-  .cta-outline:hover {
-    color: #0a0a0a !important;
+  .cta-outline:hover::before { left: 0; }
+  .cta-outline:hover { color: #0a0a0a !important; }
+
+  /* Divider line */
+  .divider-line {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #a38a6a, transparent);
+    margin: 4rem 0;
   }
 
-  /* Fade-in effect */
-  .fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease-out;
+  /* Scroll reveal */
+  .reveal-text {
+    opacity: 0.2;
+    transform: translateY(20px);
+    transition: all 1s ease-out;
   }
-  .fade-in.visible {
+  .reveal-text.visible {
     opacity: 1;
     transform: translateY(0);
   }
 
-  /* Glassmorphism cards */
-  .glass-card {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 0rem; /* sharp corners */
-    transition: all 0.4s ease;
+  /* Sticky parallax layout */
+  .service-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 6rem;
   }
-  .glass-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  .service-image {
+    position: sticky;
+    top: 100px;
+  }
+  .service-image img {
+    width: 100%;
+    border-radius: 0.5rem;
   }
 
-  /* Background video */
-  .video-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -2;
+  /* Hover glow spotlight for Inner Edge Circle */
+  #circle {
+    position: relative;
+    overflow: hidden;
   }
-  .video-overlay {
+  #circle::before {
+    content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.75);
-    z-index: -1;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    pointer-events: none;
+    transition: background 0.3s ease;
+  }
+  #circle:hover::before {
+    background: rgba(0,0,0,0.4);
   }
 
   section { position: relative; overflow: hidden; }
@@ -119,145 +121,128 @@
 
 <!-- NAVBAR -->
 <header class="fixed top-0 z-50 w-full bg-black/30 backdrop-blur-md transition-all duration-500" id="navbar">
-  <nav class="container mx-auto flex items-center justify-between whitespace-nowrap px-6 md:px-10 py-4">
-    <a href="#" class="flex items-center gap-3 text-white z-50">
-      <h2 class="font-forum text-2xl tracking-wider">SORELL</h2>
-    </a>
-    
-    <div class="hidden items-center gap-10 font-raleway text-sm uppercase tracking-widest text-white/80 md:flex">
-      <a href="#about" class="transition-colors hover:text-white">About</a>
-      <a href="#services" class="transition-colors hover:text-white">Services</a>
-      <a href="#circle" class="transition-colors hover:text-white">Circle</a>
-      <a href="#contact" class="transition-colors hover:text-white">Contact</a>
+  <nav class="container mx-auto flex items-center justify-between px-6 md:px-10 py-4">
+    <h2 class="font-forum text-2xl tracking-wider text-white">SORELL</h2>
+    <div class="hidden md:flex gap-10 font-raleway text-sm uppercase tracking-widest text-white/80">
+      <a href="#about" class="hover:text-white">About</a>
+      <a href="#services" class="hover:text-white">Services</a>
+      <a href="#circle" class="hover:text-white">Circle</a>
+      <a href="#contact" class="hover:text-white">Contact</a>
     </div>
     <a href="#contact" class="hidden md:block font-raleway px-6 py-2 text-sm font-bold uppercase tracking-widest cta-outline">
       Request Access
     </a>
-
-    <div class="md:hidden">
-        <button id="menu-btn" type="button" class="z-50 block hamburger md:hidden focus:outline-none">
-            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path id="hamburger-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </button>
-    </div>
   </nav>
-
-  <div id="mobile-menu" class="hidden md:hidden absolute top-0 left-0 w-full bg-black/90 backdrop-blur-lg pt-24 pb-8">
-      <div class="flex flex-col items-center gap-8 font-raleway text-lg uppercase tracking-widest text-white/80">
-          <a href="#about" class="menu-link transition-colors hover:text-white">About</a>
-          <a href="#services" class="menu-link transition-colors hover:text-white">Services</a>
-          <a href="#circle" class="menu-link transition-colors hover:text-white">Circle</a>
-          <a href="#contact" class="menu-link transition-colors hover:text-white">Contact</a>
-          <a href="#contact" class="menu-link mt-4 font-raleway px-6 py-2 text-sm font-bold uppercase tracking-widest cta-outline">
-            Request Access
-          </a>
-      </div>
-  </div>
 </header>
 
 <main class="flex-grow">
 
-<!-- HERO full-screen -->
+<!-- HERO -->
 <section class="flex h-screen items-center justify-center">
-  <div class="absolute inset-0 z-[-2]" style='background-image: url("cylindrical-black-light-gold-podium-luxury-product-display-background-3d-rendering(1).bcDVHE0x.jpg"); background-size: cover; background-position: center;'></div>
+  <div class="absolute inset-0 z-[-2]" style='background-image: url("cylindrical-black-light-gold-podium-luxury-product-display-background-3d-rendering(1).jpg"); background-size: cover; background-position: center;'></div>
   <div class="absolute inset-0 bg-black/60 z-[-1]"></div>
-  <div class="relative z-10 flex flex-col items-center gap-6 px-4 text-center fade-in">
-    <h1 class="font-forum text-5xl leading-tight text-white md:text-7xl">The Circle Beyond</h1>
-    <p class="max-w-2xl text-lg text-white/80 md:text-xl">
-      Beyond automation. Into legacy. Sorell redefines exclusivity in AI for real estate visionaries.
+  <div class="relative z-10 text-center space-y-6">
+    <h1 class="font-forum text-6xl md:text-7xl text-white">The Circle Beyond</h1>
+    <p class="max-w-2xl mx-auto text-lg md:text-xl text-white/80">
+      Wake up to high-net-worth clients discovered, portfolios managed, and deals closing — without lifting a finger.
     </p>
-    <a href="#about" class="mt-4 font-raleway px-8 py-3 text-sm font-bold uppercase tracking-widest cta-outline">
-      Discover More
+    <a href="#contact" class="font-raleway px-8 py-3 text-sm font-bold uppercase tracking-widest cta-outline">
+      Request Access to the Edge
     </a>
   </div>
 </section>
 
-<!-- ABOUT -->
-<section id="about" class="py-16 md:py-24 fade-in">
-  <div class="container mx-auto max-w-4xl px-4 text-center">
-    <h2 class="font-forum text-4xl text-white md:text-5xl">Timeless Innovation</h2>
-    <div class="mx-auto mt-6 mb-8 h-px w-24 bg-muted-gold"></div>
-    <p class="text-lg leading-relaxed text-white/70">
-      Sorell merges bespoke service with the precision of artificial intelligence. We are the discreet partner for elite real estate professionals, delivering a decisive advantage through intelligent automation.
-    </p>
-  </div>
+<div class="divider-line"></div>
+
+<!-- WHY US -->
+<section id="about" class="py-24 text-center">
+  <h2 class="font-raleway text-5xl md:text-6xl text-white reveal-text">Timeless Innovation, Redefined</h2>
+  <p class="mt-6 max-w-3xl mx-auto text-xl text-white/70 reveal-text">
+    In a world drowning in noise, Sorell offers clarity. We don’t just automate — we elevate.  
+    This isn’t technology. This is legacy, built on intelligent automation.
+  </p>
 </section>
 
-<!-- SERVICES -->
-<section id="services" class="py-16 md:py-24 fade-in">
-  <video autoplay muted loop playsinline class="video-bg">
-    <source src="12421437_1920_1080_30fps.mp4" type="video/mp4">
-  </video>
-  <div class="video-overlay"></div>
+<div class="divider-line"></div>
 
-  <div class="relative container mx-auto px-4">
-    <div class="text-center">
-      <h2 class="font-forum text-4xl text-white md:text-5xl">Our Signature Services</h2>
-      <div class="mx-auto mt-6 mb-12 h-px w-24 bg-muted-gold"></div>
-    </div>
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-      <div class="glass-card p-8">
-        <h3 class="font-forum mb-4 text-2xl text-muted-gold">AI-Powered Clientele Discovery</h3>
-        <p class="text-white/80">Predictive analytics to identify and engage high-net-worth individuals before they even enter the market.</p>
-      </div>
-      <div class="glass-card p-8">
-        <h3 class="font-forum mb-4 text-2xl text-muted-gold">Automated Estate Management</h3>
-        <p class="text-white/80">Streamline luxury property management — from maintenance to discreet tenant communications.</p>
-      </div>
-      <div class="glass-card p-8">
-        <h3 class="font-forum mb-4 text-2xl text-muted-gold">Market Intelligence &amp; Foresight</h3>
-        <p class="text-white/80">Access proprietary analysis & predictive modeling to inform acquisitions and optimize portfolios.</p>
-      </div>
-      <div class="glass-card p-8">
-        <h3 class="font-forum mb-4 text-2xl text-muted-gold">Bespoke Client Journeys</h3>
-        <p class="text-white/80">Hyper-personalized experiences that anticipate needs and foster lifelong loyalty.</p>
+<!-- SERVICES sticky parallax -->
+<section id="services" class="py-24">
+  <h2 class="font-forum text-5xl text-center text-white mb-20">Our Signature Services</h2>
+
+  <div class="container mx-auto space-y-24">
+    <div class="service-block">
+      <div class="service-image"><img src="https://via.placeholder.com/600x400" alt="Service 1"></div>
+      <div>
+        <h3 class="font-raleway text-3xl text-muted-gold mb-4">AI-Powered Clientele Discovery</h3>
+        <p class="text-white/80 text-lg">Your next ultra-high-net-worth client? Already identified and nurtured before they even hit the market.</p>
       </div>
     </div>
+    <div class="service-block">
+      <div>
+        <h3 class="font-raleway text-3xl text-muted-gold mb-4">Automated Estate Management</h3>
+        <p class="text-white/80 text-lg">Every tenant request, maintenance update, and detail handled in silence — while you focus on empire building.</p>
+      </div>
+      <div class="service-image"><img src="https://via.placeholder.com/600x400" alt="Service 2"></div>
+    </div>
+    <div class="service-block">
+      <div class="service-image"><img src="https://via.placeholder.com/600x400" alt="Service 3"></div>
+      <div>
+        <h3 class="font-raleway text-3xl text-muted-gold mb-4">Market Intelligence &amp; Foresight</h3>
+        <p class="text-white/80 text-lg">Know where to invest before the market shifts. Make moves with the precision others only dream of.</p>
+      </div>
+    </div>
+    <div class="service-block">
+      <div>
+        <h3 class="font-raleway text-3xl text-muted-gold mb-4">Bespoke Client Journeys</h3>
+        <p class="text-white/80 text-lg">Turn clients into lifelong loyalists with experiences so personal, they’ll never look at another agency again.</p>
+      </div>
+      <div class="service-image"><img src="https://via.placeholder.com/600x400" alt="Service 4"></div>
+    </div>
   </div>
 </section>
 
-<!-- CIRCLE -->
-<section id="circle" class="py-16 md:py-24 fade-in">
-  <div class="container mx-auto max-w-4xl px-4 text-center">
-    <h2 class="font-forum text-4xl text-white md:text-5xl">The Inner Edge Circle</h2>
-    <div class="mx-auto mt-6 mb-8 h-px w-24 bg-muted-gold"></div>
-    <p class="mb-8 text-lg leading-relaxed text-white/70">
-      Membership in the Inner Edge Circle is extended by invitation only. It is a confluence of the most forward-thinking minds in real estate. Members gain access to exclusive data, private events, and peers at the highest echelon.
-    </p>
-  </div>
+<div class="divider-line"></div>
+
+<!-- INNER EDGE CIRCLE -->
+<section id="circle" class="py-24 text-center">
+  <h2 class="font-forum text-5xl text-white">The Inner Edge Circle</h2>
+  <div class="mx-auto mt-6 mb-8 h-px w-24 bg-muted-gold"></div>
+  <p class="max-w-3xl mx-auto text-xl text-white/70">
+    Membership in the Inner Edge Circle is more than access — it is ascension.  
+    This invite-only enclave gathers the top 1% of real estate leaders.  
+    Private data, strategic foresight, and peer networks converge here.
+  </p>
 </section>
 
-<!-- CONTACT -->
-<section id="contact" class="bg-black/20 py-16 md:py-24 fade-in text-center">
-  <div class="container mx-auto px-4">
-    <h2 class="font-forum text-4xl text-white md:text-5xl">An Invitation Awaits</h2>
-    <p class="mt-4 mb-8 max-w-2xl mx-auto text-lg text-white/70">
-      To maintain exclusivity, we operate invite-only. If your enterprise aligns with our values, request consideration.
-    </p>
-    <a href="#" class="inline-block font-raleway px-10 py-4 text-sm font-bold uppercase tracking-widest cta-outline">
-      Request an Invitation
-    </a>
-  </div>
+<div class="divider-line"></div>
+
+<!-- CONTACT CTA -->
+<section id="contact" class="py-24 text-center bg-black/20">
+  <h2 class="font-forum text-5xl text-white">Your Legacy Begins Here</h2>
+  <p class="mt-6 max-w-2xl mx-auto text-lg text-white/70">
+    Exclusivity cannot be bought. It must be earned. If your vision aligns, we’ll open the doors. If not, the Circle remains closed.
+  </p>
+  <a href="#" class="mt-8 inline-block font-raleway px-10 py-4 text-sm font-bold uppercase tracking-widest cta-outline">
+    Request an Invitation
+  </a>
 </section>
 
 </main>
 
 <!-- FOOTER -->
-<footer class="bg-black/50 backdrop-blur-sm fade-in">
-  <div class="container mx-auto px-6 md:px-10 py-8">
-    <div class="my-8 h-px w-full border-t border-muted-gold/30"></div>
-    <div class="flex flex-col items-center justify-between gap-6 text-center md:flex-row">
-      <div class="text-center md:text-left">
-        <p class="font-forum text-xl tracking-wider text-white">SORELL</p>
+<footer class="bg-black/50 backdrop-blur-sm py-10">
+  <div class="container mx-auto px-6 md:px-10">
+    <div class="h-px w-full border-t border-muted-gold/30 mb-8"></div>
+    <div class="flex flex-col md:flex-row justify-between items-center text-center gap-6">
+      <div>
+        <p class="font-forum text-xl text-white">SORELL</p>
         <p class="text-xs uppercase tracking-widest text-muted-gold">The Art of Automation</p>
       </div>
       <div class="flex gap-6 text-muted-gold">
-        <a href="#" aria-label="Instagram" class="transition-colors hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
-        <a href="#" aria-label="Facebook" class="transition-colors hover:text-white"><i class="fab fa-facebook-f text-xl"></i></a>
-        <a href="#" aria-label="X" class="transition-colors hover:text-white"><i class="fab fa-x-twitter text-xl"></i></a>
-        <a href="#" aria-label="LinkedIn" class="transition-colors hover:text-white"><i class="fab fa-linkedin-in text-xl"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram text-xl"></i></a>
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f text-xl"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter text-xl"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in text-xl"></i></a>
       </div>
       <p class="font-raleway text-xs text-white/50">© 2025 Sorell. All Rights Reserved.</p>
     </div>
@@ -267,54 +252,15 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-
 <script>
-// Mobile Menu Toggle
-const menuBtn = document.getElementById('menu-btn');
-const mobileMenu = document.getElementById('mobile-menu');
-const hamburgerIcon = document.getElementById('hamburger-icon');
-const closeIcon = document.getElementById('close-icon');
-
-const toggleMenu = () => {
-  mobileMenu.classList.toggle('hidden');
-  hamburgerIcon.classList.toggle('hidden');
-  closeIcon.classList.toggle('hidden');
-};
-
-menuBtn.addEventListener('click', toggleMenu);
-
-// Close menu when a link is clicked
-const menuLinks = document.querySelectorAll('.menu-link');
-menuLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        if (!mobileMenu.classList.contains('hidden')) {
-            toggleMenu();
-        }
-    });
-});
-
-// Fade-in on scroll
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal-text');
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){ entry.target.classList.add('visible'); }
   });
-}, { threshold: 0.2 });
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-// Navbar hide on scroll down
-let lastScrollTop = 0;
-const navbar = document.getElementById('navbar');
-window.addEventListener("scroll", function(){
-  let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  if(scrollTop > lastScrollTop && scrollTop > 100){
-    navbar.classList.add("opacity-0","-translate-y-full");
-  } else {
-    navbar.classList.remove("opacity-0","-translate-y-full");
-  }
-  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-});
+},{threshold:0.3});
+revealEls.forEach(el=>obs.observe(el));
 </script>
 </body>
 </html>
