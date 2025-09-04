@@ -84,54 +84,43 @@
     z-index: -1;
   }
   
-  /* ---------- CRED-LIKE DIM + GLOW (SERVICES) ---------- */
-  /* 🔎 darker global dim with vignette */
-  #services.isolate .cred-dim{
-    position:absolute; inset:0; z-index:0; pointer-events:none;
-    background:
-      radial-gradient(180% 120% at 50% 60%,
-        rgba(255,255,255,0.05) 0%,
-        rgba(0,0,0,0.55) 45%,
-        rgba(0,0,0,0.82) 75%,
-        rgba(0,0,0,0.94) 100%),
-      linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.55));
-  }
-  /* 🔎 premium paper noise */
-  #services.isolate::after{
-    content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
-    opacity:.06;
-    background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="120" height="120" filter="url(%23n)" opacity="0.8"/></svg>');
-    mix-blend-mode:soft-light;
-  }
-  /* 🔎 spotlight that brightens beneath content like CRED */
-  #services.isolate .cred-spot{
-    position:absolute; inset:0; z-index:1; pointer-events:none;
-    --mx:50%; --my:55%;
-    background:
-      radial-gradient(260px 260px at var(--mx) var(--my),
-        rgba(255,255,255,0.28) 0%,
-        rgba(255,255,255,0.14) 34%,
-        rgba(255,255,255,0.00) 65%),
-      radial-gradient(360px 360px at var(--mx) var(--my),
-        rgba(163,138,106,0.28) 0%,
-        rgba(163,138,106,0.12) 28%,
-        rgba(163,138,106,0.00) 60%);
-    mix-blend-mode:screen;
-    filter: blur(22px);
-    transition: opacity .25s ease, transform .25s ease;
-  }
-  #services.isolate .cred-spot.idle{ opacity:.65; }
+/* ---------- CRED INVERSE SPOTLIGHT (like your SS) ---------- */
+:root { --x: 50%; --y: 55%; } /* default center */
 
-  /* 🔎 mute base text so glow creates contrast */
-  #services h2, #services h3 { color: rgba(255,255,255,0.88); }
-  #services p{ color: rgba(255,255,255,0.72); }
+#services { background: #000; } /* pure black base */
 
-  /* 🔎 polish cards in the dimmed environment */
-  #services .glass-card{
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(163,138,106,0.28);
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03), 0 10px 30px rgba(0,0,0,0.45);
-  }
+/* Full overlay; dark with a transparent hole that follows (--x, --y) */
+#services .spotlight{
+  position:absolute; inset:0; pointer-events:none; z-index:1;
+  background:
+    radial-gradient(
+      circle at var(--x) var(--y),
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,0) 10%,
+      rgba(0,0,0,0.60) 22%,
+      rgba(0,0,0,0.85) 42%,
+      rgba(0,0,0,0.95) 58%,
+      #000 100%
+    );
+  transition: background 120ms linear;
+}
+
+/* ultra-subtle noise so black isn’t flat */
+#services::after{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  opacity:.03; mix-blend-mode:soft-light;
+  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="120" height="120" filter="url(%23n)" opacity="0.8"/></svg>');
+}
+
+/* type slightly muted so the hole feels brighter by contrast */
+#services h2, #services h3{ color:rgba(255,255,255,.9); }
+#services p{ color:rgba(255,255,255,.65); }
+
+#services .glass-card{
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(163,138,106,0.26);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03), 0 10px 30px rgba(0,0,0,0.48);
+}
 
   /* Parallax */
   .parallax-bg {
@@ -249,7 +238,8 @@
 <div class="divider-line"></div>
 
 <!-- SERVICES (CRED EFFECT) -->
-<section id="services" class="relative isolate text-center overflow-hidden bg-[#0c0c0c]">
+<div class="spotlight"></div>
+
   <!-- 🔎 NEW: dim + glow layers -->
   <div class="cred-dim"></div>
   <div class="cred-spot idle"></div>
@@ -365,35 +355,33 @@ window.addEventListener("scroll", function(){
 </script>
 
 <script>
-  // ---------- CRED spotlight logic ----------
+  // Inverse spotlight (transparent hole in a dark overlay)
   const services = document.getElementById('services');
-  const spot = services.querySelector('.cred-spot');
+  const spot = services.querySelector('.spotlight');
 
-  const setPos = (e) => {
+  function setSpot(e){
     const r = services.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width) * 100;
-    const y = ((e.clientY - r.top) / r.height) * 100;
-    spot.style.setProperty('--mx', x + '%');
-    spot.style.setProperty('--my', y + '%');
-  };
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    // match the SS: set vars in PX
+    spot.style.setProperty('--x', x + 'px');
+    spot.style.setProperty('--y', y + 'px');
+  }
 
-  services.addEventListener('mouseenter', () => {
-    spot.classList.remove('idle');
-  });
-
-  services.addEventListener('mousemove', setPos);
+  services.addEventListener('mousemove', setSpot);
 
   services.addEventListener('mouseleave', () => {
-    spot.classList.add('idle');
-    spot.style.setProperty('--mx','50%');
-    spot.style.setProperty('--my','55%');
+    // relax to a pleasing center when not hovered
+    spot.style.setProperty('--x','50%');
+    spot.style.setProperty('--y','55%');
   });
 
-  // Touch devices: keep centered/idle for performance
+  // touch devices: keep centered (no tracking)
   const isTouch = matchMedia('(hover: none), (pointer: coarse)').matches;
   if (isTouch) {
-    spot.classList.add('idle');
-    services.removeEventListener('mousemove', setPos);
+    services.removeEventListener('mousemove', setSpot);
+    spot.style.setProperty('--x','50%');
+    spot.style.setProperty('--y','55%');
   }
 </script>
 
