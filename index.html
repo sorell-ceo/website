@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sorell — Premium Invite-only for Real Estate</title>
-  <meta name="description" content="Sorell — invite-only solutions for high-value real estate agencies. White-glove onboarding, lead routing, and high-status positioning." />
+  <title>Sorell — Premium AI Automation for Real Estate</title>
+  <meta name="description" content="Sorell — invite-only AI automation for high-value real estate agencies. Sales automation, lead routing, WhatsApp flows, and white-glove onboarding." />
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Forum&family=Cal+Sans:wght@700;800&family=DM+Sans:wght@400;500;700&family=Red+Hat+Display:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kotta+One&family=Red+Hat+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -20,42 +20,41 @@
       --white: #f6f8fb;
     }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background: linear-gradient(180deg,var(--bg) 0%, #071020 100%);color:var(--white);}
-    body{font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;}
+    html,body{height:100%;margin:0;font-family: 'Red Hat Display', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background: linear-gradient(180deg,var(--bg) 0%, #071020 100%); color:var(--white);}
 
     /* Top nav */
     .topnav{position:fixed;top:0;left:0;right:0;backdrop-filter: blur(6px);background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-bottom:1px solid rgba(255,255,255,0.03);z-index:40}
     .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 22px}
     .brand{display:flex;align-items:center;gap:14px}
-    .logo{font-family:'Forum', serif; font-size:22px; letter-spacing:0.2px; color:var(--white)}
+    .logo{font-family:'Kotta One', serif; font-size:24px; letter-spacing:0.4px; color:var(--white)}
     .badge{font-size:11px;background:var(--accent);color:#061017;padding:6px 8px;border-radius:999px;font-weight:700}
 
     .nav-links{display:flex;gap:20px;align-items:center}
     .nav-links a{color:var(--white);text-decoration:none;padding:8px 10px;border-radius:8px;font-weight:500}
     .nav-links a.secondary{color:var(--muted);background:transparent}
-    .btn-primary{background:linear-gradient(90deg,#f3d88b,#d9a84a);color:#061017;padding:10px 14px;border-radius:12px;font-weight:700;border:none;font-family:'DM Sans',sans-serif}
+    .btn-primary{background:linear-gradient(90deg,#f3d88b,#d9a84a);color:#061017;padding:10px 14px;border-radius:12px;font-weight:700;box-shadow:0 6px 20px rgba(217,168,74,0.12);border:none}
 
-    /* Hero (centered) */
-    .hero{min-height:66vh;display:flex;align-items:center;justify-content:center;padding:80px 22px}
-    .hero-inner{max-width:980px;text-align:center}
-    .kicker-pill{display:inline-block;padding:8px 18px;border-radius:999px;background:rgba(255,255,255,0.02);box-shadow: inset 0 2px 8px rgba(255,255,255,0.06);font-family:'Red Hat Display',sans-serif;color:var(--white);font-weight:600;font-size:13px}
+    /* Hero */
+    .hero{max-width:1200px;margin:120px auto 40px;padding:40px 22px;display:grid;grid-template-columns:1fr 420px;gap:36px;align-items:center}
+    .kicker{color:var(--muted);font-weight:700;letter-spacing:1px;font-size:12px;margin-bottom:12px}
+    h1{font-size:46px;line-height:1.02;margin:0 0 18px;font-weight:800}
+    p.lead{color:var(--muted);font-size:16px;margin:0 0 22px;max-width:620px}
 
-    h1{font-family:'Cal Sans', 'Times New Roman', serif;font-size:clamp(34px,5.2vw,56px);line-height:1.02;margin:18px 0 10px;font-weight:800}
-    p.lead{font-family:'DM Sans',sans-serif;color:var(--muted);font-size:16px;margin:0 0 22px}
+    .features{display:flex;gap:16px;flex-wrap:wrap}
+    .card{background:linear-gradient(180deg,var(--card), rgba(255,255,255,0.01));padding:18px;border-radius:14px;box-shadow:0 10px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.025)}
+    .stat{display:flex;align-items:center;gap:12px}
+    .stat .num{font-weight:800;font-size:20px;color:var(--white)}
+    .stat .label{color:var(--muted);font-size:12px}
 
-    .cta-wrap{margin-top:18px}
-    .cta-primary{background:linear-gradient(90deg,#f3d88b,#d9a84a);color:#061017;padding:12px 18px;border-radius:12px;font-weight:700;border:none;font-family:'DM Sans',sans-serif;cursor:pointer}
-    .cta-primary:focus{outline:3px solid rgba(217,168,74,0.18);outline-offset:3px}
-    .cta-primary:active{transform:translateY(1px)}
+    /* Right panel */
+    .panel{background:linear-gradient(180deg,var(--glass), var(--glass-2));padding:20px;border-radius:14px;border:1px solid rgba(255,255,255,0.03)}
+    .panel h3{margin:0 0 12px}
+    .lead-form{display:flex;flex-direction:column;gap:12px}
+    .input, .select{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:12px;border-radius:10px;color:var(--white);outline:none}
+    .small{font-size:13px;color:var(--muted)}
 
-    /* Stats cards centered under hero */
-    .stats{display:flex;gap:28px;justify-content:center;align-items:stretch;margin-top:56px;flex-wrap:wrap}
-    .stat-card{background:linear-gradient(180deg,var(--card), rgba(255,255,255,0.01));padding:18px;border-radius:14px;box-shadow:0 10px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.025;);min-width:160px;flex:0 0 auto;text-align:center}
-    .stat-card .num{font-weight:800;font-size:20px;color:var(--white)}
-    .stat-card .label{color:var(--muted);font-size:13px;margin-top:6px}
-
-    /* Features grid (unchanged content) */
-    .why{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:32px 22px;max-width:1200px;margin:40px auto}
+    /* Features grid */
+    .why{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:32px 22px;max-width:1200px;margin:8px auto}
     .why .item{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
     .why h4{margin:0 0 8px}
     .why p{margin:0;color:var(--muted);font-size:14px}
@@ -69,19 +68,18 @@
 
     /* Responsive */
     @media (max-width:980px){
+      .hero{grid-template-columns:1fr;gap:20px;margin-top:92px}
       .why{grid-template-columns:repeat(2,1fr)}
-      .stat-card{min-width:220px}
     }
     @media (max-width:640px){
       .nav-links{display:none}
       .why{grid-template-columns:1fr}
       h1{font-size:32px}
-      .stat-card{min-width:100%;}
-      .hero{padding:56px 18px}
     }
 
     /* micro-interactions */
-    .stat-card:hover{transform:translateY(-6px);transition:all .28s cubic-bezier(.2,.9,.25,1)}
+    .btn-primary:active{transform:translateY(1px)}
+    .card:hover{transform:translateY(-6px);transition:all .28s cubic-bezier(.2,.9,.25,1)}
   </style>
 </head>
 <body>
@@ -92,44 +90,59 @@
         <div class="badge">Invite-only</div>
       </div>
       <div class="nav-links" aria-hidden="false">
-        <a href="#sorell-solution">Sorell Solution</a>
+        <a href="#why">Why Us</a>
         <a href="#work">Proof</a>
         <a href="#pricing" class="secondary">Pricing</a>
-        <button class="btn-primary" onclick="openCTAModal()">Send Request</button>
+        <button class="btn-primary" onclick="openCTAModal()">Apply</button>
       </div>
     </div>
   </nav>
 
   <main>
     <section class="hero" aria-labelledby="hero-heading">
-      <div class="hero-inner">
-        <div class="kicker-pill">Welcome to Sorell</div>
-        <h1 id="hero-heading">Solutions for high-value real estate agencies — invite only</h1>
-        <p class="lead">Sorell Solution</p>
+      <div>
+        <div class="kicker">Premium • Real Estate • Automation</div>
+        <h1 id="hero-heading">AI automation for high-value real estate teams — invite-only onboarding.</h1>
+        <p class="lead">Sorell delivers white-glove automation: lead triage, WhatsApp-first nurture, automated show-booking and revenue-tracking — all built for agencies that handle 40+ listings and 300+ leads monthly.</p>
 
-        <div class="cta-wrap">
-          <button class="cta-primary" onclick="openCTAModal()">Send Request</button>
+        <div style="display:flex;gap:12px;align-items:center;margin-top:14px">
+          <button class="btn-primary" onclick="openCTAModal()">Request Invite</button>
+          <a href="#why" class="small" style="color:var(--muted);text-decoration:none;padding:10px">See how it works →</a>
         </div>
 
-        <!-- Stats cards moved here and centered -->
-        <div class="stats" aria-label="Key stats">
-          <div class="stat-card">
-            <div class="num">40+</div>
-            <div class="label">Listings — Ideal client</div>
+        <div class="features" style="margin-top:22px">
+          <div class="card" style="min-width:180px">
+            <div class="stat"><div class="num">40+</div><div class="label">Listings — Ideal client</div></div>
           </div>
-          <div class="stat-card">
-            <div class="num">300+</div>
-            <div class="label">Leads / month</div>
+          <div class="card" style="min-width:180px">
+            <div class="stat"><div class="num">300+</div><div class="label">Leads / month</div></div>
           </div>
-          <div class="stat-card">
-            <div class="num">3–6 weeks</div>
-            <div class="label">Average onboarding</div>
+          <div class="card" style="min-width:220px">
+            <div class="stat"><div class="num">3–6 weeks</div><div class="label">Average onboarding</div></div>
           </div>
         </div>
       </div>
+
+      <aside class="panel" aria-labelledby="panel-1">
+        <h3 id="panel-1">Quick pre-qualify</h3>
+        <form class="lead-form" onsubmit="event.preventDefault();submitForm()">
+          <input class="input" type="text" id="company" placeholder="Agency name *" required />
+          <input class="input" type="tel" id="phone" placeholder="WhatsApp number *" required />
+          <select class="select" id="size">
+            <option value="">Listings per month</option>
+            <option>40–80</option>
+            <option>80–200</option>
+            <option>200+</option>
+          </select>
+          <div style="display:flex;gap:10px">
+            <button class="btn-primary" type="submit">Request invite</button>
+            <button class="card" type="button" onclick="copyEmail()">Email us</button>
+          </div>
+          <div class="small">We manually review every application — typical response time: 48–72 hours.</div>
+        </form>
+      </aside>
     </section>
 
-    <!-- Features: kept unchanged in copy -->
     <section id="why" class="why" aria-label="Why Sorell">
       <div class="item">
         <h4>Sales-first automations</h4>
@@ -154,7 +167,7 @@
 
     <footer>
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
-        <div>Sorell • Invite-only</div>
+        <div>Sorell • Invite-only AI Automation</div>
         <div style="gap:12px;display:flex;align-items:center"><div class="small">© Sorell — All rights reserved</div></div>
       </div>
     </footer>
@@ -162,7 +175,18 @@
 
   <script>
     function openCTAModal(){
-      alert('Request placeholder — replace with modal that captures qualifications (e.g., listings count) for higher lead quality.');
+      alert('CTA placeholder — in production replace with modal or lead capture flow.');
+    }
+    function copyEmail(){
+      navigator.clipboard?.writeText('hello@sorell.ai');
+      alert('Email copied: hello@sorell.ai');
+    }
+    function submitForm(){
+      const name = document.getElementById('company').value;
+      const phone = document.getElementById('phone').value;
+      if(!name || !phone) return alert('Please fill required fields');
+      // placeholder: replace with real request to backend
+      alert('Application received — check your WhatsApp.');
     }
   </script>
 </body>
