@@ -7,7 +7,7 @@
   <meta name="description" content="Sorell — invite-only AI automation for high-value real estate agencies. Sales automation, lead routing, WhatsApp flows, and white-glove onboarding." />
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Kotta+One&family=Red+Hat+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kotta+One&family=Red+Hat+Display:wght@400;500;700;900&family=DM+Serif+Display&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -36,8 +36,8 @@
 
     /* Hero */
     .hero{max-width:1200px;margin:120px auto 40px;padding:40px 22px;display:grid;grid-template-columns:1fr 420px;gap:36px;align-items:center}
-    .kicker{color:var(--muted);font-weight:700;letter-spacing:1px;font-size:12px;margin-bottom:12px}
-    h1{font-size:46px;line-height:1.02;margin:0 0 18px;font-weight:800}
+    .kicker{font-size:12px;margin-bottom:12px;display:inline-block;background:var(--accent);color:#061017;padding:6px 10px;border-radius:999px;font-weight:700}
+    h1{font-family:'DM Serif Display', serif;font-size:46px;line-height:1.02;margin:0 0 18px;font-weight:800}
     p.lead{color:var(--muted);font-size:16px;margin:0 0 22px;max-width:620px}
 
     .features{display:flex;gap:16px;flex-wrap:wrap}
@@ -90,10 +90,10 @@
         <div class="badge">Invite-only</div>
       </div>
       <div class="nav-links" aria-hidden="false">
-        <a href="#why">Sorell Solutions</a>
+        <a href="#why">Why Us</a>
         <a href="#work">Proof</a>
         <a href="#pricing" class="secondary">Pricing</a>
-        <button class="btn-primary" onclick="openCTAModal()">Send Request</button>
+        <button class="btn-primary" onclick="openCTAModal()">Apply</button>
       </div>
     </div>
   </nav>
@@ -102,12 +102,11 @@
     <section class="hero" aria-labelledby="hero-heading">
       <div>
         <div class="kicker">Welcome to Sorell</div>
-        <h1 id="hero-heading">Solutions for high-value real estate agencies — invite only</h1>
+        <h1 id="hero-heading">AI automation for high-value real estate teams — invite-only onboarding.</h1>
         <p class="lead">Sorell delivers white-glove automation: lead triage, WhatsApp-first nurture, automated show-booking and revenue-tracking — all built for agencies that handle 40+ listings and 300+ leads monthly.</p>
 
         <div style="display:flex;gap:12px;align-items:center;margin-top:14px">
           <button class="btn-primary" onclick="openCTAModal()">Request Invite</button>
-          <a href="#why" class="small" style="color:var(--muted);text-decoration:none;padding:10px">See how it works →</a>
         </div>
 
         <div class="features" style="margin-top:22px">
