@@ -9,6 +9,8 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Kotta+One&family=Red+Hat+Display:wght@400;500;700;900&family=DM+Serif+Display&display=swap" rel="stylesheet">
 
+  <!-- Material Symbols -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=star_shine,trending_up,groups,editor_choice" />
   <style>
     :root{
       --bg:#0f1724; /* deep navy */
@@ -21,6 +23,16 @@
     }
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;font-family: 'Red Hat Display', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background: linear-gradient(180deg,var(--bg) 0%, #071020 100%); color:var(--white);}
+
+    /* Material icons */
+    .material-symbols-outlined {
+      font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
+      vertical-align: middle;
+    }
 
     /* Top nav */
     .topnav{position:fixed;top:0;left:0;right:0;backdrop-filter: blur(6px);background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-bottom:1px solid rgba(255,255,255,0.03);z-index:40}
@@ -36,12 +48,13 @@
 
     /* Hero */
     .hero{max-width:1200px;margin:120px auto 40px;padding:40px 22px;display:grid;grid-template-columns:1fr 420px;gap:36px;align-items:center}
-    .kicker{font-size:12px;margin-bottom:12px;display:inline-block;background:var(--accent);color:#061017;padding:6px 10px;border-radius:999px;font-weight:700}
+    .kicker{font-size:12px;margin-bottom:12px;display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#061017;padding:6px 12px;border-radius:999px;font-weight:700}
     h1{font-family:'DM Serif Display', serif;font-size:46px;line-height:1.02;margin:0 0 18px;font-weight:400}
     p.lead{color:var(--muted);font-size:16px;margin:0 0 22px;max-width:620px}
 
     .features{display:flex;gap:16px;flex-wrap:wrap}
-    .card{background:linear-gradient(180deg,var(--card), rgba(255,255,255,0.01));padding:18px;border-radius:14px;box-shadow:0 10px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.025)}
+    .card{background:linear-gradient(180deg,var(--card), rgba(255,255,255,0.01));padding:18px;border-radius:14px;box-shadow:0 10px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.025);text-align:center}
+    .card .material-symbols-outlined{font-size:32px;display:block;margin-bottom:10px;color:var(--accent)}
     .stat{display:flex;align-items:center;gap:12px}
     .stat .num{font-weight:800;font-size:20px;color:var(--white)}
     .stat .label{color:var(--muted);font-size:12px}
@@ -54,9 +67,9 @@
     .small{font-size:13px;color:var(--muted)}
 
     /* Features grid */
-    .why{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:32px 22px;max-width:1200px;margin:8px auto}
+    .why{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:32px 22px;max-width:1200px;margin:8px auto;text-align:center}
     .why .item{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
-    .why h4{margin:0 0 8px}
+    .why h4{margin:10px 0 8px}
     .why p{margin:0;color:var(--muted);font-size:14px}
 
     /* Testimonials */
@@ -100,7 +113,7 @@
   <main>
     <section class="hero" aria-labelledby="hero-heading">
       <div>
-        <div class="kicker">Welcome to Sorell</div>
+        <div class="kicker"><span class="material-symbols-outlined">star_shine</span> Welcome to Sorell</div>
         <h1 id="hero-heading">solutions for high value real estate agencies — invite only</h1>
         <p class="lead">Sorell delivers white-glove automation: lead triage, WhatsApp-first nurture, automated show-booking and revenue-tracking — all built for agencies that handle 40+ listings and 300+ leads monthly.</p>
 
@@ -143,14 +156,17 @@
 
     <section id="why" class="why" aria-label="Why Sorell">
       <div class="item">
+        <span class="material-symbols-outlined">trending_up</span>
         <h4>Sales-first automations</h4>
         <p>Designed to convert — lead scoring, hot-lead routing, and native WhatsApp flows so you don't lose leads to slow follow-ups.</p>
       </div>
       <div class="item">
+        <span class="material-symbols-outlined">groups</span>
         <h4>White-glove onboarding</h4>
         <p>Dedicated setup engineer, custom templates, and 3 months of included technical support.</p>
       </div>
       <div class="item">
+        <span class="material-symbols-outlined">editor_choice</span>
         <h4>High-status positioning</h4>
         <p>Invite-only approach and a metal membership card — built to command higher ARPA.</p>
       </div>
