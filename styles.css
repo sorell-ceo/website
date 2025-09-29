@@ -1,0 +1,368 @@
+/* ===========================
+   Sorell Stylesheet
+   =========================== */
+
+/* Root variables */
+:root {
+  --bg: #0f1724;
+  --card: #0b1220;
+  --muted: #98a0b3;
+  --accent: #d9a84a;
+  --white: #f6f8fb;
+  --glass: rgba(255, 255, 255, 0.06);
+  --glass-2: rgba(255, 255, 255, 0.03);
+}
+
+/* Reset + base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Red Hat Display', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: linear-gradient(180deg, rgba(15,23,36,0.9) 0%, rgba(7,16,32,0.9) 100%),
+              url("./assets/images/home/bg.png") no-repeat center center / cover;
+  color: var(--white);
+}
+
+/* Premium text selection */
+::selection {
+  background: #f4d5a2;
+  color: #393939;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5 {
+  font-family: 'DM Serif Display', serif;
+  font-weight: 400;
+  color: var(--white);
+}
+
+p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 12px 26px;
+  border-radius: 8px;
+  font-family: 'Liter', sans-serif;
+  font-weight: 575;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all .2s ease;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #202020;
+}
+
+.btn-primary:hover {
+  background: #d9a84a;
+  color: #fff;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--white);
+  color: var(--white);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ========== Preheader ========== */
+.preheader {
+  background: var(--glass);
+  padding: 8px 0;
+  text-align: center;
+  font-size: 14px;
+}
+
+.preheader_content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ========== Navbar ========== */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: rgba(255,255,255,0.02);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  z-index: 50;
+}
+
+.header_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px;
+}
+
+.header_brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header_brand .badge {
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--accent);
+  color: #061017;
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+
+/* Desktop nav */
+.nav-desktop a {
+  color: var(--white);
+  margin: 0 14px;
+  position: relative;
+  text-decoration: none;
+}
+
+.nav-desktop a::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--white);
+  transition: width .2s ease;
+}
+
+.nav-desktop a:hover::after {
+  width: 100%;
+}
+
+/* ========== Hero Banner ========== */
+.banner {
+  padding-top: 120px;
+  text-align: center;
+}
+
+.banner h1 {
+  font-size: 3.5rem;
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.banner p.lead {
+  font-size: 1.25rem;
+  max-width: 640px;
+  margin: 0 auto 24px;
+}
+
+.banner_btn {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.banner_video {
+  margin-top: 50px;
+}
+
+.hero-video {
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(2,6,23,0.55);
+}
+
+/* ========== Client Logos ========== */
+.clientLogo {
+  padding: 80px 0;
+  text-align: center;
+}
+
+.clientLogo .swiper-slide img {
+  max-height: 50px;
+  opacity: 0.8;
+  transition: opacity .2s ease;
+}
+
+.clientLogo .swiper-slide img:hover {
+  opacity: 1;
+}
+
+/* ========== Content Video Sections ========== */
+.contentVideo_wrapper {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 80px;
+  align-items: center;
+}
+
+.contentVideo_col {
+  flex: 1;
+}
+
+.contentVideo_content span {
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.contentVideo_box {
+  background: linear-gradient(180deg, var(--card), rgba(255,255,255,0.02));
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.025);
+  margin-top: 20px;
+}
+
+/* ========== Solution Grid ========== */
+.solution {
+  padding: 80px 0;
+  text-align: center;
+}
+
+.solution_flex {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.solution_flex-item {
+  flex: 1 1 calc(33% - 20px);
+  background: var(--glass);
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 16px;
+}
+
+/* ========== Black Theme (Voice) ========== */
+.blackTheme {
+  background: #061017;
+  padding: 80px 0;
+  color: var(--white);
+}
+
+.blackTheme_flex {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.blackTheme_flex-item h3 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+/* ========== Community ========== */
+.ourBusiness {
+  padding: 80px 0;
+}
+
+.ourBusiness_wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.ourBusiness_right .community-item {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* ========== Widget ========== */
+.widget {
+  background: var(--glass-2);
+  padding: 80px 0;
+  text-align: center;
+}
+
+.widget_btn {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* ========== Footer ========== */
+.footer {
+  background: #061017;
+  color: var(--muted);
+  padding: 40px 0;
+}
+
+.footer_wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.footer_col h5 {
+  margin-bottom: 12px;
+}
+
+.footer_col ul {
+  list-style: none;
+}
+
+.footer_col ul li {
+  margin-bottom: 6px;
+}
+
+.footer_col ul a {
+  text-decoration: none;
+  color: var(--muted);
+}
+
+.footer_col ul a:hover {
+  color: var(--accent);
+}
+
+.footer_bottom {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 14px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding-top: 20px;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 980px) {
+  .contentVideo_wrapper {
+    flex-direction: column;
+  }
+  .ourBusiness_wrapper {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 640px) {
+  .banner h1 {
+    font-size: 2.2rem;
+  }
+  .banner p.lead {
+    font-size: 1rem;
+  }
+  .solution_flex-item {
+    flex: 1 1 100%;
+  }
+  .blackTheme_flex {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
