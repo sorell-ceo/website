@@ -1,524 +1,920 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sorell — Invite-only AI Automation for Real Estate</title>
-  <meta name="description" content="Sorell — invite-only AI automation for high-value real estate agencies. Sales automation, lead routing, WhatsApp flows, and white-glove onboarding." />
-  <meta name="keywords" content="Sorell, AI automation, real estate automation, lead routing, sales automation, WhatsApp flows" />
-  <link rel="canonical" href="https://sorell.ai/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Automation Agency | AI Chatbots & Voice Assistants</title>
+    <meta name="description" content="Transform your business with Agensy's AI automation solutions. Expert AI chatbots, voice assistants, and custom automation.">
+    <meta name="keywords" content="AI automation, AI chatbots, voice assistants, AI agents, customer support automation, lead generation, AI solutions, business automation, AI voice agents">
+    <link rel="canonical" href="https://agensy.ai/">
 
-  <!-- Fav icon (replace file if needed) -->
-  <link rel="shortcut icon" href="assets/images/fav/sorell-fav.png" type="image/x-icon">
+    <!-- FAVICON -->
+    <link rel="shortcut icon" href="assets/images/fav/favico.png" type="image/x-icon">
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Kotta+One&family=Red+Hat+Display:wght@400;500;700;900&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <!-- SLIDER LINK -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
 
-  <!-- External CSS libraries (optional) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <!-- BOOTSTRAP LINK -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
-  <!-- YOUR CSS -->
-  <link rel="stylesheet" href="styles.css">
+    <!-- FONT FAMILT LINK -->
+    <link rel="stylesheet" href="./assets/fonts/stylesheet.css">
 
-  <!-- Structured Data: Organization -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Sorell",
-    "url": "https://sorell.ai",
-    "logo": "https://sorell.ai/assets/images/header/sorell_logo.svg",
-    "description": "Invite-only AI automation for high-value real estate agencies offering sales automation, lead routing and white-glove onboarding.",
-    "foundingDate": "2025",
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+[PUT-YOUR-PHONE-HERE]",
-      "contactType": "sales",
-      "areaServed": "Worldwide",
-      "availableLanguage": "English"
-    },
-    "sameAs": [
-      "https://www.linkedin.com/company/sorell-ai",
-      "https://instagram.com/sorell.ai"
-    ],
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "India"
-    }
-  }
-  </script>
-
-  <!-- Structured Data: FAQ -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "mainEntity":[
-      {
-        "@type":"Question",
-        "name":"Who is Sorell for?",
-        "acceptedAnswer":{"@type":"Answer","text":"Sorell is invite-only and designed for market-leading real estate agencies with a strong listings pipeline and high lead volume."}
+    <!-- CSS LINKS -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Agensy",
+      "url": "https://agensy.ai",
+      "logo": "https://agensy.ai/assets/images/header/agensy_logo.svg",
+      "description": "Leading AI automation agency specializing in AI chatbots, voice assistants, and custom automation solutions",
+      "foundingDate": "2024",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-555-AGENSY",
+        "contactType": "customer service",
+        "areaServed": "Worldwide",
+        "availableLanguage": "English"
       },
-      {
-        "@type":"Question",
-        "name":"What services do you provide?",
-        "acceptedAnswer":{"@type":"Answer","text":"Sales automation, lead routing, WhatsApp flows, sales AI agents, and white-glove onboarding."}
+      "sameAs": [
+        "https://www.youtube.com/channel/UCKtH94_HZBSMDoS6hEdapmg",
+        "https://www.linkedin.com/company/agensy-ai/",
+        "https://t.me/+DzsSHLjO0gthNzM6"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "Moldova"
       },
-      {
-        "@type":"Question",
-        "name":"How long does onboarding take?",
-        "acceptedAnswer":{"@type":"Answer","text":"Average onboarding is 3–6 weeks depending on complexity and integrations."}
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "AI Automation Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "AI Chatbots",
+              "description": "Custom AI chatbots for automated customer support and lead generation"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "AI Voice Assistants",
+              "description": "Human-like voice assistants for call centers and customer service"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Lead Generation",
+              "description": "AI-powered lead generation and data extraction services"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Custom Automation",
+              "description": "Tailored AI solutions for business process automation"
+            }
+          }
+        ]
       }
-    ]
-  }
-  </script>
+    }
+    </script>
+    
+    <!-- FAQ Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What AI automation services does Agensy offer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Agensy offers AI chatbots, AI voice assistants, lead generation automation, marketing automation, and custom AI solutions for businesses."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can AI chatbots help my business?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AI chatbots can automate customer support, handle inquiries 24/7, generate leads, and provide instant responses to common questions, reducing workload on your team."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What makes Agensy's AI voice assistants different?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our AI voice assistants sound human-like, can handle complex conversations, work 24/7, and integrate seamlessly with your existing systems for call centers and customer service."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How quickly can Agensy implement AI solutions?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Implementation time varies by project complexity, but we typically deliver AI chatbots within 2-4 weeks and custom solutions within 4-8 weeks."
+          }
+        }
+      ]
+    }
+    </script>
 
-  <!-- Open Graph / Twitter meta -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://sorell.ai">
-  <meta property="og:title" content="Sorell — Invite-only AI Automation for Real Estate">
-  <meta property="og:description" content="Invite-only AI automation for market-leading real estate agencies. Sales-first automations, lead routing, and white-glove onboarding.">
-  <meta property="og:image" content="https://sorell.ai/assets/images/header/thumbnail.png">
+    <!-- Universal Open Graph Tags -->
+    <meta content="website" property="og:type">
+    <meta content="https://agensy.ai" property="og:url">
+    <meta content="AI Automation Agency" property="og:title">
+    <meta content="Transform your business with AI-powered solutions" property="og:description">
+    <meta content="https://agensy.ai/assets/images/header/thumbnail.png" property="og:image">
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@SorellAI">
-  <meta name="twitter:title" content="Sorell — Invite-only AI Automation for Real Estate">
-  <meta name="twitter:description" content="Invite-only AI automation for market-leading real estate agencies.">
-  <meta name="twitter:image" content="https://sorell.ai/assets/images/header/thumbnail.png">
-</head>
+    <!-- Universal Twitter Card Tags -->
+    <meta content="summary_large_image" name="twitter:card">
+    <meta content="@AgensyAI" name="twitter:site">
+    <meta content="AI Automation Agency" name="twitter:title">
+    <meta content="Transform your business with AI-powered solutions" name="twitter:description">
+    <meta content="https://agensy.ai/assets/images/header/thumbnail.png" name="twitter:image">
+    
+    <script id="vtag-ai-js" async src="https://r2.leadsy.ai/tag.js" data-pid="cL7LQakLnUqdfTf8" data-version="062024"></script>
+<script data-pagespeed-no-defer>(function(){function f(a,b,d){if(a.addEventListener)a.addEventListener(b,d,!1);else if(a.attachEvent)a.attachEvent("on"+b,d);else{var c=a["on"+b];a["on"+b]=function(){d.call(this);c&&c.call(this)}}};window.pagespeed=window.pagespeed||{};var g=window.pagespeed;function k(a){this.g=[];this.f=0;this.h=!1;this.j=a;this.i=null;this.l=0;this.b=!1;this.a=0}function l(a,b){var d=b.getAttribute("data-pagespeed-lazy-position");if(d)return parseInt(d,0);var d=b.offsetTop,c=b.offsetParent;c&&(d+=l(a,c));d=Math.max(d,0);b.setAttribute("data-pagespeed-lazy-position",d);return d}
+function m(a,b){var d,c,e;if(!a.b&&(0==b.offsetHeight||0==b.offsetWidth))return!1;a:if(b.currentStyle)c=b.currentStyle.position;else{if(document.defaultView&&document.defaultView.getComputedStyle&&(c=document.defaultView.getComputedStyle(b,null))){c=c.getPropertyValue("position");break a}c=b.style&&b.style.position?b.style.position:""}if("relative"==c)return!0;e=0;"number"==typeof window.pageYOffset?e=window.pageYOffset:document.body&&document.body.scrollTop?e=document.body.scrollTop:document.documentElement&&
+document.documentElement.scrollTop&&(e=document.documentElement.scrollTop);d=window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight;c=e;e+=d;var h=b.getBoundingClientRect();h?(e=h.top-d,c=h.bottom):(h=l(a,b),d=h+b.offsetHeight,e=h-e,c=d-c);return e<=a.f&&0<=c+a.f}
+k.prototype.m=function(a){p(a);var b=this;window.setTimeout(function(){var d=a.getAttribute("data-pagespeed-lazy-src");if(d)if((b.h||m(b,a))&&-1!=a.src.indexOf(b.j)){var c=a.parentNode,e=a.nextSibling;c&&c.removeChild(a);a.c&&(a.getAttribute=a.c);a.removeAttribute("onload");a.tagName&&"IMG"==a.tagName&&g.CriticalImages&&f(a,"load",function(){g.CriticalImages.checkImageForCriticality(this);b.b&&(b.a--,b.a||g.CriticalImages.checkCriticalImages())});a.removeAttribute("data-pagespeed-lazy-src");a.removeAttribute("data-pagespeed-lazy-replaced-functions");
+c&&c.insertBefore(a,e);if(c=a.getAttribute("data-pagespeed-lazy-srcset"))a.srcset=c,a.removeAttribute("data-pagespeed-lazy-srcset");a.src=d}else b.g.push(a)},0)};k.prototype.loadIfVisibleAndMaybeBeacon=k.prototype.m;k.prototype.s=function(){this.h=!0;q(this)};k.prototype.loadAllImages=k.prototype.s;function q(a){var b=a.g,d=b.length;a.g=[];for(var c=0;c<d;++c)a.m(b[c])}function t(a,b){return a.a?null!=a.a(b):null!=a.getAttribute(b)}
+k.prototype.u=function(){for(var a=document.getElementsByTagName("img"),b=0,d;d=a[b];b++)t(d,"data-pagespeed-lazy-src")&&p(d)};k.prototype.overrideAttributeFunctions=k.prototype.u;function p(a){t(a,"data-pagespeed-lazy-replaced-functions")||(a.c=a.getAttribute,a.getAttribute=function(a){"src"==a.toLowerCase()&&t(this,"data-pagespeed-lazy-src")&&(a="data-pagespeed-lazy-src");return this.c(a)},a.setAttribute("data-pagespeed-lazy-replaced-functions","1"))}
+g.o=function(a,b){function d(){if(!(c.b&&a||c.i)){var b=200;200<(new Date).getTime()-c.l&&(b=0);c.i=window.setTimeout(function(){c.l=(new Date).getTime();q(c);c.i=null},b)}}var c=new k(b);g.lazyLoadImages=c;f(window,"load",function(){c.b=!0;c.h=a;c.f=200;if(g.CriticalImages){for(var b=0,d=document.getElementsByTagName("img"),r=0,n;n=d[r];r++)-1!=n.src.indexOf(c.j)&&t(n,"data-pagespeed-lazy-src")&&b++;c.a=b;c.a||g.CriticalImages.checkCriticalImages()}q(c)});b.indexOf("data")&&((new Image).src=b);f(window,
+"scroll",d);f(window,"resize",d)};g.lazyLoadInit=g.o;})();
+
+pagespeed.lazyLoadInit(true, "/pagespeed_static/1.JiBnMqyl6S.gif");
+</script></head>
 
 <body>
-  <!-- PREHEADER -->
-  <section class="preheader" aria-label="Preheader">
-    <div class="container">
-      <div class="preheader_content">
-        <span>How Sorell reduces lead leakage and increases conversion for elite agencies ⚡️</span>
-        <a href="#widget" class="btn">Learn more</a>
-      </div>
-    </div>
-  </section>
 
-  <!-- HEADER / NAV -->
-  <header class="header" role="banner">
-    <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
-      <div class="container">
-        <div class="header_wrapper">
-          <div class="header_brand">
-            <a class="navbar-brand p-0" href="index">
-              <img src="./assets/images/header/sorell_logo.svg" alt="Sorell — Invite-only AI Automation" class="logo-img">
-            </a>
-            <div class="badge">Invite-only</div>
-          </div>
-
-          <div class="header_controls">
-            <button class="navbar-toggler" type="button" aria-label="Toggle navigation" aria-expanded="false" id="navToggler" data-action="toggle-offcanvas">
-              <img src="./assets/images/icons/menu.png" alt="Menu">
-            </button>
-
-            <div class="nav-desktop d-none d-lg-flex" role="navigation" aria-label="Desktop navigation">
-              <a href="#why">Sorell Solutions</a>
-              <a href="#work">Our Results</a>
-              <a href="#widget" class="btn btn-outline">Contact</a>
-              <button class="btn btn-primary" data-action="open-cta">Request Invite</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Mobile offcanvas: bootstrap will handle if included; markup kept -->
-        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-          <div class="offcanvas-header">
-            <a class="navbar-brand p-0" href="index">
-              <img src="./assets/images/header/sorell_logo.svg" alt="Sorell logo" class="logo-img">
-            </a>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close menu"></button>
-          </div>
-          <div class="offcanvas-body">
-            <ul class="navbar-nav">
-              <li class="menu"><a href="#why">Services</a></li>
-              <li><a href="#projects">Use Cases</a></li>
-              <li><a href="#team">Why Sorell</a></li>
-              <li><a href="#careers">Careers</a></li>
-            </ul>
-            <div class="offcanvas-contact">
-              <a href="#widget" class="btn">Contact us</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-
-  <!-- MAIN -->
-  <main>
-    <!-- BANNER / HERO -->
-    <section class="banner" aria-label="Hero banner">
-      <div class="container">
-        <div class="banner_wrapper">
-          <h1 class="hero-title">Invite-only automation for market-leading real estate agencies</h1>
-          <p class="lead">Built for agencies that dominate their market — Sorell gives you the conversion edge competitors can’t access.</p>
-
-          <div class="banner_btn">
-            <a href="#widget" class="btn btn-primary" data-action="open-cta">Request Invite</a>
-            <a href="#projects" class="btn btn-outline" rel="noopener">See our results</a>
-          </div>
-        </div>
-
-        <div class="banner_video">
-          <div class="banner_bg">
-            <div class="browser-hero-header">
-              <div class="browser-tabs" aria-hidden="true">
-                <div class="close"><div class="dot"></div></div>
-                <div class="close"><div class="dash"></div></div>
-              </div>
-              <div class="url-wrapper">
-                <div class="browser-url">
-                  <div class="url-wrap">
-                    <img alt="Secure connection" class="image-165" loading="lazy" src="./assets/images/home/lock.svg">
-                    <p class="url-text">sorell.ai</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <video class="hero-video" autoplay loop muted playsinline preload="metadata" poster="assets/images/home/hero_poster.png">
-              <source src="./assets/images/home/video/header_720.webm" type="video/webm">
-              <source src="./assets/images/home/video/header_720.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CLIENT LOGOS -->
-    <section class="clientLogo" aria-label="Client logos">
-      <div class="container">
-        <h4><a href="#team" rel="noopener">Why Sorell?</a></h4>
-        <p>Trusted by leading agencies and brokers across premium markets</p>
-
-        <div class="marquee-slider swiper">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide"><img src="./assets/images/home/wakepark_logo.svg" alt="Wakepark"></div>
-            <div class="swiper-slide"><img src="./assets/images/home/pandashop_logo.svg" alt="Pandashop"></div>
-            <div class="swiper-slide"><img src="./assets/images/home/dayger_logo.svg" alt="Dayger"></div>
-            <div class="swiper-slide"><img src="./assets/images/home/ganea_logo.svg" alt="Ganea"></div>
-            <div class="swiper-slide"><img src="./assets/images/home/makeit_logo.svg" alt="Makeit"></div>
-            <div class="swiper-slide"><img src="./assets/images/home/LeadLeap_logo.svg" alt="LeadLeap"></div>
-            <div class="swiper-slide"><img src="./assets/images/home/cityfarm_logo.svg" alt="Cityfarm"></div>
-            <div class="swiper-slide"><img src="./assets/images/home/blinoff_logo.svg" alt="Blinoff"></div>
-            <div class="swiper-slide"><img src="./assets/images/home/ses_logo.svg" alt="SES"></div>
-            <div class="swiper-slide"><img src="./assets/images/home/sweetland_logo.svg" alt="Sweetland"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- VIDEO WITH CONTENT (BUILD / CONVERSION / LEADS / CUSTOM) -->
-    <section class="contentVideo" aria-label="Product sections">
-      <div class="container">
-
-        <!-- BUILD -->
-        <div class="contentVideo_wrapper">
-          <div class="contentVideo_video d-md-block d-none">
-            <video autoplay loop muted playsinline preload="metadata" poster="assets/images/home/hero_mobile.png">
-              <source src="./assets/images/home/video/Chatbot.webm" type="video/webm">
-              <source src="./assets/images/home/video/Chatbot.mp4" type="video/mp4">
-            </video>
-          </div>
-
-          <div id="build" class="contentVideo_col">
-            <div class="contentVideo_content">
-              <span>BUILD</span>
-              <h2>AI chatbots that scale, easily</h2>
-              <p>We build next-generation chatbots that handle interactions in the tone and voice of your brand — 24/7.</p>
-              <a href="#projects" class="arrow-hover">See how it works</a>
-            </div>
-
-            <div class="contentVideo_box">
-              <p><strong>It's like having an extra team member.</strong> The AI handles inquiries 24/7 and helps customers with their orders, allowing your team to focus on closing deals.</p>
-              <div class="user">
-                <img src="./assets/images/home/vasily_photo.png" alt="Vasili Garciu">
-                <div>
-                  <span>Vasili Garciu</span>
-                  <h5>Founder «PandaShop»</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- CONVERSION -->
-        <div class="contentVideo_wrapper">
-          <div class="contentVideo_video d-md-block d-none">
-            <video autoplay loop muted playsinline preload="metadata" poster="assets/images/home/insta_poster.png">
-              <source src="./assets/images/home/video/insta.webm" type="video/webm">
-              <source src="./assets/images/home/video/insta.mp4" type="video/mp4">
-            </video>
-          </div>
-
-          <div id="conversion" class="contentVideo_col">
-            <div class="contentVideo_content">
-              <span>Higher conversions</span>
-              <h2>Turn followers into qualified leads</h2>
-              <p>Auto-reply to reactions, story replies, comments and DMs — route hot leads instantly to sales.</p>
-              <a href="#contact" class="arrow-hover">Boost conversions</a>
-            </div>
-
-            <div class="contentVideo_box">
-              <p><strong>Wish I’d done this sooner.</strong> More engagement, more customers — effortless growth.</p>
-              <div class="user">
-                <img src="./assets/images/home/Tatyana_photo.png" alt="Tatyana Evlanova">
-                <div>
-                  <span>Tatyana Evlanova</span>
-                  <h5>Marketing Manager</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- LEADS -->
-        <div id="leads" class="contentVideo_wrapper">
-          <div class="contentVideo_video d-md-block d-none">
-            <img src="./assets/images/home/leads.svg" alt="Leads icon">
-          </div>
-
-          <div class="contentVideo_col">
-            <div class="contentVideo_content">
-              <span>LEAD GENERATION</span>
-              <h2>Find leads faster than ever</h2>
-              <p>Extract contact data and social signals at scale — more leads, less chasing.</p>
-            </div>
-
-            <div class="contentVideo_box">
-              <p><strong>Huge boost for our hiring process!</strong> We're finding top talent faster and more efficiently — AI transformed the way we recruit.</p>
-              <div class="user-row">
-                <div class="user">
-                  <img src="./assets/images/home/alex_photo.png" alt="Alex Rubanovici">
-                  <div>
-                    <span>Alex Rubanovici</span>
-                    <h5>HR Director</h5>
-                  </div>
-                </div>
-                <div class="btn-wrapper"><a href="#projects">See how</a></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- CUSTOM -->
-        <div id="custom" class="contentVideo_wrapper">
-          <div class="contentVideo_video d-md-block d-none">
-            <img src="./assets/images/home/invoice.svg" alt="Invoice icon">
-          </div>
-
-          <div class="contentVideo_col">
-            <div class="contentVideo_content">
-              <span>CUSTOM SOLUTIONS</span>
-              <h2>Automate repetitive tasks and processes</h2>
-              <p>Predictive automations that reduce manual work and human error for ops, sales and data teams.</p>
-              <a href="#contact" class="arrow-hover">Automate</a>
-            </div>
-
-            <div class="contentVideo_box">
-              <p><strong>A Smart Move!</strong> Automating document flows saved weeks of work. This changes how you run the business.</p>
-              <div class="user">
-                <img src="./assets/images/home/ganea_photo.svg" alt="Igor Ganea">
-                <div>
-                  <span>Igor Ganea</span>
-                  <h5>Founder «Ganea Group»</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- SOLUTION / GRID -->
-    <section class="solution" aria-label="Solution grid">
-      <div class="container">
-        <div class="solution_wrapper">
-          <span>use case solutions</span>
-          <h2>Automate customer support, then everything else</h2>
-          <p>Get started with solutions for popular use cases created by our team.</p>
-          <a href="#projects">Explore all projects</a>
-
-          <div class="solution_flex">
-            <div class="solution_flex-item">
-              <img src="./assets/images/projects/project_messenger.png" alt="Messenger solution">
-              <div class="content"><h4>Seamless Shopping: Let AI Handle Messenger Chats</h4></div>
-            </div>
-
-            <div class="solution_flex-item">
-              <img src="./assets/images/projects/projects_shopify.png" alt="Shopify solution">
-              <div class="content"><h4>Shopify Order Checker AI Agent</h4></div>
-            </div>
-
-            <div class="solution_flex-item">
-              <img src="./assets/images/projects/project_telegram.png" alt="Telegram solution">
-              <div class="content"><h4>Telegram bots that work non-stop</h4></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- BLACK THEME (VOICE) -->
-    <section class="blackTheme" aria-label="Voice assistants">
-      <div id="voice" class="container">
-        <div class="section-title">
-          <span>Human-Like Voice Assistants</span>
-          <h2>Make outbound calls, receive orders and schedule appointments</h2>
-          <p>Powerful voice assistants that feel as natural and reliable as a person.</p>
-        </div>
-
-        <div class="blackTheme_flex">
-          <div class="blackTheme_flex-item"><h3>x8</h3><span>Conversion Boost</span></div>
-          <div class="blackTheme_flex-item"><h3>24/7</h3><span>Customer Support</span></div>
-          <div class="blackTheme_flex-item"><h3>B2B</h3><span>Data Collection</span></div>
-        </div>
-      </div>
-
-      <div class="blackTheme_slider">
-        <div class="swiper blackTheme-slider">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <div class="slide-top">
-                <img src="./assets/images/home/barbershop.svg" alt="Barbershop">
-                <h4>Book</h4>
-              </div>
-              <div class="slide-body">
-                <h3>Barbershop</h3>
-                <p>Automated booking & personalized service</p>
-              </div>
-            </div>
-            <!-- More slides follow same structure -->
-          </div>
-        </div>
-
+    <!-- PREHEADER SECTION STARTS HERE -->
+    <section class="preheader" style="background-image: url(./assets/images/header/64639eaf461487ff78e46df3_Cta-BG.webp);">
         <div class="container">
-          <div class="swiper-pagination">
-            <div class="swiper-button-next-unique"><img src="./assets/images/icons/prev.png" alt="prev"></div>
-            <div class="swiper-button-prev-unique"><img src="./assets/images/icons/next.png" alt="next"></div>
-          </div>
+            <div class="preheader_content">
+                <span>Learn how Agensy automates 60% of their customer support ⚡️</span>
+                <a href="projects" class="btn">Learn more</a>
+            </div>
         </div>
-      </div>
     </section>
+    <!-- PREHEADER SECTION ENDS HERE -->
 
-    <!-- OUR BUSINESS / COMMUNITY -->
-    <section class="ourBusiness" aria-label="Community">
-      <div class="container">
-        <div class="ourBusiness_wrapper">
-          <div class="ourBusiness_left">
-            <h2>Join our <span>AI for Business</span> community</h2>
-            <p>Connect with forward-thinking entrepreneurs and industry leaders using AI at scale.</p>
-          </div>
+    <!-- HEADER SECTION STARTS HERE -->
+    <header class="header">
+        <nav class="navbar navbar-expand-lg " aria-label="Offcanvas navbar large">
+            <div class="container">
+                <div class="header_wrapper">
+                    <div class="header_logo">
+                        <a class="navbar-brand p-0" href="index">
+                            <script data-pagespeed-no-defer>(function(){for(var g="function"==typeof Object.defineProperties?Object.defineProperty:function(b,c,a){if(a.get||a.set)throw new TypeError("ES3 does not support getters and setters.");b!=Array.prototype&&b!=Object.prototype&&(b[c]=a.value)},h="undefined"!=typeof window&&window===this?this:"undefined"!=typeof global&&null!=global?global:this,k=["String","prototype","repeat"],l=0;l<k.length-1;l++){var m=k[l];m in h||(h[m]={});h=h[m]}var n=k[k.length-1],p=h[n],q=p?p:function(b){var c;if(null==this)throw new TypeError("The 'this' value for String.prototype.repeat must not be null or undefined");c=this+"";if(0>b||1342177279<b)throw new RangeError("Invalid count value");b|=0;for(var a="";b;)if(b&1&&(a+=c),b>>>=1)c+=c;return a};q!=p&&null!=q&&g(h,n,{configurable:!0,writable:!0,value:q});var t=this;function u(b,c){var a=b.split("."),d=t;a[0]in d||!d.execScript||d.execScript("var "+a[0]);for(var e;a.length&&(e=a.shift());)a.length||void 0===c?d[e]?d=d[e]:d=d[e]={}:d[e]=c};function v(b){var c=b.length;if(0<c){for(var a=Array(c),d=0;d<c;d++)a[d]=b[d];return a}return[]};function w(b){var c=window;if(c.addEventListener)c.addEventListener("load",b,!1);else if(c.attachEvent)c.attachEvent("onload",b);else{var a=c.onload;c.onload=function(){b.call(this);a&&a.call(this)}}};var x;function y(b,c,a,d,e){this.h=b;this.j=c;this.l=a;this.f=e;this.g={height:window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight,width:window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth};this.i=d;this.b={};this.a=[];this.c={}}function z(b,c){var a,d,e=c.getAttribute("data-pagespeed-url-hash");if(a=e&&!(e in b.c))if(0>=c.offsetWidth&&0>=c.offsetHeight)a=!1;else{d=c.getBoundingClientRect();var f=document.body;a=d.top+("pageYOffset"in window?window.pageYOffset:(document.documentElement||f.parentNode||f).scrollTop);d=d.left+("pageXOffset"in window?window.pageXOffset:(document.documentElement||f.parentNode||f).scrollLeft);f=a.toString()+","+d;b.b.hasOwnProperty(f)?a=!1:(b.b[f]=!0,a=a<=b.g.height&&d<=b.g.width)}a&&(b.a.push(e),b.c[e]=!0)}y.prototype.checkImageForCriticality=function(b){b.getBoundingClientRect&&z(this,b)};u("pagespeed.CriticalImages.checkImageForCriticality",function(b){x.checkImageForCriticality(b)});u("pagespeed.CriticalImages.checkCriticalImages",function(){A(x)});function A(b){b.b={};for(var c=["IMG","INPUT"],a=[],d=0;d<c.length;++d)a=a.concat(v(document.getElementsByTagName(c[d])));if(a.length&&a[0].getBoundingClientRect){for(d=0;c=a[d];++d)z(b,c);a="oh="+b.l;b.f&&(a+="&n="+b.f);if(c=!!b.a.length)for(a+="&ci="+encodeURIComponent(b.a[0]),d=1;d<b.a.length;++d){var e=","+encodeURIComponent(b.a[d]);131072>=a.length+e.length&&(a+=e)}b.i&&(e="&rd="+encodeURIComponent(JSON.stringify(B())),131072>=a.length+e.length&&(a+=e),c=!0);C=a;if(c){d=b.h;b=b.j;var f;if(window.XMLHttpRequest)f=new XMLHttpRequest;else if(window.ActiveXObject)try{f=new ActiveXObject("Msxml2.XMLHTTP")}catch(r){try{f=new ActiveXObject("Microsoft.XMLHTTP")}catch(D){}}f&&(f.open("POST",d+(-1==d.indexOf("?")?"?":"&")+"url="+encodeURIComponent(b)),f.setRequestHeader("Content-Type","application/x-www-form-urlencoded"),f.send(a))}}}function B(){var b={},c;c=document.getElementsByTagName("IMG");if(!c.length)return{};var a=c[0];if(!("naturalWidth"in a&&"naturalHeight"in a))return{};for(var d=0;a=c[d];++d){var e=a.getAttribute("data-pagespeed-url-hash");e&&(!(e in b)&&0<a.width&&0<a.height&&0<a.naturalWidth&&0<a.naturalHeight||e in b&&a.width>=b[e].o&&a.height>=b[e].m)&&(b[e]={rw:a.width,rh:a.height,ow:a.naturalWidth,oh:a.naturalHeight})}return b}var C="";u("pagespeed.CriticalImages.getBeaconData",function(){return C});u("pagespeed.CriticalImages.Run",function(b,c,a,d,e,f){var r=new y(b,c,a,e,f);x=r;d&&w(function(){window.setTimeout(function(){A(r)},0)})});})();pagespeed.CriticalImages.Run('/ngx_pagespeed_beacon','https://agensy.ai/','azWKSX1nxG',false,false,'AxSI5VxU-Bc');</script><img src="./assets/images/header/agensy_logo.svg" alt="Agensy - AI Automation Agency Logo" data-pagespeed-url-hash="1351565761" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                        </a>
+                    </div>
 
-          <div class="ourBusiness_right">
-            <div class="community-item">
-              <img src="./assets/images/home/telegram_icon.svg" alt="Telegram">
-              <div>
-                <span>Telegram Community</span>
-                <p>Join Sorell's invite-only community of AI and sales leaders.</p>
-                <a href="https://t.me/+DzsSHLjO0gthNzM6" rel="noopener">Join Telegram</a>
-              </div>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2">
+                        <img data-pagespeed-lazy-src="./assets/images/icons/menu.png" alt="Menu toggle" data-pagespeed-url-hash="2673021263" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                    </button>
+                    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2" aria-labelledby="offcanvasNavbar2Label">
+                        <div class="offcanvas-header">
+                            <div class="header_logo">
+                                <a class="navbar-brand p-0" href="index">
+                                    <img src="./assets/images/header/agensy_logo.svg" alt="Agensy - AI Automation Agency Logo" data-pagespeed-url-hash="1351565761" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                                </a>
+                            </div>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close">
+                                <img data-pagespeed-lazy-src="./assets/images/header/close.png" alt="Close menu" data-pagespeed-url-hash="2502706105" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                            </button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <ul class="navbar-nav">
+                                <li class="menu">
+                                    <a href="">Services</a>
+                                    <span class="arrow"><img src="./assets/images/icons/down.png" alt="Dropdown arrow" data-pagespeed-url-hash="3632271930" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></span>
+                                    <div class="megaMenu">
+                                        <div class="megaMenu_wrapper">
+                                            <div class="megaMenu_flex">
+                                                <div class="megaMenu_left">
+                                                    <div class="megaMenu_content">
+                                                        <img src="./assets/images/home/message_icon.svg" alt="AI Chatbot icon" data-pagespeed-url-hash="1513992183" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+
+                                                        <div>
+                                                            <h5>AI Chatbots</h5>
+                                                            <p>Automate customer support with bots that answer questions
+                                                                and
+                                                                generate leads without your involvement</p>
+                                                            <a href="#build" class="arrow-hover">View solutions<img src="./assets/images/icons/arrow_right.svg" alt="" data-pagespeed-url-hash="2457013619" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="megaMenu_content">
+                                                        <img src="./assets/images/home/voice_icon.svg" alt="AI Voice Assistant icon" data-pagespeed-url-hash="4048166932" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+
+                                                        <div>
+                                                            <h5>AI Voice Assistants</h5>
+                                                            <p>Automate entire call centers, sales, and support teams,
+                                                                that
+                                                                sound just like humans</p>
+                                                            <a href="#voice" class="arrow-hover">Check use cases<img src="./assets/images/icons/arrow_right.svg" alt="" data-pagespeed-url-hash="2457013619" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="megaMenu_right">
+                                                    <a href="#build" class="megaMenu_text">
+                                                        <h5>Sales</h5>
+                                                        <p>Scale personalized outreach</p>
+                                                    </a>
+
+                                                    <a href="#conversion" class="megaMenu_text">
+                                                        <h5>Marketing</h5>
+                                                        <p>Put social media on autopilot</p>
+                                                    </a>
+
+                                                    <a href="#custom" class="megaMenu_text">
+                                                        <h5>Recruiting</h5>
+                                                        <p>Find top candidates with AI</p>
+                                                    </a>
+
+                                                    <a href="#leads" class="megaMenu_text">
+                                                        <h5>Leads</h5>
+                                                        <p>Leads</p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><a href="projects">Use Cases</a></li>
+                                <li><a href="team">Why agensy</a></li>
+                                <li><a href="careers">Careers</a></li>
+                            </ul>
+
+                            <div class="header_btn d-block d-lg-none">
+                                <a href="contact">Contact us</a>
+                            </div>
+
+                        </div>
+
+
+                        <div class="header_btn d-lg-block d-none">
+                            <a href="contact">Contact us</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- HEADER SECTION ENDS HERE -->
+
+    <!-- MAIN SECTION STARTS HERE -->
+    <main>
+        <!-- BANNER SECTION START HERE -->
+        <section class="banner">
+            <div class="container">
+                <div class="banner_wrapper">
+                    <h1 class="gs_reveal">
+                        Transform your business with AI-powered solutions</h1>
+                    <p class="gs_reveal">We help companies
+                        build and launch incredible AI agents and custom automations,
+                        for any use case,
+                        faster.</p>
+
+                    <div class="banner_btn">
+                        <a href="contact" class="blue w-button">Let's talk <span>— it's free</span></a>
+                        <a href="projects" class="white w-button">Our solutions</a>
+                    </div>
+                </div>
+
+                <div class="banner_video gs_reveal">
+                    <div class="banner_bg">
+                        <div class="browser-hero-header">
+                            <div class="browser-tabs">
+                                <div class="close">
+                                    <div class="dot"></div>
+                                </div>
+                                <div class="close">
+                                    <div class="dash"></div>
+                                </div>
+                            </div>
+                            <div class="url-wrapper">
+                                <div class="browser-url">
+                                    <div class="url-wrap">
+                                        <img alt="Secure connection" class="image-165" loading="lazy" src="./assets/images/home/626ae5e3ccc0330d93a36ec9_lock.svg" data-pagespeed-url-hash="1386621473" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                                        <p class=" url-text">agensy.ai</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <video autoplay="" loop="" muted="" playsinline="" poster="assets/images/home/hero_mobile.png">
+                            <source src="./assets/images/home/video/header_720.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- BANNER SECTION ENDS HERE -->
+
+        <!-- CLIENT LOGO SLIDER STARTS-->
+        <section class="clientLogo">
+            <div class="container">
+                <h4>
+                    <a href="team" class="arrow-hover">Why Agensy? <img data-pagespeed-lazy-src="./assets/images/home/arrow_up.svg" alt="" data-pagespeed-url-hash="4180500099" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);"> </a>
+                </h4>
+                <p>Trusted by <span>1,500+</span> people and teams building agents across every channel and use case</p>
+                <div class="marquee-slider swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img src="./assets/images/home/wakepark_logo.svg" alt="Wakepark Logo" loading="lazy" data-pagespeed-url-hash="3309652254" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="./assets/images/home/pandashop_logo.svg" alt="Pandashop Logo" loading="lazy" data-pagespeed-url-hash="3398801392" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="./assets/images/home/dayger_logo.svg" alt="Dayger Logo" loading="lazy" data-pagespeed-url-hash="2390222652" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="./assets/images/home/ganea_logo.svg" alt="Ganea Logo" loading="lazy" data-pagespeed-url-hash="3857056828" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="./assets/images/home/makeit_logo.svg" alt="Makeit Logo" loading="lazy" data-pagespeed-url-hash="4086953667" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="./assets/images/home/LeadLeap_logo.svg" alt="LeadLeap Logo" data-pagespeed-url-hash="2363273360" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="./assets/images/home/cityfarm_logo.svg" alt="Cityfarm Logo" data-pagespeed-url-hash="3357757819" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="./assets/images/home/blinoff_logo.svg" alt="Blinoff Logo" data-pagespeed-url-hash="4263853748" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="./assets/images/home/ses_logo.svg" alt="SES Logo" data-pagespeed-url-hash="2218734947" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="./assets/images/home/sweetland_logo.svg" alt="Sweetland Logo" data-pagespeed-url-hash="1503777645" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="./assets/images/home/happyCleaning_logo.svg" alt="Happy Cleaning Logo" data-pagespeed-url-hash="3919118427" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="./assets/images/home/flexmag_logo.svg" alt="Flexmag Logo" data-pagespeed-url-hash="636347038" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- CLIENT LOGO SLIDER ENDS-->
+
+        <!-- VIDEO WITH CONTENT STARTS -->
+        <section class="contentVideo">
+            <div class="container">
+                <div class="contentVideo_wrapper">
+                    <div class="contentVideo_video d-md-block d-none gs_reveal ">
+                        <video autoplay="" loop="" muted="" playsinline="" poster="assets/images/home/hero_mobile.png">
+                            <source src="./assets/images/home/video/Chatbot.webm" type="video/mp4">
+                        </video>
+                    </div>
+
+                    <div id="build" class="contentVideo_col  gs_reveal">
+                        <div class="contentVideo_content gs_reveal">
+                            <span>BUILD</span>
+                            <h2>AI chatbots that scale, easily</h2>
+                            <div class="d-md-none d-block contentVideo_content-img">
+                                <img data-pagespeed-lazy-src="./assets/images/projects/mobile_chat.png" alt="" data-pagespeed-url-hash="2979275595" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                            </div>
+                            <p>We build next-generation human-like chatbots that handle user interactions in the
+                                same tone
+                                and voice of your brand.</p>
+                            <a href="projects" class="arrow-hover">See how it works <img src="./assets/images/icons/arrow_right.svg" alt="" data-pagespeed-url-hash="2457013619" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>
+                        </div>
+
+                        <div class="contentVideo_box gs_reveal">
+                            <img class="logo" style="height: 25px;" data-pagespeed-lazy-src="./assets/images/home/download.png" alt="" data-pagespeed-url-hash="1543011939" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                            <p><b>It's like having an extra team member.</b> The AI handles inquiries 24/7 and helps
+                                customers with
+                                their orders, allowing our team to focus on bigger tasks.”</p>
+
+                            <div class="user">
+                                <img data-pagespeed-lazy-src="./assets/images/home/vasily_photo.png" alt="" data-pagespeed-url-hash="1492855284" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                                <div>
+                                    <span>Vasili Garciu</span>
+                                    <h5>Founder «PandaShop»</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contentVideo_wrapper">
+                    <div class="contentVideo_video d-md-block d-none gs_reveal ">
+                        <video autoplay="" loop="" muted="" playsinline="" poster="assets/images/projects/mobile_insta.png">
+                            <source src="./assets/images/home/video/insta.mp4" type="video/mp4">
+                        </video>
+                    </div>
+
+                    <div id="conversion" class="contentVideo_col  gs_reveal">
+                        <div class="contentVideo_content gs_reveal">
+                            <span>Higher conversions</span>
+                            <h2>Turn followers into dollars</h2>
+
+                            <div class="d-md-none d-block contentVideo_content-img">
+                                <img data-pagespeed-lazy-src="./assets/images/projects/mobile_insta.png" alt="" data-pagespeed-url-hash="1821049062" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                            </div>
+
+                            <p>Automatically answer every reaction, story reply, comment or mention. Attract quality
+                                leads, drive more sales, and reply to conversations 24/7 in any language.</p>
+                            <a href="contact" class="arrow-hover">Boost conversions<img src="./assets/images/icons/arrow_right.svg" alt="" data-pagespeed-url-hash="2457013619" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>
+                        </div>
+
+                        <div class="contentVideo_box gs_reveal">
+                            <img class="logo" data-pagespeed-lazy-src="./assets/images/home/wakepark_logo.svg" alt="" data-pagespeed-url-hash="3309652254" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                            <p><b>"Wish I’d done this sooner.</b> Processes that used to drain so much energy are now
+                                seamless. We’re seeing more engagement, more customers, and it’s all so effortless now!"
+                            </p>
+
+                            <div class="user">
+                                <img data-pagespeed-lazy-src="./assets/images/home/Tatyana_photo.png" alt="" data-pagespeed-url-hash="2161680996" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                                <div>
+                                    <span>Tatyana Evlanova</span>
+                                    <h5>Marketing Manager</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="leads" class="contentVideo_wrapper">
+                    <div class="contentVideo_video d-md-block d-none  gs_reveal ">
+                        <img data-pagespeed-lazy-src="./assets/images/home/leads.svg" alt="" data-pagespeed-url-hash="3886993353" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                    </div>
+
+                    <div class="contentVideo_col  gs_reveal">
+                        <div class="contentVideo_content gs_reveal">
+                            <span>LEAD GENERATION</span>
+                            <h2>Find leads faster than ever</h2>
+                            <div class="d-md-none d-block contentVideo_content-img">
+                                <img data-pagespeed-lazy-src="./assets/images/projects/mobile_leads.png" alt="" data-pagespeed-url-hash="1414411942" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                            </div>
+                            <p>Get 1,000 email addresses in 10 minutes? Consider it done. Extract contact details, job
+                                listings, social media posts and reviews from any website, at scale.</p>
+
+                        </div>
+
+                        <div class="contentVideo_box gs_reveal">
+                            <img class="logo" data-pagespeed-lazy-src="./assets/images/home/dayger_logo.svg" alt="" data-pagespeed-url-hash="2390222652" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                            <p><b>"Huge boost for our hiring process!</b> We're finding top talent faster and more
+                                efficiently than ever. AI has totally transformed the way we recruit — absolutely love
+                                it!"
+                            </p>
+
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="user">
+                                    <img data-pagespeed-lazy-src="./assets/images/home/alex_photo.png" alt="" data-pagespeed-url-hash="725548608" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                                    <div>
+                                        <span>Alex Rubanovici</span>
+                                        <h5>HR Director</h5>
+                                    </div>
+                                </div>
+
+                                <div class="btn-wrapper">
+                                    <a href="projects">See how</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="custom" class="contentVideo_wrapper">
+                    <div class="contentVideo_video d-md-block d-none gs_reveal ">
+                        <img data-pagespeed-lazy-src="./assets/images/home/invoice.svg" alt="" data-pagespeed-url-hash="1466296515" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                    </div>
+
+                    <div class="contentVideo_col  gs_reveal">
+                        <div class="contentVideo_content gs_reveal">
+                            <span>CUSTOM SOLUTIONS</span>
+                            <h2>Automate repetitive tasks and processes</h2>
+                            <div class="d-md-none d-block contentVideo_content-img">
+                                <img data-pagespeed-lazy-src="./assets/images/projects/mobile_custom.png" alt="" data-pagespeed-url-hash="1305942808" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                            </div>
+                            <p>We design solutions that can predictively automate tasks, reducing manual intervention
+                                and the chances for human error. Whether you're looking to streamline administrative
+                                processes, enhance data operations, or elevate customer interactions.</p>
+                            <a href="contact" class="arrow-hover">Automate<img src="./assets/images/icons/arrow_right.svg" alt="" data-pagespeed-url-hash="2457013619" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>
+                        </div>
+
+                        <div class="contentVideo_box gs_reveal">
+                            <img class="logo" data-pagespeed-lazy-src="./assets/images/home/ganea_logo.svg" alt="" data-pagespeed-url-hash="3857056828" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                            <p><b>"A Smart Move!</b> I never realized how much time we were wasting until we automated
+                                our document flow with AI. This technology will change the way you run your
+                                business—trust me."
+                            </p>
+
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="user">
+                                    <img data-pagespeed-lazy-src="./assets/images/home/ganea_photo.svg" alt="" data-pagespeed-url-hash="3222730677" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                                    <div>
+                                        <span>Igor Ganea</span>
+                                        <h5>Founder «Ganea Group»</h5>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- VIDEO WITH CONTENT ENDS -->
+
+        <!-- SOLUTION SECTION START HERE -->
+        <section class="solution">
+            <div class="container">
+                <div class="solution_wrapper">
+                    <span class="gs_reveal">use case solutions</span>
+                    <h2 class="gs_reveal">Automate customer support,
+                        then everything else</h2>
+                    <p class="gs_reveal">Get started with solutions for popular use cases created by our team.</p>
+                    <a href="projects" class="gs_reveal">Explore all projects <img data-pagespeed-lazy-src="./assets/images/home/62d844ad593d0d6082446e1d_Arrow-up-right-primary.svg" alt="" data-pagespeed-url-hash="2662321786" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);"></a>
+
+                    <div class="solution_flex">
+                        <div class="solution_flex-item gs_reveal">
+                           <img data-pagespeed-lazy-src="./assets/images/projects/project_messenger.png" alt="" data-pagespeed-url-hash="1735024379" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                            <div class="content">
+                                <h4>Seamless Shopping: Let AI Handle Your Messenger Chats!</h4>
+                            </div>
+                        </div>
+
+                        <div class="solution_flex-item gs_reveal">
+                            <img data-pagespeed-lazy-src="./assets/images/projects/projects_shopify.png" alt="" data-pagespeed-url-hash="146251941" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                            <div class="content">
+                                <h4>Shopify Order Checker AI Agent for customer support</h4>
+                            </div>
+                        </div>
+
+                        <div class="solution_flex-item gs_reveal">
+                            <img data-pagespeed-lazy-src="./assets/images/projects/project_telegram.png" alt="" data-pagespeed-url-hash="584671263" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                            <div class="content">
+                                <h4>Automate Engagement, Boost Sales: Telegram Bots That Work Non-Stop!</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- SOLUTION SECTION ENDS HERE -->
+
+        <!-- BLACK THEME SECTION STARTS HERE -->
+        <section class="blackTheme">
+            <div id="voice" class="container">
+                <div class="blackTheme_wrapper">
+                    <div class="section-title">
+                        <span class="gs_reveal">Human-Like Voice Assistants</span>
+                        <h2 class="gs_reveal">Make outbound calls, receive orders
+                            and schedule appointments</h2>
+                        <p class="gs_reveal">Powerful AI voice assistants that feel as natural, responsive and reliable
+                            as a person.
+                            Automate
+                            entire call centers, sales, and support teams, that sound just like humans.</p>
+                    </div>
+
+                    <div class="blackTheme_flex">
+                        <div class="blackTheme_flex-item gs_reveal">
+                            <h3>x8</h3>
+                            <span>Conversion Boost</span>
+                        </div>
+
+                        <div class="blackTheme_flex-item gs_reveal">
+                            <h3>24/7</h3>
+                            <span>Customer Support</span>
+                        </div>
+
+                        <div class="blackTheme_flex-item gs_reveal">
+                            <h3>B2B</h3>
+                            <span>Data Collection</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="community-item">
-              <img src="./assets/images/home/youtube_icon.svg" alt="YouTube">
-              <div>
-                <span>YouTube tutorials</span>
-                <p>Learn our automation playbooks and case studies.</p>
-                <a href="https://www.youtube.com/channel/UCKtH94_HZBSMDoS6hEdapmg" rel="noopener">See Tutorials</a>
-              </div>
+            <div class="blackTheme_slider gs_reveal">
+                <div class="swiper blackTheme-slider">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="d-flex align-items-center justify-content-between w-100">
+                                <img src="./assets/images/home/barbershop.svg" alt="" data-pagespeed-url-hash="870653268" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                                <h4>Book</h4>
+                            </div>
+
+                            <div>
+                                <h3>Barbershop</h3>
+                                <p>Automated booking and personalized service for a seamless experience</p>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="d-flex align-items-center justify-content-between w-100">
+                                <img src="./assets/images/home/dentist.svg" alt="" data-pagespeed-url-hash="783829273" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                                <h4>Schedule
+                                </h4>
+                            </div>
+
+                            <div>
+                                <h3>Dentist Office</h3>
+                                <p>Effortless appointment scheduling and personalized care reminders</p>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="d-flex align-items-center justify-content-between w-100">
+                                <img src="./assets/images/home/restaurants.svg" alt="" data-pagespeed-url-hash="3829392640" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                                <h4>Check
+                                </h4>
+                            </div>
+
+                            <div>
+                                <h3>Restaurants</h3>
+                                <p>Streamlined reservations and personalized dining experiences through voice AI</p>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="d-flex align-items-center justify-content-between w-100">
+                                <img src="./assets/images/home/ecommerce.svg" alt="" data-pagespeed-url-hash="83242502" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                                <h4>Buy
+                                </h4>
+                            </div>
+
+                            <div>
+                                <h3>E-commerce</h3>
+                                <p>Voice AI for personalized shopping and seamless customer support</p>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="d-flex align-items-center justify-content-between w-100">
+                                <img src="./assets/images/home/realtor.svg" alt="" data-pagespeed-url-hash="2143946423" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                                <h4>View
+                                </h4>
+                            </div>
+
+                            <div>
+                                <h3>Realtor Office</h3>
+                                <p>Automated lead management and property insights with the power of AI</p>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="d-flex align-items-center justify-content-between w-100">
+                                <img src="./assets/images/home/insurance.svg" alt="" data-pagespeed-url-hash="3777159268" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                                <h4>Insure
+                                </h4>
+                            </div>
+
+                            <div>
+                                <h3>Insurance Companies</h3>
+                                <p>Streamlined claims processing and policy guidance on autopilot</p>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="d-flex align-items-center justify-content-between w-100">
+                                <img src="./assets/images/home/feedback.svg" alt="" data-pagespeed-url-hash="2611157379" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                                <h4>Analyze</h4>
+                            </div>
+
+                            <div>
+                                <h3>Satisfaction Surveys</h3>
+                                <p>Instant feedback collection and insights analysis through AI</p>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="d-flex align-items-center justify-content-between w-100">
+                                <img src="./assets/images/home/food.svg" alt="" data-pagespeed-url-hash="1841532952" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                                <h4>Order</h4>
+                            </div>
+
+                            <div>
+                                <h3>Food Delivery</h3>
+                                <p>Effortless ordering and real-time updates with voice AI assistance</p>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="d-flex align-items-center justify-content-between w-100">
+                                <img src="./assets/images/home/debt.svg" alt="" data-pagespeed-url-hash="3273755073" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                                <h4>Collect
+                                </h4>
+                            </div>
+
+                            <div>
+                                <h3>Debt Collection</h3>
+                                <p>Automated payment reminders and personalized debt resolution assistance</p>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="d-flex align-items-center justify-content-between w-100">
+                                <img src="./assets/images/home/logistics.svg" alt="" data-pagespeed-url-hash="3853766341" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                                <h4>Send
+
+                                </h4>
+                            </div>
+
+                            <div>
+                                <h3>Logistics</h3>
+                                <p>Real-time shipment tracking and optimized routing with voice AI</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="swiper-pagination">
+                        <div class="swiper-button-next-unique"><img src="./assets/images/icons/prev.png" alt="" data-pagespeed-url-hash="1820150459" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></div>
+                        <div class="swiper-button-prev-unique">
+                            <img src="./assets/images/icons/next.png" alt="" data-pagespeed-url-hash="3629518215" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="community-item">
-              <img src="./assets/images/home/linkedin_icon.svg" alt="LinkedIn">
-              <div>
-                <span>Community updates</span>
-                <p>Follow the latest news and trends from Sorell.</p>
-                <a href="https://www.linkedin.com/company/agensy-ai/" rel="noopener">See Updates</a>
-              </div>
+        </section>
+        <!-- BLACK THEME SECTION ENDS HERE -->
+
+        <!-- OUR BUSINESS SECTION STARTS -->
+        <section class="ourBusiness overflow-hidden">
+            <div class="container">
+                <div class="ourBusiness_wrapper">
+                    <div class="ourBusiness_left">
+                        <h2 class="gs_reveal">Join our <span>AI for Business</span> community</h2>
+                        <p class="gs_reveal">Connect with forward-thinking entrepreneurs and industry leaders in the
+                            largest AI-driven
+                            business community. Share insights, explore innovative AI applications, and collaborate
+                            on
+                            projects that revolutionize industries.</p>
+                    </div>
+
+                    <div class="ourBusiness_right">
+                        <div class="ourBusiness_right-item gs_reveal gs_reveal_fromRight">
+                            <img data-pagespeed-lazy-src="./assets/images/home/telegram_icon.svg" alt="" data-pagespeed-url-hash="773397689" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                            <div>
+                                <span>Telegram Community</span>
+                                <p>Join Agensy's fast-growing community of AI entrepreneurs, designers, developers
+                                    and
+                                    builders.</p>
+                                <a href="https://t.me/+DzsSHLjO0gthNzM6" class="arrow-hover">Join Telegram <img data-pagespeed-lazy-src="./assets/images/home/62d844666995ebba9f60f6e6_Arrow-right-primary.svg" alt="" data-pagespeed-url-hash="3481420367" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);"></a>
+                            </div>
+                        </div>
+
+                        <div class="ourBusiness_right-item gs_reveal gs_reveal_fromRight">
+                            <img data-pagespeed-lazy-src="./assets/images/home/youtube_icon.svg" alt="" data-pagespeed-url-hash="2113781659" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                            <div>
+                                <span>YouTube tutorials</span>
+                                <p>Learn from video tutorials created by the Agensy team and community builders.</p>
+                                <a href="https://www.youtube.com/channel/UCKtH94_HZBSMDoS6hEdapmg" class="arrow-hover">See Tutorials<img data-pagespeed-lazy-src="./assets/images/home/62d844666995ebba9f60f6e6_Arrow-right-primary.svg" alt="" data-pagespeed-url-hash="3481420367" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);"></a>
+                            </div>
+                        </div>
+
+                        <div class="ourBusiness_right-item gs_reveal gs_reveal_fromRight">
+                            <img data-pagespeed-lazy-src="./assets/images/home/linkedin_icon.svg" alt="" data-pagespeed-url-hash="1647865680" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
+                            <div>
+                                <span>Community updates</span>
+                                <p>Follow the latest news and trends in the AI space created by our team and
+                                    community members.</p>
+                                <a href="https://www.linkedin.com/company/agensy-ai/" class="arrow-hover">See Updates<img data-pagespeed-lazy-src="./assets/images/home/62d844666995ebba9f60f6e6_Arrow-right-primary.svg" alt="" data-pagespeed-url-hash="3481420367" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+        </section>
+        <!-- OUR BUSINESS SECTION ENDS -->
+
+        <!-- WIDGET SECTION STARTS HERE -->
+        <section class="widget gs_reveal">
+            <div class="container">
+                <div class="widget_wrapper">
+                    <h2 class="gs_reveal">Start building AI solutions</h2>
+                    <p class="gs_reveal">Curious how Agensy can help you? Let’s talk.</p>
+                    <div class="widget_btn gs_reveal">
+                        <a href="contact" class="blue">Contact us — it's free</a>
+                        <a href="https://t.me/+DzsSHLjO0gthNzM6" class="white">Join community</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- WIDGET SECTION ENDS HERE -->
+    </main>
+    <!-- MAIN SECTION ENDS HERE -->
+
+    <!-- FOOTER SECTION STARTS HERE -->
+    <footer class="footer gs_reveal">
+        <div class="container">
+            <div class="footer_wrapper">
+                <div class="footer_col">
+                    <a href="index" class="footer_logo"><img data-pagespeed-lazy-src="./assets/images/home/agensy_logo.svg" alt="" data-pagespeed-url-hash="3295145023" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);"></a>
+                    <ul>
+                        <li><a href="https://www.youtube.com/channel/UCKtH94_HZBSMDoS6hEdapmg"><img data-pagespeed-lazy-src="./assets/images/home/youtube_icon.svg" alt="" data-pagespeed-url-hash="2113781659" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">Youtube</a></li>
+                        <li><a href="https://www.linkedin.com/company/agensy-ai/"><img data-pagespeed-lazy-src="./assets/images/home/linkedin_icon.svg" alt="" data-pagespeed-url-hash="1647865680" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">Linkedin</a></li>
+                        <li><a href="https://t.me/+DzsSHLjO0gthNzM6"><img data-pagespeed-lazy-src="./assets/images/home/telegram_icon.svg" alt="" data-pagespeed-url-hash="773397689" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">Telegram</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer_col">
+                    <h5>Services</h5>
+                    <ul>
+                        <li><a href="#build">Chatbots</a></li>
+                        <li><a href="#voice">Voice Assistants</a></li>
+                        <li><a href="#leads">Lead Generation</a></li>
+                        <li><a href="#conversion">Marketing Automation</a></li>
+                        <li><a href="#custom">Custom Solutions</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer_col">
+                    <h5>Company</h5>
+                    <ul>
+                        <li><a href="team">About</a></li>
+                        <li><a href="contact">Contact</a></li>
+                        <li><a href="careers">Careers</a></li>
+                        <li><a href="terms">Terms of service</a></li>
+                        <li><a href="privacy">Privacy policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer_bottom">
+                <p>© 2024 Agensy, Inc. All rights reserved.</p>
+                <p>Made with 🤍 in Moldova.</p>
+            </div>
         </div>
-      </div>
-    </section>
+    </footer>
+    <!-- FOOTER SECTION ENDS HERE -->
 
-    <!-- WIDGET / CTA -->
-    <section id="widget" class="widget" aria-label="Contact widget">
-      <div class="container">
-        <div class="widget_wrapper">
-          <h2>Start building invite-only automations</h2>
-          <p>Curious how Sorell can help your agency? Apply for an invite and our team will qualify your fit.</p>
-          <div class="widget_btn">
-            <a href="#contact" class="btn btn-primary" data-action="open-cta">Request Invite</a>
-            <a href="https://t.me/+DzsSHLjO0gthNzM6" class="btn btn-outline" rel="noopener">Join community</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
 
-  <!-- FOOTER -->
-  <footer class="footer" role="contentinfo">
-    <div class="container">
-      <div class="footer_wrapper">
-        <div class="footer_col">
-          <a href="index" class="footer_logo">
-            <img src="./assets/images/header/sorell_logo.svg" alt="Sorell logo">
-          </a>
-          <ul class="social-list">
-            <li><a href="https://www.youtube.com/channel/UCKtH94_HZBSMDoS6hEdapmg" rel="noopener">Youtube</a></li>
-            <li><a href="https://www.linkedin.com/company/agensy-ai/" rel="noopener">Linkedin</a></li>
-            <li><a href="https://t.me/+DzsSHLjO0gthNzM6" rel="noopener">Telegram</a></li>
-          </ul>
-        </div>
+    <!-- BUNDILE SCRIPT -->
+    <script type="text/javascript" data-pagespeed-no-defer>pagespeed.lazyLoadImages.overrideAttributeFunctions();</script><script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-        <div class="footer_col">
-          <h5>Services</h5>
-          <ul>
-            <li><a href="#build">Chatbots</a></li>
-            <li><a href="#voice">Voice Assistants</a></li>
-            <li><a href="#leads">Lead Generation</a></li>
-            <li><a href="#conversion">Marketing Automation</a></li>
-            <li><a href="#custom">Custom Solutions</a></li>
-          </ul>
-        </div>
 
-        <div class="footer_col">
-          <h5>Company</h5>
-          <ul>
-            <li><a href="team">About</a></li>
-            <li><a href="contact">Contact</a></li>
-            <li><a href="careers">Careers</a></li>
-            <li><a href="terms">Terms of service</a></li>
-            <li><a href="privacy">Privacy policy</a></li>
-          </ul>
-        </div>
-      </div>
+    <!-- SLIDER SCRIPT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.4.1/swiper-bundle.min.js"></script>
 
-      <div class="footer_bottom">
-        <p>© 2025 Sorell — All rights reserved.</p>
-        <p>Made with 🤍</p>
-      </div>
-    </div>
-  </footer>
+    <!-- GSAP SCRIPT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
 
-  <!-- EXTERNAL LIBS (optional) -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.4.1/swiper-bundle.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js" defer></script>
+    <!-- CUSTOM JS -->
+    <script src="./assets/javascript/gsap.js"></script>
+    <script src="./assets/javascript/sliders.js"></script>
+    <script src="./assets/javascript/script.js"></script>
 
-  <!-- YOUR JS -->
-  <script src="script.js" defer></script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");ym(98183880,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});</script>
+    <noscript>
+        <div><img alt="" src="https://mc.yandex.ru/watch/98183880" style="position:absolute; left:-9999px;" data-pagespeed-url-hash="3144951935"/></div>
+    </noscript>
+    <!-- /Yandex.Metrika counter -->
+
+        <!-- Meta Pixel Code -->
+    <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1233888004434363');fbq('track','PageView');</script>
+    <noscript><img height="1" src="https://www.facebook.com/tr?id=1233888004434363&ev=PageView&noscript=1" style="display:none" width="1" data-pagespeed-url-hash="2228932771"/></noscript>
+    <!-- End Meta Pixel Code -->
+
+    <!-- Voiceflow Widget 
+    <script type="text/javascript">
+        (function (d, t) {
+            var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+            v.onload = function () {
+                window.voiceflow.chat.load({
+                    verify: {projectID: '66c9b0168fc7af56845fd5a0'},
+                    url: 'https://general-runtime.voiceflow.com',
+                    versionID: 'production'
+                });
+            }
+            v.src = "https://cdn.voiceflow.com/widget/bundle.mjs";
+            v.type = "text/javascript";
+            s.parentNode.insertBefore(v, s);
+        })(document, 'script');
+    </script> -->
+    
+       <!-- ElevenLabs Widget -->
+       <elevenlabs-convai agent-id="agent_4901k395e892fpfrf6nd260hykbp"></elevenlabs-convai><script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
 </body>
 </html>
