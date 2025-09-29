@@ -80,6 +80,32 @@
       font-size:16px;
       border:none;
     }
+    /* Secondary CTA */
+.btn-secondary {
+  background: var(--white);
+  color: var(--bg); /* dark navy text */
+  padding: 16px 32px;
+  border-radius: 8px; /* same as primary */
+  font-weight: 700;
+  font-family: 'Red Hat Display', sans-serif;
+  border: none;
+  margin-left: 14px; /* spacing between buttons */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Hover Effects */
+.btn-primary:hover {
+  background: #f4d5a2;
+  color: #f4d5a2;
+}
+
+.btn-secondary:hover {
+  background: transparent;
+  border: 2px solid #f4d5a2;
+  color: #f4d5a2;
+}
+
 
     /* Hero - centered layout */
     .hero{max-width:980px;margin:140px auto 40px;padding:40px 22px;text-align:center}
@@ -185,7 +211,9 @@
 
         <div class="cta-wrap">
           <button class="btn-primary" onclick="openCTAModal()">Send Request</button>
+          <button class="btn-secondary">Learn More</button>
         </div>
+
 
         <div class="features">
           <div class="card">
