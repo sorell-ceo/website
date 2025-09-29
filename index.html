@@ -23,20 +23,23 @@
     }
     *{box-sizing:border-box}
     html,body {
-  height:100%;
-  margin:0;
-  font-family: 'Red Hat Display', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  background: linear-gradient(180deg, rgba(15,23,36,0.9) 0%, rgba(7,16,32,0.9) 100%),
-              url("bg(4).png") no-repeat center center / cover; color: var(--white);}
+      height:100%;
+      margin:0;
+      font-family: 'Red Hat Display', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: linear-gradient(180deg, rgba(15,23,36,0.9) 0%, rgba(7,16,32,0.9) 100%),
+                  url("bg(4).png") no-repeat center center / cover; 
+      color: var(--white);
+    }
 
+    /* Premium text selection */
+    ::selection {
+      background: var(--accent);
+      color: #061017;
+    }
 
     /* Material icons */
     .material-symbols-outlined {
-      font-variation-settings:
-      'FILL' 0,
-      'wght' 400,
-      'GRAD' 0,
-      'opsz' 24;
+      font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
       vertical-align: middle;
       font-family: 'Material Symbols Outlined';
       font-size: 36px;
@@ -62,14 +65,21 @@
       width:0;
       height:2px;
       background:var(--white);
-      transition:width .3s ease, left .3s ease, right;
+      transition:width .3s ease;
     }
-    .nav-links a:hover::after{
-      width:100%;
-      left:0;
-    }
+    .nav-links a:hover::after{width:100%}
 
-    .btn-primary{background:#cf9a3f;color:#202020;padding:12px 18px;border-radius:6px;font-weight:700;box-shadow:0 6px 20px rgba(217,168,74,0.12);font-size: 16px; border:none}
+    .btn-primary{
+      background:#cf9a3f;
+      color:#202020;
+      padding:12px 18px;
+      border-radius:6px;
+      font-weight:700;
+      font-family: 'Red Hat Display', sans-serif;
+      box-shadow:0 6px 20px rgba(217,168,74,0.12);
+      font-size:16px;
+      border:none;
+    }
 
     /* Hero - centered layout */
     .hero{max-width:980px;margin:140px auto 40px;padding:40px 22px;text-align:center}
@@ -78,7 +88,13 @@
     p.lead{color:var(--muted);font-size:24px;margin:0 0 24px;max-width:550px;margin-left:auto;margin-right:auto}
 
     .cta-wrap{margin-top:35px}
-    .cta-wrap .btn-primary{padding:14px 28px;border-radius:999px}
+    .cta-wrap .btn-primary{
+      padding:16px 32px;
+      border-radius:8px;
+      background:var(--accent);
+      font-family:'Red Hat Display', sans-serif;
+      font-weight:700;
+    }
 
     /* Stats placement + spacing */
     .features{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-top:64px}
@@ -109,8 +125,10 @@
     @media (max-width:640px){
       .nav-links{display:none}
       .why{grid-template-columns:1fr}
-      h1{font-size:36px}
-      p.lead{font-size:16px}
+      h1{font-size:42px}
+      p.lead{font-size:18px}
+      .kicker{font-size:15px}
+      .hero{margin-top:140px}
       .material-symbols-outlined{font-size:28px}
       .features{gap:14px}
     }
@@ -118,6 +136,26 @@
     /* micro-interactions */
     .btn-primary:active{transform:translateY(1px)}
     .card:hover{transform:translateY(-6px);transition:all .28s cubic-bezier(.2,.9,.25,1)}
+
+    /* Hamburger menu */
+    .hamburger {
+      display:none;
+      background:none;
+      border:none;
+      color:var(--white);
+      font-size:32px;
+      cursor:pointer;
+    }
+    @media (max-width:640px){
+      .hamburger{display:block}
+      .nav-links.open{
+        display:flex;
+        flex-direction:column;
+        gap:16px;
+        background:var(--card);
+        padding:20px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -127,6 +165,7 @@
         <div class="logo">Sorell</div>
         <div class="badge">Invite-only</div>
       </div>
+      <button class="hamburger material-symbols-outlined">menu</button>
       <div class="nav-links" aria-hidden="false">
         <a href="#why">Sorell Solutions</a>
         <a href="#work">Our Results</a>
@@ -138,7 +177,7 @@
   <main>
     <section class="hero" aria-labelledby="hero-heading">
       <div>
-        <div class="kicker"></span> Welcome to Sorell</div>
+        <div class="kicker">Welcome to Sorell</div>
         <h1 id="hero-heading">solutions for high value real estate agencies — invite only</h1>
         <p class="lead">For agencies that already lead the market, Sorell Solution sharpens the edge.</p>
 
@@ -201,6 +240,9 @@
       navigator.clipboard?.writeText('hello@sorell.ai');
       alert('Email copied: hello@sorell.ai');
     }
+    document.querySelector('.hamburger').addEventListener('click', () => {
+      document.querySelector('.nav-links').classList.toggle('open');
+    });
   </script>
 </body>
 </html>
