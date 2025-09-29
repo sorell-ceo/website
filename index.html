@@ -1,565 +1,524 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorell — Invite-only AI Automation for Real Estate</title>
-    <meta name="description" content="Sorell — invite-only AI automation for high-value real estate agencies. Sales automation, lead routing, WhatsApp flows, and white-glove onboarding.">
-    <meta name="keywords" content="Sorell, AI automation, real estate automation, lead routing, sales automation, WhatsApp flows">
-    <link rel="canonical" href="https://sorell.ai/">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sorell — Invite-only AI Automation for Real Estate</title>
+  <meta name="description" content="Sorell — invite-only AI automation for high-value real estate agencies. Sales automation, lead routing, WhatsApp flows, and white-glove onboarding." />
+  <meta name="keywords" content="Sorell, AI automation, real estate automation, lead routing, sales automation, WhatsApp flows" />
+  <link rel="canonical" href="https://sorell.ai/">
 
-    <!-- FAVICON -->
-    <!-- TODO: replace with Sorell favicon file -->
-    <link rel="shortcut icon" href="assets/images/fav/sorell-fav.png" type="image/x-icon">
+  <!-- Fav icon (replace file if needed) -->
+  <link rel="shortcut icon" href="assets/images/fav/sorell-fav.png" type="image/x-icon">
 
-    <!-- Performance preconnects & preload -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://r2.leadsy.ai" crossorigin>
-    <link rel="preload" as="image" href="./assets/images/header/sorell_logo.svg">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kotta+One&family=Red+Hat+Display:wght@400;500;700;900&family=DM+Serif+Display&display=swap" rel="stylesheet">
 
-    <!-- SLIDER LINK -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+  <!-- External CSS libraries (optional) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
-    <!-- BOOTSTRAP LINK -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <!-- YOUR CSS -->
+  <link rel="stylesheet" href="styles.css">
 
-    <!-- LOCAL FONT STYLESHEET (if any) -->
-    <link rel="stylesheet" href="./assets/fonts/stylesheet.css">
+  <!-- Structured Data: Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Sorell",
+    "url": "https://sorell.ai",
+    "logo": "https://sorell.ai/assets/images/header/sorell_logo.svg",
+    "description": "Invite-only AI automation for high-value real estate agencies offering sales automation, lead routing and white-glove onboarding.",
+    "foundingDate": "2025",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+[PUT-YOUR-PHONE-HERE]",
+      "contactType": "sales",
+      "areaServed": "Worldwide",
+      "availableLanguage": "English"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/company/sorell-ai",
+      "https://instagram.com/sorell.ai"
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "India"
+    }
+  }
+  </script>
 
-    <!-- MAIN CSS -->
-    <link rel="stylesheet" href="./assets/css/style.css">
-
-    <!-- Inline critical CSS tweaks for Sorell (nav offset, hero scaling) -->
-    <style>
-      :root {
-        --bg: #0f1724; /* deep navy */
-        --card: #0b1220;
-        --muted: #98a0b3;
-        --accent: #d9a84a; /* warm gold */
-        --glass: rgba(255,255,255,0.04);
-        --white: #f6f8fb;
-        --nav-height: 88px;
-      }
-      html,body{height:100%;margin:0;background:
-        linear-gradient(180deg, rgba(15,23,36,0.92) 0%, rgba(7,16,32,0.92) 100%),
-        url("./assets/images/bg/bg-4.webp") no-repeat center center / cover;
-        color:var(--white);font-family: 'Red Hat Display', system-ui, -apple-system, 'Segoe UI', Roboto, Arial}
-
-      /* Ensure fixed nav doesn't overlap content */
-      main{padding-top:calc(var(--nav-height) + 18px)}
-
-      /* Responsive hero */
-      h1.hero-title{font-family:'DM Serif Display',serif;font-size:clamp(34px,6.8vw,70px);line-height:1.05;margin:0 0 16px;font-weight:400}
-      p.lead{color:var(--muted);font-size:clamp(15px,2.2vw,20px);max-width:720px;margin:0 auto 18px}
-
-      /* Small accessibility */
-      .navbar-toggler{outline: none}
-    </style>
-
-    <!-- Organization structured data (update contact details) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Sorell",
-      "url": "https://sorell.ai",
-      "logo": "https://sorell.ai/assets/images/header/sorell_logo.svg",
-      "description": "Invite-only AI automation for high-value real estate agencies offering sales automation, lead routing and white-glove onboarding.",
-      "foundingDate": "2025",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+[PUT-YOUR-PHONE-HERE]",
-        "contactType": "sales",
-        "areaServed": "Worldwide",
-        "availableLanguage": "English"
+  <!-- Structured Data: FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"Who is Sorell for?",
+        "acceptedAnswer":{"@type":"Answer","text":"Sorell is invite-only and designed for market-leading real estate agencies with a strong listings pipeline and high lead volume."}
       },
-      "sameAs": [
-        "https://www.linkedin.com/company/sorell-ai",
-        "https://instagram.com/sorell.ai"
-      ],
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "India"
+      {
+        "@type":"Question",
+        "name":"What services do you provide?",
+        "acceptedAnswer":{"@type":"Answer","text":"Sales automation, lead routing, WhatsApp flows, sales AI agents, and white-glove onboarding."}
+      },
+      {
+        "@type":"Question",
+        "name":"How long does onboarding take?",
+        "acceptedAnswer":{"@type":"Answer","text":"Average onboarding is 3–6 weeks depending on complexity and integrations."}
       }
-    }
-    </script>
+    ]
+  }
+  </script>
 
-    <!-- FAQ structured data (update contents if needed) -->
-    <script type="application/ld+json">
-    {
-      "@context":"https://schema.org",
-      "@type":"FAQPage",
-      "mainEntity":[
-        {
-          "@type":"Question",
-          "name":"Who is Sorell for?",
-          "acceptedAnswer":{"@type":"Answer","text":"Sorell is invite-only and designed for market-leading real estate agencies with a strong listings pipeline and high lead volume."}
-        },
-        {
-          "@type":"Question",
-          "name":"What services do you provide?",
-          "acceptedAnswer":{"@type":"Answer","text":"Sales automation, lead routing, WhatsApp flows, sales AI agents, and white-glove onboarding."}
-        },
-        {
-          "@type":"Question",
-          "name":"How long does onboarding take?",
-          "acceptedAnswer":{"@type":"Answer","text":"Average onboarding is 3–6 weeks depending on complexity and integrations."}
-        }
-      ]
-    }
-    </script>
+  <!-- Open Graph / Twitter meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sorell.ai">
+  <meta property="og:title" content="Sorell — Invite-only AI Automation for Real Estate">
+  <meta property="og:description" content="Invite-only AI automation for market-leading real estate agencies. Sales-first automations, lead routing, and white-glove onboarding.">
+  <meta property="og:image" content="https://sorell.ai/assets/images/header/thumbnail.png">
 
-    <!-- Open Graph / Twitter (Sorell branding) -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://sorell.ai">
-    <meta property="og:title" content="Sorell — Invite-only AI Automation for Real Estate">
-    <meta property="og:description" content="Invite-only AI automation for market-leading real estate agencies. Sales-first automations, lead routing, and white-glove onboarding.">
-    <meta property="og:image" content="https://sorell.ai/assets/images/header/thumbnail.png">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@SorellAI">
-    <meta name="twitter:title" content="Sorell — Invite-only AI Automation for Real Estate">
-    <meta name="twitter:description" content="Invite-only AI automation for market-leading real estate agencies.">
-    <meta name="twitter:image" content="https://sorell.ai/assets/images/header/thumbnail.png">
-
-    <!-- Keep the Leadsy tag (if you use it) -->
-    <script id="vtag-ai-js" async src="https://r2.leadsy.ai/tag.js" data-pid="cL7LQakLnUqdfTf8" data-version="062024"></script>
-
-    <!-- Pagespeed lazy loader script (keeps your image lazy system intact) -->
-    <script data-pagespeed-no-defer>(function(){function f(a,b,d){if(a.addEventListener)a.addEventListener(b,d,!1);else if(a.attachEvent)a.attachEvent("on"+b,d);else{var c=a["on"+b];a["on"+b]=function(){d.call(this);c&&c.call(this)}}};window.pagespeed=window.pagespeed||{};var g=window.pagespeed;function k(a){this.g=[];this.f=0;this.h=!1;this.j=a;this.i=null;this.l=0;this.b=!1;this.a=0}function l(a,b){var d=b.getAttribute("data-pagespeed-lazy-position");if(d)return parseInt(d,0);var d=b.offsetTop,c=b.offsetParent;c&&(d+=l(a,c));d=Math.max(d,0);b.setAttribute("data-pagespeed-lazy-position",d);return d}
-function m(a,b){var d,c,e;if(!a.b&&(0==b.offsetHeight||0==b.offsetWidth))return!1;a:if(b.currentStyle)c=b.currentStyle.position;else{if(document.defaultView&&document.defaultView.getComputedStyle&&(c=document.defaultView.getComputedStyle(b,null))){c=c.getPropertyValue("position");break a}c=b.style&&b.style.position?b.style.position:""}if("relative"==c)return!0;e=0;"number"==typeof window.pageYOffset?e=window.pageYOffset:document.body&&document.body.scrollTop?e=document.body.scrollTop:document.documentElement&&
-document.documentElement.scrollTop&&(e=document.documentElement.scrollTop);d=window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight;c=e;e+=d;var h=b.getBoundingClientRect();h?(e=h.top-d,c=h.bottom):(h=l(a,b),d=h+b.offsetHeight,e=h-e,c=d-c);return e<=a.f&&0<=c+a.f}
-k.prototype.m=function(a){p(a);var b=this;window.setTimeout(function(){var d=a.getAttribute("data-pagespeed-lazy-src");if(d)if((b.h||m(b,a))&&-1!=a.src.indexOf(b.j)){var c=a.parentNode,e=a.nextSibling;c&&c.removeChild(a);a.c&&(a.getAttribute=a.c);a.removeAttribute("onload");a.tagName&&"IMG"==a.tagName&&g.CriticalImages&&f(a,"load",function(){g.CriticalImages.checkImageForCriticality(this);b.b&&(b.a--,b.a||g.CriticalImages.checkCriticalImages())});a.removeAttribute("data-pagespeed-lazy-src");a.removeAttribute("data-pagespeed-lazy-replaced-functions");
-c&&c.insertBefore(a,e);if(c=a.getAttribute("data-pagespeed-lazy-srcset"))a.srcset=c,a.removeAttribute("data-pagespeed-lazy-srcset");a.src=d}else b.g.push(a)},0)};k.prototype.loadIfVisibleAndMaybeBeacon=k.prototype.m;k.prototype.s=function(){this.h=!0;q(this)};k.prototype.loadAllImages=k.prototype.s;function q(a){var b=a.g,d=b.length;a.g=[];for(var c=0;c<d;++c)a.m(b[c])}function t(a,b){return a.a?null!=a.a(b):null!=a.getAttribute(b)}
-k.prototype.u=function(){for(var a=document.getElementsByTagName("img"),b=0,d;d=a[b];b++)t(d,"data-pagespeed-lazy-src")&&p(d)};k.prototype.overrideAttributeFunctions=k.prototype.u;function p(a){t(a,"data-pagespeed-lazy-replaced-functions")||(a.c=a.getAttribute,a.getAttribute=function(a){"src"==a.toLowerCase()&&t(this,"data-pagespeed-lazy-src")&&(a="data-pagespeed-lazy-src");return this.c(a)},a.setAttribute("data-pagespeed-lazy-replaced-functions","1"))}
-g.o=function(a,b){function d(){if(!(c.b&&a||c.i)){var b=200;200<(new Date).getTime()-c.l&&(b=0);c.i=window.setTimeout(function(){c.l=(new Date).getTime();q(c);c.i=null},b)}}var c=new k(b);g.lazyLoadImages=c;f(window,"load",function(){c.b=!0;c.h=a;c.f=200;if(g.CriticalImages){for(var b=0,d=document.getElementsByTagName("img"),r=0,n;n=d[r];r++)-1!=n.src.indexOf(c.j)&&t(n,"data-pagespeed-lazy-src")&&b++;c.a=b;c.a||g.CriticalImages.checkCriticalImages()}q(c)});b.indexOf("data")&&((new Image).src=b);f(window,
-"scroll",d);f(window,"resize",d)};g.lazyLoadInit=g.o;})();
-</script>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@SorellAI">
+  <meta name="twitter:title" content="Sorell — Invite-only AI Automation for Real Estate">
+  <meta name="twitter:description" content="Invite-only AI automation for market-leading real estate agencies.">
+  <meta name="twitter:image" content="https://sorell.ai/assets/images/header/thumbnail.png">
 </head>
 
 <body>
+  <!-- PREHEADER -->
+  <section class="preheader" aria-label="Preheader">
+    <div class="container">
+      <div class="preheader_content">
+        <span>How Sorell reduces lead leakage and increases conversion for elite agencies ⚡️</span>
+        <a href="#widget" class="btn">Learn more</a>
+      </div>
+    </div>
+  </section>
 
-    <!-- PREHEADER SECTION -->
-    <section class="preheader" style="background-image: url(./assets/images/header/64639eaf461487ff78e46df3_Cta-BG.webp);">
-        <div class="container">
-            <div class="preheader_content">
-                <span>How Sorell reduces lead leakage and increases conversion for elite agencies ⚡️</span>
-                <a href="#widget" class="btn">Learn more</a>
+  <!-- HEADER / NAV -->
+  <header class="header" role="banner">
+    <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
+      <div class="container">
+        <div class="header_wrapper">
+          <div class="header_brand">
+            <a class="navbar-brand p-0" href="index">
+              <img src="./assets/images/header/sorell_logo.svg" alt="Sorell — Invite-only AI Automation" class="logo-img">
+            </a>
+            <div class="badge">Invite-only</div>
+          </div>
+
+          <div class="header_controls">
+            <button class="navbar-toggler" type="button" aria-label="Toggle navigation" aria-expanded="false" id="navToggler" data-action="toggle-offcanvas">
+              <img src="./assets/images/icons/menu.png" alt="Menu">
+            </button>
+
+            <div class="nav-desktop d-none d-lg-flex" role="navigation" aria-label="Desktop navigation">
+              <a href="#why">Sorell Solutions</a>
+              <a href="#work">Our Results</a>
+              <a href="#widget" class="btn btn-outline">Contact</a>
+              <button class="btn btn-primary" data-action="open-cta">Request Invite</button>
             </div>
+          </div>
         </div>
+
+        <!-- Mobile offcanvas: bootstrap will handle if included; markup kept -->
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+          <div class="offcanvas-header">
+            <a class="navbar-brand p-0" href="index">
+              <img src="./assets/images/header/sorell_logo.svg" alt="Sorell logo" class="logo-img">
+            </a>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close menu"></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav">
+              <li class="menu"><a href="#why">Services</a></li>
+              <li><a href="#projects">Use Cases</a></li>
+              <li><a href="#team">Why Sorell</a></li>
+              <li><a href="#careers">Careers</a></li>
+            </ul>
+            <div class="offcanvas-contact">
+              <a href="#widget" class="btn">Contact us</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <!-- BANNER / HERO -->
+    <section class="banner" aria-label="Hero banner">
+      <div class="container">
+        <div class="banner_wrapper">
+          <h1 class="hero-title">Invite-only automation for market-leading real estate agencies</h1>
+          <p class="lead">Built for agencies that dominate their market — Sorell gives you the conversion edge competitors can’t access.</p>
+
+          <div class="banner_btn">
+            <a href="#widget" class="btn btn-primary" data-action="open-cta">Request Invite</a>
+            <a href="#projects" class="btn btn-outline" rel="noopener">See our results</a>
+          </div>
+        </div>
+
+        <div class="banner_video">
+          <div class="banner_bg">
+            <div class="browser-hero-header">
+              <div class="browser-tabs" aria-hidden="true">
+                <div class="close"><div class="dot"></div></div>
+                <div class="close"><div class="dash"></div></div>
+              </div>
+              <div class="url-wrapper">
+                <div class="browser-url">
+                  <div class="url-wrap">
+                    <img alt="Secure connection" class="image-165" loading="lazy" src="./assets/images/home/lock.svg">
+                    <p class="url-text">sorell.ai</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <video class="hero-video" autoplay loop muted playsinline preload="metadata" poster="assets/images/home/hero_poster.png">
+              <source src="./assets/images/home/video/header_720.webm" type="video/webm">
+              <source src="./assets/images/home/video/header_720.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- HEADER / NAV -->
-    <header class="header" role="banner">
-        <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
-            <div class="container">
-                <div class="header_wrapper" style="display:flex;align-items:center;gap:16px;width:100%;justify-content:space-between">
-                    <div class="header_brand" style="display:flex;align-items:center;gap:12px">
-                        <!-- TODO: replace with Sorell SVG logo file -->
-                        <a class="navbar-brand p-0" href="index">
-                            <img src="./assets/images/header/sorell_logo.svg" alt="Sorell — Invite-only AI Automation" style="height:34px" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
-                        </a>
-                        <div style="background:var(--accent);color:#061017;padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px">Invite-only</div>
-                    </div>
+    <!-- CLIENT LOGOS -->
+    <section class="clientLogo" aria-label="Client logos">
+      <div class="container">
+        <h4><a href="#team" rel="noopener">Why Sorell?</a></h4>
+        <p>Trusted by leading agencies and brokers across premium markets</p>
 
-                    <div style="display:flex;align-items:center;gap:12px">
-                        <button class="navbar-toggler" type="button" aria-label="Toggle navigation" aria-expanded="false" id="navToggler">
-                            <img data-pagespeed-lazy-src="./assets/images/icons/menu.png" alt="Menu" data-pagespeed-url-hash="2673021263" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
-                        </button>
-
-                        <div class="d-none d-lg-flex" style="align-items:center;gap:18px">
-                            <a href="#why" style="color:var(--white);text-decoration:none">Sorell Solutions</a>
-                            <a href="#work" style="color:var(--white);text-decoration:none">Our Results</a>
-                            <a href="#widget" class="btn btn-outline-light d-none d-xl-inline-block" style="padding:10px 16px;border-radius:8px;text-decoration:none">Contact</a>
-                            <button class="btn btn-primary" style="background:var(--accent);border:none;color:#061017;padding:10px 18px;border-radius:8px" onclick="openCTAModal()">Request Invite</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Offcanvas for mobile (keeps bootstrap pattern from Agensy) -->
-                <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                    <div class="offcanvas-header">
-                        <a class="navbar-brand p-0" href="index">
-                            <img src="./assets/images/header/sorell_logo.svg" alt="Sorell logo" style="height:28px" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
-                        </a>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close menu"></button>
-                    </div>
-                    <div class="offcanvas-body">
-                        <ul class="navbar-nav">
-                            <li class="menu"><a href="#why">Services</a></li>
-                            <li><a href="#projects">Use Cases</a></li>
-                            <li><a href="#team">Why Sorell</a></li>
-                            <li><a href="#careers">Careers</a></li>
-                        </ul>
-                        <div style="margin-top:14px">
-                            <a href="#widget" class="btn btn-light" rel="noopener">Contact us</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </nav>
-    </header>
-
-    <!-- MAIN -->
-    <main>
-        <!-- HERO / BANNER -->
-        <section class="banner">
-            <div class="container">
-                <div class="banner_wrapper" style="text-align:center;padding:42px 0">
-                    <h1 class="hero-title gs_reveal">Invite-only automation for market-leading real estate agencies</h1>
-                    <p class="lead gs_reveal">Built for agencies that dominate their market — Sorell gives you the conversion edge competitors can’t access.</p>
-
-                    <div class="banner_btn gs_reveal" style="display:flex;gap:12px;justify-content:center;margin-top:22px">
-                        <a href="#widget" class="btn btn-primary" style="background:var(--accent);border:none;color:#061017;padding:12px 20px;border-radius:8px">Request Invite</a>
-                        <a href="#projects" class="btn btn-outline-light" rel="noopener" style="padding:12px 20px;border-radius:8px">See our results</a>
-                    </div>
-                </div>
-
-                <div class="banner_video gs_reveal" style="display:flex;justify-content:center">
-                    <div class="banner_bg" style="max-width:920px;width:100%;border-radius:16px;overflow:hidden;box-shadow:0 18px 50px rgba(2,6,23,0.65);border:1px solid rgba(255,255,255,0.02);">
-                        <div class="browser-hero-header" style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,0.02)">
-                            <div class="url-wrapper" style="display:flex;align-items:center;gap:8px">
-                                <img alt="Secure connection" class="image-165" loading="lazy" src="./assets/images/home/lock.svg" style="height:14px" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
-                                <p class="url-text" style="margin:0;color:var(--muted)">sorell.ai</p>
-                            </div>
-                        </div>
-
-                        <!-- Video: include both webm and mp4. Confirm file names in assets. -->
-                        <video autoplay loop muted playsinline preload="metadata" poster="assets/images/home/hero_poster.png" style="width:100%;height:auto;display:block;object-fit:cover">
-                            <source src="./assets/images/home/video/header_720.webm" type="video/webm">
-                            <source src="./assets/images/home/video/header_720.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CLIENT LOGOS -->
-        <section class="clientLogo">
-            <div class="container" style="text-align:center;padding:28px 0">
-                <h4><a href="#team" class="arrow-hover" rel="noopener">Why Sorell?</a></h4>
-                <p style="color:var(--muted)">Trusted by leading agencies and brokers across premium markets</p>
-
-                <div class="marquee-slider swiper" style="margin-top:18px">
-                    <div class="swiper-wrapper" aria-hidden="false">
-                        <!-- TODO: Replace slides with your Sorell client logos -->
-                        <div class="swiper-slide"><img src="./assets/images/home/wakepark_logo.svg" alt="Client Logo" loading="lazy"></div>
-                        <div class="swiper-slide"><img src="./assets/images/home/pandashop_logo.svg" alt="Client Logo" loading="lazy"></div>
-                        <div class="swiper-slide"><img src="./assets/images/home/dayger_logo.svg" alt="Client Logo" loading="lazy"></div>
-                        <!-- ... keep rest -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- VIDEO WITH CONTENT (Use cases) -->
-        <section class="contentVideo">
-            <div class="container">
-                <!-- BUILD -->
-                <div class="contentVideo_wrapper" style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin-bottom:28px">
-                    <div class="contentVideo_video d-md-block d-none" style="flex:1;min-width:320px">
-                        <video autoplay loop muted playsinline preload="metadata" poster="assets/images/home/hero_mobile.png" style="width:100%;height:auto;display:block;object-fit:cover;">
-                            <source src="./assets/images/home/video/Chatbot.webm" type="video/webm">
-                            <source src="./assets/images/home/video/Chatbot.mp4" type="video/mp4">
-                        </video>
-                    </div>
-
-                    <div id="build" class="contentVideo_col" style="flex:1;min-width:320px">
-                        <div class="contentVideo_content">
-                            <span style="color:var(--muted);font-weight:700">BUILD</span>
-                            <h2>AI chatbots that scale, easily</h2>
-                            <p>We build next-generation chatbots that handle interactions in the tone and voice of your brand — 24/7.</p>
-                            <a href="#projects" class="arrow-hover" rel="noopener">See how it works →</a>
-                        </div>
-
-                        <div class="contentVideo_box" style="margin-top:14px;background:linear-gradient(180deg,#07101a,#061017);padding:16px;border-radius:10px">
-                            <p><b>"It's like having an extra team member."</b> The AI handles inquiries 24/7 and helps customers with orders, allowing your team to focus on closing deals.</p>
-                            <div class="user" style="display:flex;align-items:center;gap:10px;margin-top:12px">
-                                <img src="./assets/images/home/vasily_photo.png" alt="Client photo" style="height:40px;border-radius:6px">
-                                <div>
-                                    <span style="font-weight:700">Vasili Garciu</span><br><small style="color:var(--muted)">Founder «PandaShop»</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CONVERSION -->
-                <div class="contentVideo_wrapper" style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin-bottom:28px">
-                    <div class="contentVideo_video d-md-block d-none" style="flex:1;min-width:320px">
-                        <video autoplay loop muted playsinline preload="metadata" poster="assets/images/home/insta_poster.png" style="width:100%;height:auto;display:block;object-fit:cover;">
-                            <source src="./assets/images/home/video/insta.webm" type="video/webm">
-                            <source src="./assets/images/home/video/insta.mp4" type="video/mp4">
-                        </video>
-                    </div>
-
-                    <div id="conversion" class="contentVideo_col" style="flex:1;min-width:320px">
-                        <div class="contentVideo_content">
-                            <span style="color:var(--muted);font-weight:700">Higher conversions</span>
-                            <h2>Turn followers into qualified leads</h2>
-                            <p>Auto-reply to reactions, story replies, comments and DMs — route hot leads instantly to sales.</p>
-                            <a href="#contact" class="arrow-hover" rel="noopener">Boost conversions →</a>
-                        </div>
-
-                        <div class="contentVideo_box" style="margin-top:14px;background:linear-gradient(180deg,#07101a,#061017);padding:16px;border-radius:10px">
-                            <p><b>"Wish I’d done this sooner."</b> More engagement, more customers — effortless growth.</p>
-                            <div class="user" style="display:flex;align-items:center;gap:10px;margin-top:12px">
-                                <img src="./assets/images/home/Tatyana_photo.png" alt="Client photo" style="height:40px;border-radius:6px">
-                                <div><span style="font-weight:700">Tatyana Evlanova</span><br><small style="color:var(--muted)">Marketing Manager</small></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- LEADS -->
-                <div id="leads" class="contentVideo_wrapper" style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin-bottom:28px">
-                    <div class="contentVideo_video d-md-block d-none" style="flex:1;min-width:320px">
-                        <img data-pagespeed-lazy-src="./assets/images/home/leads.svg" alt="Leads icon" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
-                    </div>
-
-                    <div class="contentVideo_col" style="flex:1;min-width:320px">
-                        <div class="contentVideo_content">
-                            <span style="color:var(--muted);font-weight:700">LEAD GENERATION</span>
-                            <h2>Find leads faster than ever</h2>
-                            <p>Extract contact data and social signals at scale — more leads, less chasing.</p>
-                        </div>
-
-                        <div class="contentVideo_box" style="margin-top:14px;background:linear-gradient(180deg,#07101a,#061017);padding:16px;border-radius:10px">
-                            <p><b>"Huge boost for our hiring process!"</b> We're finding top talent faster and more efficiently — AI transformed the way we recruit.</p>
-                            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
-                                <div class="user" style="display:flex;align-items:center;gap:10px">
-                                    <img src="./assets/images/home/alex_photo.png" alt="Alex photo" style="height:40px;border-radius:6px">
-                                    <div><span style="font-weight:700">Alex Rubanovici</span><br><small style="color:var(--muted)">HR Director</small></div>
-                                </div>
-                                <div class="btn-wrapper"><a href="#projects" rel="noopener">See how</a></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CUSTOM -->
-                <div id="custom" class="contentVideo_wrapper" style="display:flex;flex-wrap:wrap;gap:20px;align-items:center">
-                    <div class="contentVideo_video d-md-block d-none" style="flex:1;min-width:320px">
-                        <img data-pagespeed-lazy-src="./assets/images/home/invoice.svg" alt="Invoice icon" src="/pagespeed_static/1.JiBnMqyl6S.gif" onload="pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);">
-                    </div>
-
-                    <div class="contentVideo_col" style="flex:1;min-width:320px">
-                        <div class="contentVideo_content">
-                            <span style="color:var(--muted);font-weight:700">CUSTOM SOLUTIONS</span>
-                            <h2>Automate repetitive tasks and processes</h2>
-                            <p>Predictive automations that reduce manual work and human error for ops, sales and data teams.</p>
-                            <a href="#contact" class="arrow-hover" rel="noopener">Automate →</a>
-                        </div>
-
-                        <div class="contentVideo_box" style="margin-top:14px;background:linear-gradient(180deg,#07101a,#061017);padding:16px;border-radius:10px">
-                            <p><b>"A Smart Move!"</b> Automating document flows saved weeks of work. This changes how you run the business.</p>
-                            <div style="display:flex;align-items:center;gap:10px;margin-top:12px">
-                                <img src="./assets/images/home/ganea_photo.svg" alt="Ganea photo" style="height:40px;border-radius:6px">
-                                <div><span style="font-weight:700">Igor Ganea</span><br><small style="color:var(--muted)">Founder «Ganea Group»</small></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SOLUTION / GRID -->
-        <section class="solution">
-            <div class="container" style="padding:40px 0">
-                <div class="solution_wrapper" style="text-align:center">
-                    <span style="color:var(--muted);font-weight:700">use case solutions</span>
-                    <h2 style="margin-top:8px">Automate customer support, then everything else</h2>
-                    <p style="color:var(--muted)">Get started with solutions for popular use cases created by our team.</p>
-                    <a href="#projects" rel="noopener">Explore all projects →</a>
-
-                    <div class="solution_flex" style="display:flex;gap:18px;margin-top:22px;flex-wrap:wrap;justify-content:center">
-                        <div class="solution_flex-item" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:10px;min-width:260px">
-                            <img src="./assets/images/projects/project_messenger.png" alt="Messenger solution" style="width:100%;height:auto">
-                            <div class="content"><h4>Seamless Shopping: Let AI Handle Messenger Chats</h4></div>
-                        </div>
-
-                        <div class="solution_flex-item" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:10px;min-width:260px">
-                            <img src="./assets/images/projects/projects_shopify.png" alt="Shopify solution" style="width:100%;height:auto">
-                            <div class="content"><h4>Shopify Order Checker AI Agent</h4></div>
-                        </div>
-
-                        <div class="solution_flex-item" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:10px;min-width:260px">
-                            <img src="./assets/images/projects/project_telegram.png" alt="Telegram solution" style="width:100%;height:auto">
-                            <div class="content"><h4>Telegram bots that work non-stop</h4></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- BLACK THEME - VOICE -->
-        <section class="blackTheme" style="padding:40px 0;background:linear-gradient(180deg,#07101a,#061017);color:var(--white)">
-            <div id="voice" class="container">
-                <div class="blackTheme_wrapper" style="text-align:center;margin-bottom:18px">
-                    <span style="color:var(--muted);font-weight:700">Human-Like Voice Assistants</span>
-                    <h2 style="margin-top:8px">Make outbound calls, receive orders and schedule appointments</h2>
-                    <p style="color:var(--muted)">Powerful voice assistants that feel as natural and reliable as a person.</p>
-                </div>
-
-                <div class="blackTheme_flex" style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap">
-                    <div class="blackTheme_flex-item" style="min-width:160px;text-align:center">
-                        <h3>×8</h3><span style="color:var(--muted)">Conversion Boost</span>
-                    </div>
-                    <div class="blackTheme_flex-item" style="min-width:160px;text-align:center">
-                        <h3>24/7</h3><span style="color:var(--muted)">Customer Support</span>
-                    </div>
-                    <div class="blackTheme_flex-item" style="min-width:160px;text-align:center">
-                        <h3>B2B</h3><span style="color:var(--muted)">Data Collection</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="blackTheme_slider" style="padding:20px 0">
-                <div class="swiper blackTheme-slider">
-                    <div class="swiper-wrapper">
-                        <!-- slides: keep same structure — update icons if necessary -->
-                        <div class="swiper-slide">
-                            <div style="display:flex;align-items:center;justify-content:space-between">
-                                <img src="./assets/images/home/barbershop.svg" alt="Barbershop">
-                                <h4>Book</h4>
-                            </div>
-                            <div><h3>Barbershop</h3><p>Automated booking & personalized service</p></div>
-                        </div>
-                        <!-- ... more slides ... -->
-                    </div>
-                </div>
-
-                <div class="container" style="margin-top:12px">
-                    <div class="swiper-pagination">
-                        <div class="swiper-button-next-unique"><img src="./assets/images/icons/prev.png" alt="prev"></div>
-                        <div class="swiper-button-prev-unique"><img src="./assets/images/icons/next.png" alt="next"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- OUR BUSINESS / COMMUNITY -->
-        <section class="ourBusiness" style="padding:40px 0">
-            <div class="container" style="display:flex;gap:24px;flex-wrap:wrap;align-items:center">
-                <div style="flex:1;min-width:260px">
-                    <h2>Join our <span style="color:var(--accent)">AI for Business</span> community</h2>
-                    <p style="color:var(--muted)">Connect with forward-thinking entrepreneurs and industry leaders using AI at scale.</p>
-                </div>
-                <div style="flex:1;min-width:260px;display:flex;flex-direction:column;gap:12px">
-                    <div style="display:flex;gap:12px;align-items:center">
-                        <img src="./assets/images/home/telegram_icon.svg" alt="Telegram" style="height:42px">
-                        <div>
-                            <span style="font-weight:700">Telegram Community</span>
-                            <p style="color:var(--muted);margin:0">Join Sorell's invite-only community of AI and sales leaders.</p>
-                            <a href="https://t.me/+DzsSHLjO0gthNzM6" rel="noopener" class="arrow-hover">Join Telegram →</a>
-                        </div>
-                    </div>
-
-                    <div style="display:flex;gap:12px;align-items:center">
-                        <img src="./assets/images/home/youtube_icon.svg" alt="YouTube" style="height:42px">
-                        <div>
-                            <span style="font-weight:700">YouTube tutorials</span>
-                            <p style="color:var(--muted);margin:0">Learn our automation playbooks and case studies.</p>
-                            <a href="https://www.youtube.com/channel/UCKtH94_HZBSMDoS6hEdapmg" rel="noopener" class="arrow-hover">See Tutorials →</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- WIDGET / CTA -->
-        <section id="widget" class="widget" style="padding:36px 0;background:linear-gradient(180deg,transparent,rgba(0,0,0,0.03))">
-            <div class="container" style="text-align:center">
-                <h2>Start building invite-only automations</h2>
-                <p style="color:var(--muted)">Curious how Sorell can help your agency? Apply for an invite and our team will qualify your fit.</p>
-                <div style="margin-top:18px">
-                    <a href="#contact" class="btn btn-primary" style="background:var(--accent);border:none;color:#061017;padding:12px 18px;border-radius:8px">Request Invite</a>
-                    <a href="https://t.me/+DzsSHLjO0gthNzM6" class="btn btn-outline-light" rel="noopener" style="margin-left:10px;padding:12px 18px;border-radius:8px">Join community</a>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="footer" style="padding:28px 0;background:transparent">
-        <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-            <div style="display:flex;align-items:center;gap:10px">
-                <img src="./assets/images/header/sorell_logo.svg" alt="Sorell logo" style="height:28px">
-                <div style="color:var(--muted)">Sorell • Invite-only AI Automation</div>
-            </div>
-            <div style="color:var(--muted)">© 2025 Sorell — All rights reserved</div>
+        <div class="marquee-slider swiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="./assets/images/home/wakepark_logo.svg" alt="Wakepark"></div>
+            <div class="swiper-slide"><img src="./assets/images/home/pandashop_logo.svg" alt="Pandashop"></div>
+            <div class="swiper-slide"><img src="./assets/images/home/dayger_logo.svg" alt="Dayger"></div>
+            <div class="swiper-slide"><img src="./assets/images/home/ganea_logo.svg" alt="Ganea"></div>
+            <div class="swiper-slide"><img src="./assets/images/home/makeit_logo.svg" alt="Makeit"></div>
+            <div class="swiper-slide"><img src="./assets/images/home/LeadLeap_logo.svg" alt="LeadLeap"></div>
+            <div class="swiper-slide"><img src="./assets/images/home/cityfarm_logo.svg" alt="Cityfarm"></div>
+            <div class="swiper-slide"><img src="./assets/images/home/blinoff_logo.svg" alt="Blinoff"></div>
+            <div class="swiper-slide"><img src="./assets/images/home/ses_logo.svg" alt="SES"></div>
+            <div class="swiper-slide"><img src="./assets/images/home/sweetland_logo.svg" alt="Sweetland"></div>
+          </div>
         </div>
-    </footer>
+      </div>
+    </section>
 
-    <!-- Pagespeed helper -->
-    <script type="text/javascript" data-pagespeed-no-defer>pagespeed.lazyLoadImages.overrideAttributeFunctions();</script>
+    <!-- VIDEO WITH CONTENT (BUILD / CONVERSION / LEADS / CUSTOM) -->
+    <section class="contentVideo" aria-label="Product sections">
+      <div class="container">
 
-    <!-- Core libs (defer) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.4.1/swiper-bundle.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js" defer></script>
+        <!-- BUILD -->
+        <div class="contentVideo_wrapper">
+          <div class="contentVideo_video d-md-block d-none">
+            <video autoplay loop muted playsinline preload="metadata" poster="assets/images/home/hero_mobile.png">
+              <source src="./assets/images/home/video/Chatbot.webm" type="video/webm">
+              <source src="./assets/images/home/video/Chatbot.mp4" type="video/mp4">
+            </video>
+          </div>
 
-    <!-- Your local JS files — keep original names -->
-    <script src="./assets/javascript/gsap.js" defer></script>
-    <script src="./assets/javascript/sliders.js" defer></script>
-    <script src="./assets/javascript/script.js" defer></script>
+          <div id="build" class="contentVideo_col">
+            <div class="contentVideo_content">
+              <span>BUILD</span>
+              <h2>AI chatbots that scale, easily</h2>
+              <p>We build next-generation chatbots that handle interactions in the tone and voice of your brand — 24/7.</p>
+              <a href="#projects" class="arrow-hover">See how it works</a>
+            </div>
 
-    <!-- Analytics & trackers (keep consent in mind) -->
-    <script type="text/javascript">
-      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");ym(98183880,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});
-    </script>
-    <noscript><div><img alt="" src="https://mc.yandex.ru/watch/98183880" style="position:absolute; left:-9999px;" data-pagespeed-url-hash="3144951935"/></div></noscript>
+            <div class="contentVideo_box">
+              <p><strong>It's like having an extra team member.</strong> The AI handles inquiries 24/7 and helps customers with their orders, allowing your team to focus on closing deals.</p>
+              <div class="user">
+                <img src="./assets/images/home/vasily_photo.png" alt="Vasili Garciu">
+                <div>
+                  <span>Vasili Garciu</span>
+                  <h5>Founder «PandaShop»</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <!-- Meta Pixel -->
-    <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','[PUT_YOUR_PIXEL_ID]');fbq('track','PageView');</script>
-    <noscript><img height="1" src="https://www.facebook.com/tr?id=[PUT_YOUR_PIXEL_ID]&ev=PageView&noscript=1" style="display:none" width="1" data-pagespeed-url-hash="2228932771"/></noscript>
+        <!-- CONVERSION -->
+        <div class="contentVideo_wrapper">
+          <div class="contentVideo_video d-md-block d-none">
+            <video autoplay loop muted playsinline preload="metadata" poster="assets/images/home/insta_poster.png">
+              <source src="./assets/images/home/video/insta.webm" type="video/webm">
+              <source src="./assets/images/home/video/insta.mp4" type="video/mp4">
+            </video>
+          </div>
 
-    <!-- Optional: ElevenLabs Widget (check privacy) -->
-    <!-- <elevenlabs-convai agent-id="agent_..."></elevenlabs-convai>
-    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async></script> -->
+          <div id="conversion" class="contentVideo_col">
+            <div class="contentVideo_content">
+              <span>Higher conversions</span>
+              <h2>Turn followers into qualified leads</h2>
+              <p>Auto-reply to reactions, story replies, comments and DMs — route hot leads instantly to sales.</p>
+              <a href="#contact" class="arrow-hover">Boost conversions</a>
+            </div>
 
-    <!-- Small UI + accessibility script (nav toggle & placeholder modal) -->
-    <script>
-      (function(){
-        const navToggler = document.getElementById('navToggler');
-        const offcanvas = document.getElementById('offcanvasNavbar');
-        if(navToggler){
-          navToggler.addEventListener('click', function(){
-            const expanded = this.getAttribute('aria-expanded') === 'true';
-            this.setAttribute('aria-expanded', String(!expanded));
-            // Bootstrap will handle opening the offcanvas via data-bs-target if present.
-            // If you use custom offcanvas, toggle class here.
-          });
-        }
+            <div class="contentVideo_box">
+              <p><strong>Wish I’d done this sooner.</strong> More engagement, more customers — effortless growth.</p>
+              <div class="user">
+                <img src="./assets/images/home/Tatyana_photo.png" alt="Tatyana Evlanova">
+                <div>
+                  <span>Tatyana Evlanova</span>
+                  <h5>Marketing Manager</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        window.openCTAModal = function(){
-          // Replace with proper modal or a qualification form.
-          alert('Request placeholder — replace with invite modal that captures qualifications.');
-        };
+        <!-- LEADS -->
+        <div id="leads" class="contentVideo_wrapper">
+          <div class="contentVideo_video d-md-block d-none">
+            <img src="./assets/images/home/leads.svg" alt="Leads icon">
+          </div>
 
-        // Accessibility: Escape key closes offcanvas if open
-        document.addEventListener('keydown', (e) => {
-          if(e.key === 'Escape') {
-            // Close any open offcanvas if present (Bootstrap handles it)
-            // This is a simple hook in case of custom offcanvas.
-            const off = document.querySelector('.offcanvas.show');
-            if(off){
-              const bs = bootstrap.Offcanvas.getInstance(off);
-              if(bs) bs.hide();
-            }
-          }
-        });
-      })();
-    </script>
+          <div class="contentVideo_col">
+            <div class="contentVideo_content">
+              <span>LEAD GENERATION</span>
+              <h2>Find leads faster than ever</h2>
+              <p>Extract contact data and social signals at scale — more leads, less chasing.</p>
+            </div>
 
-    <!-- Keep your pagespeed init last -->
-    <script>pagespeed.lazyLoadInit(true, "/pagespeed_static/1.JiBnMqyl6S.gif");</script>
+            <div class="contentVideo_box">
+              <p><strong>Huge boost for our hiring process!</strong> We're finding top talent faster and more efficiently — AI transformed the way we recruit.</p>
+              <div class="user-row">
+                <div class="user">
+                  <img src="./assets/images/home/alex_photo.png" alt="Alex Rubanovici">
+                  <div>
+                    <span>Alex Rubanovici</span>
+                    <h5>HR Director</h5>
+                  </div>
+                </div>
+                <div class="btn-wrapper"><a href="#projects">See how</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CUSTOM -->
+        <div id="custom" class="contentVideo_wrapper">
+          <div class="contentVideo_video d-md-block d-none">
+            <img src="./assets/images/home/invoice.svg" alt="Invoice icon">
+          </div>
+
+          <div class="contentVideo_col">
+            <div class="contentVideo_content">
+              <span>CUSTOM SOLUTIONS</span>
+              <h2>Automate repetitive tasks and processes</h2>
+              <p>Predictive automations that reduce manual work and human error for ops, sales and data teams.</p>
+              <a href="#contact" class="arrow-hover">Automate</a>
+            </div>
+
+            <div class="contentVideo_box">
+              <p><strong>A Smart Move!</strong> Automating document flows saved weeks of work. This changes how you run the business.</p>
+              <div class="user">
+                <img src="./assets/images/home/ganea_photo.svg" alt="Igor Ganea">
+                <div>
+                  <span>Igor Ganea</span>
+                  <h5>Founder «Ganea Group»</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SOLUTION / GRID -->
+    <section class="solution" aria-label="Solution grid">
+      <div class="container">
+        <div class="solution_wrapper">
+          <span>use case solutions</span>
+          <h2>Automate customer support, then everything else</h2>
+          <p>Get started with solutions for popular use cases created by our team.</p>
+          <a href="#projects">Explore all projects</a>
+
+          <div class="solution_flex">
+            <div class="solution_flex-item">
+              <img src="./assets/images/projects/project_messenger.png" alt="Messenger solution">
+              <div class="content"><h4>Seamless Shopping: Let AI Handle Messenger Chats</h4></div>
+            </div>
+
+            <div class="solution_flex-item">
+              <img src="./assets/images/projects/projects_shopify.png" alt="Shopify solution">
+              <div class="content"><h4>Shopify Order Checker AI Agent</h4></div>
+            </div>
+
+            <div class="solution_flex-item">
+              <img src="./assets/images/projects/project_telegram.png" alt="Telegram solution">
+              <div class="content"><h4>Telegram bots that work non-stop</h4></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLACK THEME (VOICE) -->
+    <section class="blackTheme" aria-label="Voice assistants">
+      <div id="voice" class="container">
+        <div class="section-title">
+          <span>Human-Like Voice Assistants</span>
+          <h2>Make outbound calls, receive orders and schedule appointments</h2>
+          <p>Powerful voice assistants that feel as natural and reliable as a person.</p>
+        </div>
+
+        <div class="blackTheme_flex">
+          <div class="blackTheme_flex-item"><h3>x8</h3><span>Conversion Boost</span></div>
+          <div class="blackTheme_flex-item"><h3>24/7</h3><span>Customer Support</span></div>
+          <div class="blackTheme_flex-item"><h3>B2B</h3><span>Data Collection</span></div>
+        </div>
+      </div>
+
+      <div class="blackTheme_slider">
+        <div class="swiper blackTheme-slider">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <div class="slide-top">
+                <img src="./assets/images/home/barbershop.svg" alt="Barbershop">
+                <h4>Book</h4>
+              </div>
+              <div class="slide-body">
+                <h3>Barbershop</h3>
+                <p>Automated booking & personalized service</p>
+              </div>
+            </div>
+            <!-- More slides follow same structure -->
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="swiper-pagination">
+            <div class="swiper-button-next-unique"><img src="./assets/images/icons/prev.png" alt="prev"></div>
+            <div class="swiper-button-prev-unique"><img src="./assets/images/icons/next.png" alt="next"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OUR BUSINESS / COMMUNITY -->
+    <section class="ourBusiness" aria-label="Community">
+      <div class="container">
+        <div class="ourBusiness_wrapper">
+          <div class="ourBusiness_left">
+            <h2>Join our <span>AI for Business</span> community</h2>
+            <p>Connect with forward-thinking entrepreneurs and industry leaders using AI at scale.</p>
+          </div>
+
+          <div class="ourBusiness_right">
+            <div class="community-item">
+              <img src="./assets/images/home/telegram_icon.svg" alt="Telegram">
+              <div>
+                <span>Telegram Community</span>
+                <p>Join Sorell's invite-only community of AI and sales leaders.</p>
+                <a href="https://t.me/+DzsSHLjO0gthNzM6" rel="noopener">Join Telegram</a>
+              </div>
+            </div>
+
+            <div class="community-item">
+              <img src="./assets/images/home/youtube_icon.svg" alt="YouTube">
+              <div>
+                <span>YouTube tutorials</span>
+                <p>Learn our automation playbooks and case studies.</p>
+                <a href="https://www.youtube.com/channel/UCKtH94_HZBSMDoS6hEdapmg" rel="noopener">See Tutorials</a>
+              </div>
+            </div>
+
+            <div class="community-item">
+              <img src="./assets/images/home/linkedin_icon.svg" alt="LinkedIn">
+              <div>
+                <span>Community updates</span>
+                <p>Follow the latest news and trends from Sorell.</p>
+                <a href="https://www.linkedin.com/company/agensy-ai/" rel="noopener">See Updates</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WIDGET / CTA -->
+    <section id="widget" class="widget" aria-label="Contact widget">
+      <div class="container">
+        <div class="widget_wrapper">
+          <h2>Start building invite-only automations</h2>
+          <p>Curious how Sorell can help your agency? Apply for an invite and our team will qualify your fit.</p>
+          <div class="widget_btn">
+            <a href="#contact" class="btn btn-primary" data-action="open-cta">Request Invite</a>
+            <a href="https://t.me/+DzsSHLjO0gthNzM6" class="btn btn-outline" rel="noopener">Join community</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer_wrapper">
+        <div class="footer_col">
+          <a href="index" class="footer_logo">
+            <img src="./assets/images/header/sorell_logo.svg" alt="Sorell logo">
+          </a>
+          <ul class="social-list">
+            <li><a href="https://www.youtube.com/channel/UCKtH94_HZBSMDoS6hEdapmg" rel="noopener">Youtube</a></li>
+            <li><a href="https://www.linkedin.com/company/agensy-ai/" rel="noopener">Linkedin</a></li>
+            <li><a href="https://t.me/+DzsSHLjO0gthNzM6" rel="noopener">Telegram</a></li>
+          </ul>
+        </div>
+
+        <div class="footer_col">
+          <h5>Services</h5>
+          <ul>
+            <li><a href="#build">Chatbots</a></li>
+            <li><a href="#voice">Voice Assistants</a></li>
+            <li><a href="#leads">Lead Generation</a></li>
+            <li><a href="#conversion">Marketing Automation</a></li>
+            <li><a href="#custom">Custom Solutions</a></li>
+          </ul>
+        </div>
+
+        <div class="footer_col">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="team">About</a></li>
+            <li><a href="contact">Contact</a></li>
+            <li><a href="careers">Careers</a></li>
+            <li><a href="terms">Terms of service</a></li>
+            <li><a href="privacy">Privacy policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer_bottom">
+        <p>© 2025 Sorell — All rights reserved.</p>
+        <p>Made with 🤍</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- EXTERNAL LIBS (optional) -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.4.1/swiper-bundle.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js" defer></script>
+
+  <!-- YOUR JS -->
+  <script src="script.js" defer></script>
 </body>
 </html>
