@@ -50,23 +50,20 @@
     }
     /* ---------- Video Section ---------- */
 .video-section {
-  height: auto;                /* full height on desktop */
   display: flex;
-  align-items: center;
   justify-content: center;
-  margin: 50px 10px;            /* spacing above (50px) and side margins */
-  box-sizing: border-box;
+  align-items: center;
+  margin: 50px 50px;   /* top/bottom 50px, left/right 50px */
 }
 
 .video-section video {
-  width: 900%;
-  height: auto;
-  object-fit: contain;
-  border-radius: 12px;
+  width: 100%;
+  height: auto;        /* adjust height automatically */
+  object-fit: contain; /* no cropping */
+  border-radius: 16px;
   box-shadow: 0 12px 40px rgba(2,6,23,0.55);
   display: block;
 }
-
 /* ---------- Mobile ---------- */
 @media (max-width:800px){
   .video-section {
