@@ -1,1 +1,118 @@
+/* Reset & Base Setup */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background-color: #111;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden; /* Prevents scrolling */
+  color: white;
+}
 
+/* =========================================
+   STAGE 1: SCRATCH CARD (Performance First)
+   ========================================= */
+#scratch-stage {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  background-color: #0f0f0f;
+  transition: opacity 0.5s ease;
+}
+
+.scratch-ticket {
+  position: relative;
+  width: 300px; height: 360px;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  box-shadow: 0px 10px 30px rgba(255, 102, 0, 0.3);
+  display: flex; justify-content: center; align-items: center; text-align: center;
+  overflow: hidden;
+}
+
+.scratch-content h2 { color: #FF6600; font-family: 'Space Grotesk', sans-serif; margin-bottom: 10px;}
+.scratch-content p { color: #888; font-size: 14px; margin-bottom: 20px;}
+
+#reveal-site-btn {
+  background: #FF6600; color: #fff;
+  border: none; padding: 12px 24px; border-radius: 30px;
+  font-weight: bold; font-family: 'Space Grotesk', sans-serif;
+  opacity: 0; pointer-events: none; transition: opacity 0.5s;
+}
+
+#scratch-canvas {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%; cursor: crosshair;
+}
+
+/* =========================================
+   STAGE 2: MAIN SITE (Loaded Later)
+   ========================================= */
+.hidden { display: none !important; }
+
+/* The background is ONLY applied when the .active class is added via JS */
+#main-site {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#main-site.active {
+  /* Update this path if your image is named differently */
+  background-image: url('assets/bg-image.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: fadeIn 1s ease forwards;
+}
+
+/* Glassmorphism Nav */
+.glass-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  margin: 15px;
+  border-radius: 20px;
+  /* The Glass Magic */
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-logo { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: #FF6600; }
+.nav-tag { font-family: 'Space Grotesk', sans-serif; font-size: 14px; color: #ddd; }
+
+/* CTAs (Pushed to the bottom over the image) */
+.cta-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 0 20px 60px 20px; /* Space at the bottom */
+}
+
+.primary-cta {
+  background: #FF6600; color: #fff; border: none;
+  padding: 16px; border-radius: 12px; font-size: 16px;
+  font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+  box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
+}
+
+.secondary-cta {
+  background: transparent; color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 14px; border-radius: 12px; font-size: 14px;
+  font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+  backdrop-filter: blur(5px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
