@@ -36,14 +36,14 @@ body {
    CARD STACK (Physics & Mockup matching)
    ========================================= */
 #question-stack-container {
-    width: 90%;
+    /* This calculates 100% width MINUS 60px (30px for each side) */
+    width: calc(100% - 60px); 
     max-width: 400px;
     height: 70vh; 
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* CRITICAL: Stops mobile screen from moving while dragging cards */
     touch-action: none; 
 }
 
@@ -72,7 +72,6 @@ body {
   transition: transform 0.5s ease, opacity 0.5s ease;
   box-shadow: 0 10px 40px rgba(0,0,0,0.6);
   cursor: grab;
-  margin: 0 5%;
 }
 
 .quiz-card:active {
