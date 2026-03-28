@@ -121,6 +121,7 @@ body.locked {
   box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
   cursor: pointer;
   transition: transform 0.2s;
+  margin: 0 15px;
 }
 .primary-cta:active { transform: scale(0.98); }
 
