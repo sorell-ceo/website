@@ -5,18 +5,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const scratchStage = document.getElementById('scratch-stage');
   const mainSite = document.getElementById('main-site');
 
-  canvas.width = 300; canvas.height = 360;
+  canvas.width = 320; canvas.height = 400;
 
-  // The Blue Razorpay-style overlay
-  ctx.fillStyle = '#2c52ed'; 
+  // 1. GENERATE GRITTY TEXTURE
+  ctx.fillStyle = '#1c1c1c'; // Dark matte base
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.font = 'bold 20px sans-serif';
-  ctx.fillStyle = '#ffffff';
+  
+  // Add programmatic noise/grit
+  for (let i = 0; i < 8000; i++) {
+    ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.04})`;
+    ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 1.5, 1.5);
+  }
+
+  // Draw the heavy GenZ Font on top
+  ctx.font = 'bold 24px Space Grotesk, sans-serif';
+  ctx.fillStyle = '#888888';
   ctx.textAlign = 'center';
   ctx.fillText('SCRATCH TO REVEAL', canvas.width / 2, canvas.height / 2);
 
-  let isDragging = false;
+  let isDrawing = false;
   let isScratched = false;
+  let lastPoint = null;
+  let completionPercentage = 0;
 
   function getPos(e) {
       const rect = canvas.getBoundingClientRect();
@@ -25,51 +35,81 @@ document.addEventListener('DOMContentLoaded', () => {
       return { x, y };
   }
 
+  // 2. FLUID SCRATCH PHYSICS
   function scratch(e) {
-      if (!isDragging || isScratched) return;
+      if (!isDrawing || isScratched) return;
       e.preventDefault(); 
       const pos = getPos(e);
       
       ctx.globalCompositeOperation = 'destination-out';
-      ctx.beginPath();
-      ctx.arc(pos.x, pos.y, 35, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.lineWidth = 45; // Thick eraser
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round'; // Makes lines fluid instead of stamped circles
 
-      checkCompletion();
+      ctx.beginPath();
+      if (lastPoint) {
+          ctx.moveTo(lastPoint.x, lastPoint.y);
+      }
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+
+      lastPoint = pos;
+      calculateProgress();
   }
 
-  canvas.addEventListener('mousedown', () => isDragging = true);
-  canvas.addEventListener('mouseup', () => isDragging = false);
-  canvas.addEventListener('mousemove', scratch);
-  canvas.addEventListener('touchstart', (e) => { isDragging = true; scratch(e); }, { passive: false });
-  canvas.addEventListener('touchend', () => isDragging = false);
-  canvas.addEventListener('touchmove', scratch, { passive: false });
-
-  function checkCompletion() {
+  function calculateProgress() {
       const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
       let clear = 0;
       for (let i = 3; i < pixels.length; i += 4) { if (pixels[i] === 0) clear++; }
-      
-      if ((clear / (pixels.length / 4)) * 100 > 40 && !isScratched) {
+      completionPercentage = (clear / (pixels.length / 4)) * 100;
+  }
+
+  // 3. SMART REVEAL LOGIC (User Agency)
+  function handleEnd() {
+      isDrawing = false;
+      lastPoint = null;
+
+      // Only reveal if they hit the threshold AND lifted their finger
+      if (completionPercentage > 45 && !isScratched) {
           isScratched = true;
-          canvas.style.transition = 'opacity 0.4s';
+          canvas.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
           canvas.style.opacity = '0';
+          canvas.style.transform = 'scale(1.05)';
+          
           revealBtn.style.opacity = '1';
           revealBtn.style.pointerEvents = 'auto';
-          setTimeout(() => canvas.remove(), 400);
+          
+          setTimeout(() => canvas.remove(), 600);
       }
   }
 
-  // --- THE LAZY LOAD TRANSITION ---
+  // Event Listeners for Mobile & Desktop
+  canvas.addEventListener('mousedown', (e) => { isDrawing = true; lastPoint = null; scratch(e); });
+  canvas.addEventListener('mousemove', scratch);
+  window.addEventListener('mouseup', handleEnd);
+
+  canvas.addEventListener('touchstart', (e) => { isDrawing = true; lastPoint = null; scratch(e); }, { passive: false });
+  canvas.addEventListener('touchmove', scratch, { passive: false });
+  window.addEventListener('touchend', handleEnd);
+
+  // 4. TRANSITION TO MAIN SITE
   revealBtn.addEventListener('click', () => {
       scratchStage.style.opacity = '0';
       
       setTimeout(() => {
-          scratchStage.remove(); // Delete the scratch stage completely
-          mainSite.classList.remove('hidden'); // Unhide the main site
-          
-          // Adding this class TRIGGERS the heavy image download!
-          mainSite.classList.add('active'); 
+          scratchStage.remove(); 
+          document.body.classList.remove('locked'); // Unlocks infinite scroll
+          mainSite.classList.remove('hidden'); 
+          mainSite.classList.add('active'); // Triggers lazy-load of Canva image
       }, 500);
+  });
+
+  // 5. NAV & CTA CLICK LOGIC
+  const triggers = document.querySelectorAll('.trigger-quiz');
+  triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+          console.log("Quiz trigger clicked! Route to Class 10/11/12 logic here.");
+          // We will build the quiz slide-in UI here next.
+      });
   });
 });
