@@ -123,6 +123,22 @@ body {
     opacity: 0 !important; 
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease !important;
 }
+/* Card 1 & 4 (Deep Charcoal) */
+.quiz-card:nth-child(5n+1), .quiz-card:nth-child(5n+4) {
+    background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+}
+
+/* Card 2 & 5 (Sorell Dark Orange/Brown) */
+.quiz-card:nth-child(5n+2), .quiz-card:nth-child(5n+5) {
+    background: linear-gradient(145deg, #251002, #0a0a0a);
+    border: 1px solid rgba(255, 102, 0, 0.15);
+}
+
+/* Card 3 (Midnight Navy/Purple Vibe) */
+.quiz-card:nth-child(5n+3) {
+    background: linear-gradient(145deg, #0f0a1e, #050505);
+    border: 1px solid rgba(138, 43, 226, 0.1);
+}
 
 /* =========================================
    INSTRUCTIONS (Below cards)
