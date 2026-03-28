@@ -4,7 +4,7 @@
   --bg-dark: #000000;
   --card-bg: #1a1a1a;
   --card-border: rgba(255, 255, 255, 0.1);
-  --font-funnel: 'Funnel Display', sans-serif; /* CHANGED */
+  --font-funnel: 'Funnel Display', sans-serif; 
   --font-space: 'Space Grotesk', sans-serif;
 }
 
@@ -29,11 +29,11 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
-    padding-bottom: 20px; /* Space for instructions */
+    padding-bottom: 20px; 
 }
 
 /* =========================================
-   CARD STACK (Mockup matching)
+   CARD STACK (Physics & Mockup matching)
    ========================================= */
 #question-stack-container {
     width: 90%;
@@ -43,9 +43,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* ADD THIS LINE SO THE SCREEN DOESN'T MOVE WHILE SWIPING 👇 */
+    /* CRITICAL: Stops mobile screen from moving while dragging cards */
     touch-action: none; 
 }
+
 #question-stack {
     width: 100%;
     height: 100%;
@@ -65,8 +66,15 @@ body {
   align-items: center;
   padding: 30px;
   text-align: center;
+  /* Base transition, will be overridden by JS during drag */
   transition: transform 0.5s ease, opacity 0.5s ease;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Matching shadow and depth from mockup */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+  /* Allows the user's cursor to grab the card */
+  cursor: grab;
+}
+
+.quiz-card:active {
+  cursor: grabbing;
 }
 
 /* PLACEHOLDER IN TOP LEFT */
@@ -78,48 +86,42 @@ body {
     color: #888;
     font-weight: 700;
     font-family: var(--font-space);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 /* BIG AND VISIBLE QUESTION TEXT */
 .quiz-card .question {
-    font-family: var(--font-funnel); /* CHANGED */
+    font-family: var(--font-funnel); 
     font-size: 32px; 
-    font-weight: 700; /* Added weight for impact */
+    font-weight: 700; 
     line-height: 1.1;
     color: white;
     word-break: break-word; 
+    /* Prevents user from accidentally highlighting text while swiping */
+    user-select: none; 
+    -webkit-user-select: none;
 }
 
-/* INVISIBLE SWIPE BUTTONS (Clickable areas) */
-.quiz-card .swipe-btns {
-    position: absolute;
-    bottom: 20px;
-    width: 80%;
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-}
-
-.swipe-btn {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: transparent; /* Invisible, lets instructions be below */
-    padding: 15px;
-    cursor: pointer;
-}
-
-/* THE STACK EFFECT AND ROTATION FROM MOCKUP */
-/* Cards are stacked: top (nth-child 1), 2nd, 3rd, 4th, 5th */
+/* THE STACK EFFECT (Fallback styling before JS takes over) */
 .quiz-card:nth-child(1) { z-index: 5; transform: translateY(0); }
-.quiz-card:nth-child(2) { z-index: 4; transform: translateY(15px) scale(0.96) rotate(-2deg); opacity: 0.9; } /* Rotation from mockup */
+.quiz-card:nth-child(2) { z-index: 4; transform: translateY(15px) scale(0.96) rotate(-2deg); opacity: 0.9; }
 .quiz-card:nth-child(3) { z-index: 3; transform: translateY(30px) scale(0.92) rotate(2deg); opacity: 0.7; }
 .quiz-card:nth-child(4) { z-index: 2; transform: translateY(45px) scale(0.88) rotate(-2deg); opacity: 0.5; }
 .quiz-card:nth-child(5) { z-index: 1; transform: translateY(60px) scale(0.84) rotate(2deg); opacity: 0.3; }
 
-/* Swipe Left/Right Animations */
-.swipe-left { transform: translateX(-150%) rotate(-20deg) !important; opacity: 0 !important; }
-.swipe-right { transform: translateX(150%) rotate(20deg) !important; opacity: 0 !important; }
+/* SNAPPY SWIPE ANIMATIONS (Tinder-style physics) */
+.swipe-left { 
+    transform: translate3d(-200%, 0, 0) rotate(-30deg) !important; 
+    opacity: 0 !important; 
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease !important;
+}
+
+.swipe-right { 
+    transform: translate3d(200%, 0, 0) rotate(30deg) !important; 
+    opacity: 0 !important; 
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease !important;
+}
 
 /* =========================================
    INSTRUCTIONS (Below cards)
@@ -178,7 +180,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.8); /* Fades in on show */
+    background-color: rgba(0,0,0,0.8); 
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -199,18 +201,18 @@ body {
   max-width: 450px;
   background-color: var(--card-bg);
   padding: 40px;
-  border-radius: 24px 24px 0 0; /* Rounded top left and right */
+  border-radius: 24px 24px 0 0; 
   border: 1px solid var(--card-border);
   box-shadow: 0 -10px 30px rgba(0,0,0,0.8);
   display: flex;
   flex-direction: column;
   gap: 15px;
-  transform: translateY(100%); /* Start hidden from bottom */
-  transition: transform 0.5s ease-out;
+  transform: translateY(100%); 
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy slide up */
 }
 
 #lead-form-overlay.show .lead-form-content {
-    transform: translateY(0); /* Slide up on show */
+    transform: translateY(0); 
 }
 
 .form-title { 
@@ -237,6 +239,10 @@ body {
   border-radius: 12px;
   font-family: var(--font-space);
   font-size: 16px;
+  outline: none;
+}
+#lead-form input:focus {
+  border-color: var(--sorell-orange);
 }
 #lead-form input::placeholder { color: #888; }
 
@@ -251,5 +257,6 @@ body {
   font-weight: 700;
   cursor: pointer;
   transition: transform 0.2s;
+  margin-top: 10px;
 }
 #get-aura-btn:active { transform: scale(0.98); }
