@@ -58,9 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // HANDLE SWIPE LOGIC
     window.handleSwipe = (direction) => {
-        // Find the current top card (the one not yet swiped)
-        const topCard = document.querySelector('.quiz-card:not(.swipe-left):not(.swipe-right)');
-        if (!topCard) return; // All cards swiped
+        // BUG FIX: Explicitly target the ID of the current top card
+        const topCard = document.getElementById(`card-${currentStep}`);
+        
+        if (!topCard) return; // Safeguard
         
         // Add swiping animation class
         topCard.classList.add(direction === 'left' ? 'swipe-left' : 'swipe-right');
@@ -69,17 +70,14 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             currentStep++;
             if (currentStep < questions.length) {
-                // If more questions, remove the swiped card
                 topCard.remove();
-                // Re-render to update the stack effect naturally
                 renderStack(); 
             } else {
-                // All questions swiped. Show final component.
-                questionStack.remove(); // Remove the stack container
-                swipeInstructions.classList.add('hidden'); // Hide instructions
-                finalContainer.classList.remove('hidden'); // Show View my College Aura btn
+                questionStack.remove(); 
+                swipeInstructions.classList.add('hidden'); 
+                finalContainer.classList.remove('hidden'); 
             }
-        }, 500); // Wait for swipe animation to finish
+        }, 500); // Matches CSS transition time
     };
 
     // SHOW BOTTOM SLIDING COMPONENT
