@@ -19,30 +19,43 @@ document.addEventListener('DOMContentLoaded', () => {
     // RENDER THE CARD STACK
     function renderStack() {
         questionStack.innerHTML = '';
-        // Show 5 cards at a time for the stack effect
-        for (let i = 0; i < questions.length; i++) {
-            if (questions[i]) {
-                const card = document.createElement('div');
-                card.className = `quiz-card ${i < currentStep ? 'swipe-' + (i % 2 === 0 ? 'left' : 'right') : ''}`; // Apply swipe style if needed (but we remove top card)
-                card.id = `card-${i}`;
-                card.innerHTML = `
-                    <div class="placeholder">${questions[i].placeholder}</div>
-                    <div class="question">${questions[i].question}</div>
-                    <div class="swipe-btns">
-                        <button onclick="handleSwipe('left')" class="swipe-btn no">NO</button>
-                        <button onclick="handleSwipe('right')" class="swipe-btn yes">YES</button>
-                    </div>
-                `;
-                questionStack.appendChild(card);
-            }
-        }
         
-        // Disable interaction on stacked cards, only top card is active by default in CSS nth-child rules.
-        // The interaction logic always targets the top card and advances currentStep.
+        // Loop backwards so the current card is appended LAST (making it sit on top of the z-index stack)
+        for (let i = questions.length - 1; i >= currentStep; i--) {
+            const card = document.createElement('div');
+            // We use 'i - currentStep' to calculate its position in the visible stack
+            const stackPosition = i - currentStep; 
+            
+            card.className = 'quiz-card';
+            card.id = `card-${i}`;
+            
+            // Add a style tag directly to handle the Razorpay stack effect dynamically
+            // Top card is 0, next is 1, next is 2...
+            if (stackPosition === 0) {
+                card.style.zIndex = 5;
+                card.style.transform = `translateY(0)`;
+                card.style.opacity = 1;
+            } else {
+                card.style.zIndex = 5 - stackPosition;
+                // Alternate rotation based on if it's an even or odd card in the stack
+                const rotation = stackPosition % 2 === 0 ? -2 : 2; 
+                card.style.transform = `translateY(${stackPosition * 15}px) scale(${1 - (stackPosition * 0.04)}) rotate(${rotation}deg)`;
+                card.style.opacity = 1 - (stackPosition * 0.2);
+            }
+
+            card.innerHTML = `
+                <div class="placeholder">${questions[i].placeholder}</div>
+                <div class="question">${questions[i].question}</div>
+                <div class="swipe-btns">
+                    <button onclick="handleSwipe('left')" class="swipe-btn no">NO</button>
+                    <button onclick="handleSwipe('right')" class="swipe-btn yes">YES</button>
+                </div>
+            `;
+            questionStack.appendChild(card);
+        }
     }
-
     renderStack();
-
+    
     // HANDLE SWIPE LOGIC
     window.handleSwipe = (direction) => {
         // Find the current top card (the one not yet swiped)
