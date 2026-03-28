@@ -24,17 +24,19 @@
     </div>
   </div>
 
-  <div id="main-site" class="hidden">
-    
-    <nav class="glass-nav">
-      <div class="nav-logo trigger-quiz">Sorell.</div>
-      <div class="nav-tag trigger-quiz">Find my Match</div>
+  <div id="main-site" class="active"> <nav class="glass-nav">
+      <div class="nav-logo" onclick="navigateToQuiz()">Sorell.</div>
+      <div class="nav-tag" onclick="navigateToQuiz()">Find my Match</div>
     </nav>
 
-    <div class="cta-container">
-      <button class="primary-cta trigger-quiz">START VIBE CHECK</button>
+    <div class="main-content">
+      <h1>Find your college's VIBE not the numbers.</h1>
+      <p>Free Till 31st March</p>
     </div>
 
+    <div class="cta-container">
+      <button class="primary-cta" onclick="navigateToQuiz()">START VIBE CHECK</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
