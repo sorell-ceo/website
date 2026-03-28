@@ -4,7 +4,7 @@
   --bg-dark: #000000;
   --card-bg: #1a1a1a;
   --card-border: rgba(255, 255, 255, 0.1);
-  --font-dela: 'Dela Gothic One', cursive; /* Our big Funnel-style font */
+  --font-funnel: 'Funnel Display', sans-serif; /* CHANGED */
   --font-space: 'Space Grotesk', sans-serif;
 }
 
@@ -81,11 +81,12 @@ body {
 
 /* BIG AND VISIBLE QUESTION TEXT */
 .quiz-card .question {
-    font-family: var(--font-dela);
-    font-size: 32px; /* Large and visible as requested */
+    font-family: var(--font-funnel); /* CHANGED */
+    font-size: 32px; 
+    font-weight: 700; /* Added weight for impact */
     line-height: 1.1;
     color: white;
-    word-break: break-word; /* Handle long words */
+    word-break: break-word; 
 }
 
 /* INVISIBLE SWIPE BUTTONS (Clickable areas) */
