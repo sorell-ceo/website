@@ -110,7 +110,7 @@ body.locked {
 .cta-container {
   display: flex; flex-direction: column; gap: 15px;
   padding: 0 20px;
-  margin-top: 75vh; /* Adjust this value if needed to perfectly align under the text */
+  margin-top: 62vh; /* Adjust this value if needed to perfectly align under the text */
   z-index: 10;
 }
 
