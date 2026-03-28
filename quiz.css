@@ -37,7 +37,7 @@ body {
    ========================================= */
 #question-stack-container {
     /* This calculates 100% width MINUS 60px (30px for each side) */
-    width: calc(100% - 60px); 
+    width: calc(100% - 80px); 
     max-width: 400px;
     height: 70vh; 
     position: relative;
