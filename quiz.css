@@ -1,1 +1,253 @@
+/* Core Colors and Fonts */
+:root {
+  --sorell-orange: #FF6600;
+  --bg-dark: #000000;
+  --card-bg: #1a1a1a;
+  --card-border: rgba(255, 255, 255, 0.1);
+  --font-dela: 'Dela Gothic One', cursive; /* Our big Funnel-style font */
+  --font-space: 'Space Grotesk', sans-serif;
+}
 
+/* Reset and Base Setup */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background-color: var(--bg-dark);
+  font-family: var(--font-space);
+  color: white;
+  min-height: 100vh;
+  overflow: hidden; /* Prevent body scroll */
+}
+
+/* =========================================
+   QUIZ PAGE STRUCTURE
+   ========================================= */
+#quiz-page {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding-bottom: 20px; /* Space for instructions */
+}
+
+/* =========================================
+   CARD STACK (Mockup matching)
+   ========================================= */
+#question-stack-container {
+    width: 90%;
+    max-width: 400px;
+    height: 70vh; /* Adjust as needed */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#question-stack {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.quiz-card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: var(--card-bg);
+  border-radius: 24px;
+  border: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  text-align: center;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Matching shadow and depth from mockup */
+}
+
+/* PLACEHOLDER IN TOP LEFT */
+.quiz-card .placeholder {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 14px;
+    color: #888;
+    font-weight: 700;
+    font-family: var(--font-space);
+}
+
+/* BIG AND VISIBLE QUESTION TEXT */
+.quiz-card .question {
+    font-family: var(--font-dela);
+    font-size: 32px; /* Large and visible as requested */
+    line-height: 1.1;
+    color: white;
+    word-break: break-word; /* Handle long words */
+}
+
+/* INVISIBLE SWIPE BUTTONS (Clickable areas) */
+.quiz-card .swipe-btns {
+    position: absolute;
+    bottom: 20px;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.swipe-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: transparent; /* Invisible, lets instructions be below */
+    padding: 15px;
+    cursor: pointer;
+}
+
+/* THE STACK EFFECT AND ROTATION FROM MOCKUP */
+/* Cards are stacked: top (nth-child 1), 2nd, 3rd, 4th, 5th */
+.quiz-card:nth-child(1) { z-index: 5; transform: translateY(0); }
+.quiz-card:nth-child(2) { z-index: 4; transform: translateY(15px) scale(0.96) rotate(-2deg); opacity: 0.9; } /* Rotation from mockup */
+.quiz-card:nth-child(3) { z-index: 3; transform: translateY(30px) scale(0.92) rotate(2deg); opacity: 0.7; }
+.quiz-card:nth-child(4) { z-index: 2; transform: translateY(45px) scale(0.88) rotate(-2deg); opacity: 0.5; }
+.quiz-card:nth-child(5) { z-index: 1; transform: translateY(60px) scale(0.84) rotate(2deg); opacity: 0.3; }
+
+/* Swipe Left/Right Animations */
+.swipe-left { transform: translateX(-150%) rotate(-20deg) !important; opacity: 0 !important; }
+.swipe-right { transform: translateX(150%) rotate(20deg) !important; opacity: 0 !important; }
+
+/* =========================================
+   INSTRUCTIONS (Below cards)
+   ========================================= */
+#swipe-instructions {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: #ddd;
+    font-weight: 700;
+    font-family: var(--font-space);
+}
+
+/* =========================================
+   FINAL CONTAINER AND COMPONENT
+   ========================================= */
+#final-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.hidden { display: none !important; }
+
+/* FINAL CTA */
+.final-cta {
+  background-color: var(--sorell-orange);
+  color: #fff;
+  border: none;
+  padding: 18px 30px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: var(--font-space);
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s;
+  animation: fadeIn 0.5s ease;
+}
+.final-cta:active { transform: scale(0.98); }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* BOTTOM SLIDING FORM OVERLAY */
+#lead-form-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8); /* Fades in on show */
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 100;
+}
+
+#lead-form-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* FORM CONTENT */
+.lead-form-content {
+  width: 100%;
+  max-width: 450px;
+  background-color: var(--card-bg);
+  padding: 40px;
+  border-radius: 24px 24px 0 0; /* Rounded top left and right */
+  border: 1px solid var(--card-border);
+  box-shadow: 0 -10px 30px rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  transform: translateY(100%); /* Start hidden from bottom */
+  transition: transform 0.5s ease-out;
+}
+
+#lead-form-overlay.show .lead-form-content {
+    transform: translateY(0); /* Slide up on show */
+}
+
+.form-title { 
+  color: var(--sorell-orange); 
+  font-family: var(--font-space); 
+  font-size: 24px;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.form-subtitle { color: #888; font-size: 14px; line-height: 1.4; margin-bottom: 20px; }
+
+#lead-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#lead-form input {
+  background: #222;
+  border: 1px solid #444;
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  font-family: var(--font-space);
+  font-size: 16px;
+}
+#lead-form input::placeholder { color: #888; }
+
+#get-aura-btn {
+  background-color: var(--sorell-orange);
+  color: #fff;
+  border: none;
+  padding: 18px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: var(--font-space);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+#get-aura-btn:active { transform: scale(0.98); }
