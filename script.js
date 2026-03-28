@@ -118,3 +118,20 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 });
+
+// FUNCTION TO HANDLE NAVIGATION TO THE QUIZ PAGE
+function navigateToQuiz() {
+    console.log("Navigating to Quiz Page");
+    // Change to your actual quiz page filename, e.g., 'quiz.html'
+    window.location.href = 'quiz.html'; 
+}
+
+// EXISTING CODE TO HANDLE HERO PAGE APPEARANCE
+document.addEventListener('DOMContentLoaded', () => {
+    const mainSite = document.getElementById('main-site');
+    if (mainSite) {
+        // Add .active class immediately for the hero page.
+        // The background image will be lazy-loaded by the CSS rule on .active
+        mainSite.classList.add('active');
+    }
+});
