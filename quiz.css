@@ -57,7 +57,7 @@ body {
   position: absolute;
   width: 100%;
   /* Use Aspect Ratio instead of fixed height for perfect proportions */
-  aspect-ratio: 2 / 3.14; 
+  aspect-ratio: 6 / 9; 
   /* If they still look too long, try 4 / 5 */
   
   background-color: var(--card-bg);
