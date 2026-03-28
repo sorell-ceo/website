@@ -4,8 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const swipeInstructions = document.getElementById('swipe-instructions');
     const viewAuraBtn = document.getElementById('view-aura-btn');
     const leadFormOverlay = document.getElementById('lead-form-overlay');
+    const stackContainer = document.getElementById('question-stack-container');
     
-    // YOUR EXACT QUESTIONS AND PLACEHOLDERS (all lowercase as requested)
+    // YOUR EXACT QUESTIONS AND PLACEHOLDERS
     const questions = [
         { placeholder: "attendance", question: "Do you want to bunk the classes in colleges??" },
         { placeholder: "social life", question: "you want to increase your friend circle?" },
@@ -16,28 +17,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentStep = 0;
 
-    // RENDER THE CARD STACK
+    // 1. RENDER THE CARD STACK (Buttons Removed)
     function renderStack() {
         questionStack.innerHTML = '';
         
-        // Loop backwards so the current card is appended LAST (making it sit on top of the z-index stack)
+        // Loop backwards so the current card is on top
         for (let i = questions.length - 1; i >= currentStep; i--) {
             const card = document.createElement('div');
-            // We use 'i - currentStep' to calculate its position in the visible stack
             const stackPosition = i - currentStep; 
             
             card.className = 'quiz-card';
             card.id = `card-${i}`;
             
-            // Add a style tag directly to handle the Razorpay stack effect dynamically
-            // Top card is 0, next is 1, next is 2...
             if (stackPosition === 0) {
                 card.style.zIndex = 5;
-                card.style.transform = `translateY(0)`;
+                card.style.transform = `translateY(0) rotate(0deg)`;
                 card.style.opacity = 1;
             } else {
                 card.style.zIndex = 5 - stackPosition;
-                // Alternate rotation based on if it's an even or odd card in the stack
                 const rotation = stackPosition % 2 === 0 ? -2 : 2; 
                 card.style.transform = `translateY(${stackPosition * 15}px) scale(${1 - (stackPosition * 0.04)}) rotate(${rotation}deg)`;
                 card.style.opacity = 1 - (stackPosition * 0.2);
@@ -46,39 +43,96 @@ document.addEventListener('DOMContentLoaded', () => {
             card.innerHTML = `
                 <div class="placeholder">${questions[i].placeholder}</div>
                 <div class="question">${questions[i].question}</div>
-                <div class="swipe-btns">
-                    <button onclick="handleSwipe('left')" class="swipe-btn no">NO</button>
-                    <button onclick="handleSwipe('right')" class="swipe-btn yes">YES</button>
-                </div>
             `;
             questionStack.appendChild(card);
         }
     }
-    renderStack();
-    
-    // HANDLE SWIPE LOGIC
-    window.handleSwipe = (direction) => {
-        // BUG FIX: Explicitly target the ID of the current top card
-        const topCard = document.getElementById(`card-${currentStep}`);
-        
-        if (!topCard) return; // Safeguard
-        
-        // Add swiping animation class
-        topCard.classList.add(direction === 'left' ? 'swipe-left' : 'swipe-right');
 
-        // Advance to next question after animation
+    renderStack();
+
+    // 2. THE REAL SWIPE PHYSICS (Touch & Mouse)
+    let isDragging = false;
+    let startX = 0;
+    let currentX = 0;
+    let topCard = null;
+
+    function handleDragStart(e) {
+        topCard = document.getElementById(`card-${currentStep}`);
+        if (!topCard) return;
+
+        isDragging = true;
+        // Get starting X coordinate (works for mouse or touch)
+        startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+        
+        // Disable CSS transition so it instantly follows the finger
+        topCard.style.transition = 'none';
+    }
+
+    function handleDragMove(e) {
+        if (!isDragging || !topCard) return;
+
+        currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+        const deltaX = currentX - startX;
+        
+        // Rotate slightly as you drag further away from the center
+        const rotation = deltaX * 0.05; 
+        
+        // Physically move the card
+        topCard.style.transform = `translateX(${deltaX}px) translateY(0px) rotate(${rotation}deg)`;
+    }
+
+    function handleDragEnd(e) {
+        if (!isDragging || !topCard) return;
+        isDragging = false;
+        
+        const deltaX = currentX - startX;
+        
+        // Turn transitions back on so it smoothly snaps or flies away
+        topCard.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+        
+        // Did they drag it far enough to count as a swipe?
+        if (deltaX > 100) {
+            triggerSwipe('right');
+        } else if (deltaX < -100) {
+            triggerSwipe('left');
+        } else {
+            // Didn't drag far enough, snap back to center
+            topCard.style.transform = 'translateY(0) scale(1) rotate(0deg)';
+        }
+        
+        topCard = null;
+    }
+
+    // Attach listeners to the container
+    stackContainer.addEventListener('mousedown', handleDragStart);
+    stackContainer.addEventListener('mousemove', handleDragMove);
+    window.addEventListener('mouseup', handleDragEnd);
+
+    stackContainer.addEventListener('touchstart', handleDragStart, { passive: false });
+    stackContainer.addEventListener('touchmove', handleDragMove, { passive: false });
+    window.addEventListener('touchend', handleDragEnd);
+
+
+    // 3. TRIGGER THE FINAL SWIPE ANIMATION AND NEXT CARD
+    function triggerSwipe(direction) {
+        const swipingCard = document.getElementById(`card-${currentStep}`);
+        if (!swipingCard) return;
+        
+        // Add swiping animation class (CSS !important overrides the inline styles)
+        swipingCard.classList.add(direction === 'left' ? 'swipe-left' : 'swipe-right');
+
         setTimeout(() => {
             currentStep++;
             if (currentStep < questions.length) {
-                topCard.remove();
+                swipingCard.remove();
                 renderStack(); 
             } else {
                 questionStack.remove(); 
                 swipeInstructions.classList.add('hidden'); 
                 finalContainer.classList.remove('hidden'); 
             }
-        }, 500); // Matches CSS transition time
-    };
+        }, 400); // 400ms for a snappy feel
+    }
 
     // SHOW BOTTOM SLIDING COMPONENT
     viewAuraBtn.addEventListener('click', () => {
@@ -93,13 +147,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// HANDLE FORM SUBMISSION (Prevent default redirect for now)
+// HANDLE FORM SUBMISSION 
 function handleFormSubmit(event) {
-    event.preventDefault(); // Prevent default redirect
+    event.preventDefault(); 
     console.log("Form submitted. Name and Phone captured.");
     const userName = document.getElementById('user-name').value;
     const userPhone = document.getElementById('user-phone').value;
-    console.log(`Name: ${userName}, Phone: ${userPhone}`);
-    // Next turn will handle data integration and the redirect.
-    alert("Details Captured! Next turn: data integration and result redirect.");
+    
+    // We will replace this alert with the Google Sheets push next!
+    alert(`Captured - Name: ${userName}, Phone: ${userPhone}`);
 }
