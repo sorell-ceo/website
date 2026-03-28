@@ -2,7 +2,8 @@
 :root {
   --sorell-orange: #FF6600;
   --bg-dark: #000000;
-  --card-bg: #1a1a1a;
+  --card-bg-dark: #464646;
+  --card-bg-light: #DFDFDF;
   --card-border: rgba(255, 255, 255, 0.1);
   --font-funnel: 'Funnel Display', sans-serif; 
   --font-space: 'Space Grotesk', sans-serif;
@@ -33,10 +34,10 @@ body {
 }
 
 /* =========================================
-   CARD STACK (Physics & Mockup matching)
+   CARD STACK (Physics & Layout)
    ========================================= */
 #question-stack-container {
-    /* This calculates 100% width MINUS 60px (30px for each side) */
+    /* 100% minus double the desired margin (e.g., 40px margin = 80px subtraction) */
     width: calc(100% - 80px); 
     max-width: 400px;
     height: 70vh; 
@@ -56,13 +57,8 @@ body {
 .quiz-card {
   position: absolute;
   width: 100%;
-  /* Use Aspect Ratio instead of fixed height for perfect proportions */
   aspect-ratio: 6 / 7; 
-  /* If they still look too long, try 4 / 5 */
-  
-  background-color: var(--card-bg);
-  border-radius: 28px; /* Slightly rounder for that premium feel */
-  border: 1px solid var(--card-border);
+  border-radius: 28px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -78,40 +74,54 @@ body {
   cursor: grabbing;
 }
 
+/* 1. DARK GREY CARDS (Odd positions in stack) */
+.quiz-card:nth-child(odd) {
+    background-color: var(--card-bg-dark) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.quiz-card:nth-child(odd) .question { color: #ffffff; }
+.quiz-card:nth-child(odd) .placeholder { color: rgba(255, 255, 255, 0.5); }
+
+/* 2. LIGHT GREY CARDS (Even positions in stack) */
+.quiz-card:nth-child(even) {
+    background-color: var(--card-bg-light) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.quiz-card:nth-child(even) .question { color: #000000; }
+.quiz-card:nth-child(even) .placeholder { color: rgba(0, 0, 0, 0.5); }
+
 /* PLACEHOLDER IN TOP LEFT */
 .quiz-card .placeholder {
     position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 14px;
-    color: #888;
+    top: 24px;
+    left: 24px;
+    font-size: 13px;
     font-weight: 700;
     font-family: var(--font-space);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
 }
 
-/* BIG AND VISIBLE QUESTION TEXT */
+/* REFINED QUESTION TEXT */
 .quiz-card .question {
     font-family: var(--font-funnel); 
     font-size: 32px; 
-    font-weight: 350; 
-    line-height: 1.1;
-    color: white;
+    font-weight: 400; /* Reduced weight for a cleaner look */
+    line-height: 1.15;
     word-break: break-word; 
-    /* Prevents user from accidentally highlighting text while swiping */
     user-select: none; 
     -webkit-user-select: none;
+    padding: 0 10px;
 }
 
-/* THE STACK EFFECT (Fallback styling before JS takes over) */
+/* THE STACK EFFECT */
 .quiz-card:nth-child(1) { z-index: 5; transform: translateY(0); }
-.quiz-card:nth-child(2) { z-index: 4; transform: translateY(15px) scale(0.96) rotate(-2deg); opacity: 0.9; }
-.quiz-card:nth-child(3) { z-index: 3; transform: translateY(30px) scale(0.92) rotate(2deg); opacity: 0.7; }
-.quiz-card:nth-child(4) { z-index: 2; transform: translateY(45px) scale(0.88) rotate(-2deg); opacity: 0.5; }
-.quiz-card:nth-child(5) { z-index: 1; transform: translateY(60px) scale(0.84) rotate(2deg); opacity: 0.3; }
+.quiz-card:nth-child(2) { z-index: 4; transform: translateY(12px) scale(0.96) rotate(-1.5deg); opacity: 0.9; }
+.quiz-card:nth-child(3) { z-index: 3; transform: translateY(24px) scale(0.92) rotate(1.5deg); opacity: 0.7; }
+.quiz-card:nth-child(4) { z-index: 2; transform: translateY(36px) scale(0.88) rotate(-1.5deg); opacity: 0.5; }
+.quiz-card:nth-child(5) { z-index: 1; transform: translateY(48px) scale(0.84) rotate(1.5deg); opacity: 0.3; }
 
-/* SNAPPY SWIPE ANIMATIONS (Tinder-style physics) */
+/* SNAPPY SWIPE ANIMATIONS */
 .swipe-left { 
     transform: translate3d(-200%, 0, 0) rotate(-30deg) !important; 
     opacity: 0 !important; 
@@ -123,46 +133,26 @@ body {
     opacity: 0 !important; 
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease !important;
 }
-/* Card 1 & 4 (Deep Charcoal) */
-.quiz-card:nth-child(5n+1), .quiz-card:nth-child(5n+4) {
-    background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
-}
-
-/* Card 2 & 5 (Sorell Dark Orange/Brown) */
-.quiz-card:nth-child(5n+2), .quiz-card:nth-child(5n+5) {
-    background: linear-gradient(145deg, #251002, #0a0a0a);
-    border: 1px solid rgba(255, 102, 0, 0.15);
-}
-
-/* Card 3 (Midnight Navy/Purple Vibe) */
-.quiz-card:nth-child(5n+3) {
-    background: linear-gradient(145deg, #0f0a1e, #050505);
-    border: 1px solid rgba(138, 43, 226, 0.1);
-}
 
 /* =========================================
-   INSTRUCTIONS (Below cards)
+   INSTRUCTIONS & FINAL UI
    ========================================= */
 #swipe-instructions {
     position: absolute;
-    bottom: 20px;
+    bottom: 30px;
     width: 100%;
     text-align: center;
     font-size: 14px;
-    color: #ddd;
-    font-weight: 700;
+    color: #666;
+    font-weight: 600;
     font-family: var(--font-space);
 }
 
-/* =========================================
-   FINAL CONTAINER AND COMPONENT
-   ========================================= */
 #final-container {
     width: 100%;
     height: 100%;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -171,39 +161,33 @@ body {
 
 .hidden { display: none !important; }
 
-/* FINAL CTA */
 .final-cta {
   background-color: var(--sorell-orange);
   color: #fff;
   border: none;
-  padding: 18px 30px;
-  border-radius: 12px;
-  font-size: 16px;
+  padding: 18px 36px;
+  border-radius: 14px;
+  font-size: 17px;
   font-family: var(--font-space);
   font-weight: 700;
-  box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
+  box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);
   cursor: pointer;
   transition: transform 0.2s;
-  animation: fadeIn 0.5s ease;
 }
-.final-cta:active { transform: scale(0.98); }
+.final-cta:active { transform: scale(0.96); }
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-/* BOTTOM SLIDING FORM OVERLAY */
+/* BOTTOM SLIDING FORM */
 #lead-form-overlay {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.8); 
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.85); 
     display: flex;
     justify-content: center;
     align-items: flex-end;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.4s ease;
     z-index: 100;
 }
 
@@ -212,68 +196,51 @@ body {
     pointer-events: auto;
 }
 
-/* FORM CONTENT */
 .lead-form-content {
   width: 100%;
-  max-width: 450px;
-  background-color: var(--card-bg);
-  padding: 40px;
-  border-radius: 24px 24px 0 0; 
-  border: 1px solid var(--card-border);
-  box-shadow: 0 -10px 30px rgba(0,0,0,0.8);
+  max-width: 500px;
+  background-color: #161616;
+  padding: 40px 30px;
+  border-radius: 30px 30px 0 0; 
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -15px 40px rgba(0,0,0,0.8);
   display: flex;
   flex-direction: column;
   gap: 15px;
   transform: translateY(100%); 
-  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy slide up */
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.2); 
 }
 
 #lead-form-overlay.show .lead-form-content {
     transform: translateY(0); 
 }
 
-.form-title { 
-  color: var(--sorell-orange); 
-  font-family: var(--font-space); 
-  font-size: 24px;
-  letter-spacing: 1px;
-  font-weight: 700;
-}
+.form-title { color: var(--sorell-orange); font-size: 26px; font-weight: 800; }
+.form-subtitle { color: #888; font-size: 15px; margin-bottom: 10px; }
 
-.form-subtitle { color: #888; font-size: 14px; line-height: 1.4; margin-bottom: 20px; }
-
-#lead-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
+#lead-form { display: flex; flex-direction: column; gap: 12px; }
 
 #lead-form input {
   background: #222;
-  border: 1px solid #444;
+  border: 1px solid #333;
   color: white;
-  padding: 15px;
-  border-radius: 12px;
+  padding: 18px;
+  border-radius: 14px;
   font-family: var(--font-space);
   font-size: 16px;
   outline: none;
+  transition: border 0.3s;
 }
-#lead-form input:focus {
-  border-color: var(--sorell-orange);
-}
-#lead-form input::placeholder { color: #888; }
+#lead-form input:focus { border-color: var(--sorell-orange); }
 
 #get-aura-btn {
   background-color: var(--sorell-orange);
   color: #fff;
   border: none;
   padding: 18px;
-  border-radius: 12px;
+  border-radius: 14px;
   font-size: 16px;
-  font-family: var(--font-space);
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
-  transition: transform 0.2s;
   margin-top: 10px;
 }
-#get-aura-btn:active { transform: scale(0.98); }
