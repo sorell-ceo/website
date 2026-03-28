@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const revealBtn = document.getElementById('reveal-site-btn');
   const scratchStage = document.getElementById('scratch-stage');
   const mainSite = document.getElementById('main-site');
+  
+  // NEW: Grab the floating text layer from your HTML
+  const scratchTextOverlay = document.getElementById('scratch-text-overlay');
 
   canvas.width = 320; canvas.height = 400;
 
@@ -17,11 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 1.5, 1.5);
   }
 
-  // Draw the heavy GenZ Font on top
-  ctx.font = 'bold 24px Space Grotesk, sans-serif';
-  ctx.fillStyle = '#888888';
-  ctx.textAlign = 'center';
-  ctx.fillText('SCRATCH TO REVEAL', canvas.width / 2, canvas.height / 2);
+  // Notice: The old ctx.fillText code is officially GONE!
 
   let isDrawing = false;
   let isScratched = false;
@@ -39,6 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function scratch(e) {
       if (!isDrawing || isScratched) return;
       e.preventDefault(); 
+      
+      // NEW: Make the HTML text vanish the exact millisecond they start scratching!
+      if (scratchTextOverlay) {
+          scratchTextOverlay.style.opacity = '0';
+      }
+      
       const pos = getPos(e);
       
       ctx.globalCompositeOperation = 'destination-out';
