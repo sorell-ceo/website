@@ -68,16 +68,24 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 24px;
-  /* Text in bottom-left corner, matching the reference image */
+  border-radius: 32px; /* Slightly rounder for that premium Sorell look */
+  
+  /* THE ALIGNMENT FIX */
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding: 24px 24px 28px 24px;
-  transform-origin: bottom center;
-  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease;
+  justify-content: center; /* Moves text from bottom to center vertically */
+  align-items: flex-start;  /* Keeps text left-aligned */
+  
+  padding: 30px; /* Generous padding for a breathable, high-end feel */
+  
+  /* RADIAL STACK LOGIC */
+  transform-origin: bottom center; 
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease;
+  
+  /* SHADOW & DEPTH */
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 2px 0 rgba(255,255,255,0.06) inset;
+  
+  /* INTERACTION */
   cursor: grab;
   user-select: none;
   -webkit-user-select: none;
