@@ -1,364 +1,127 @@
-/* Core Colors and Fonts */
-:root {
-  --sorell-orange: #FF6600;
-  --bg-dark: #000000;
-  --sorell-grey: #262626;
-  --sorell-neon: #39FF14;
-  --card-bg-dark: #464646;
-  --card-bg-light: #F0F0F0;
-  --card-border: rgba(255, 255, 255, 0.1);
-  --font-funnel: 'Funnel Display', sans-serif;
-  --font-space: 'Space Grotesk', sans-serif;
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const questionStack = document.getElementById('question-stack');
+    const finalContainer = document.getElementById('final-container');
+    const swipeInstructions = document.getElementById('swipe-instructions');
+    const viewAuraBtn = document.getElementById('view-aura-btn');
+    const leadFormOverlay = document.getElementById('lead-form-overlay');
+    const stackContainer = document.getElementById('question-stack-container');
+    
+    const questions = [
+        { placeholder: "attendance", question: "Do you want to bunk classes in college?" },
+        { placeholder: "social life", question: "You want to increase your friend circle?" },
+        { placeholder: "dating", question: "You wanna have relationships in college?" },
+        { placeholder: "academics", question: "Will you actually study in college?" },
+        { placeholder: "stream", question: "Which stream did you have in 12th?" }
+    ];
 
-/* Reset and Base Setup */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background-color: var(--bg-dark);
-  font-family: var(--font-space);
-  color: white;
-  min-height: 100vh;
-  overflow: hidden;
-}
+    let currentStep = 0;
 
-/* =========================================
-   QUIZ PAGE STRUCTURE
-   ========================================= */
-#quiz-page {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
+    function renderStack() {
+        questionStack.innerHTML = '';
+        
+        for (let i = questions.length - 1; i >= currentStep; i--) {
+            const card = document.createElement('div');
+            const stackPosition = i - currentStep;
+            
+            card.className = 'quiz-card';
+            card.id = `card-${i}`;
+            
+            if (stackPosition === 0) {
+                card.style.zIndex = 5;
+                card.style.transform = 'translateX(0) translateY(0) rotate(0deg)';
+                card.style.opacity = 1;
+            } else {
+                card.style.zIndex = 5 - stackPosition;
+                const rotation = stackPosition % 2 === 0 ? -(stackPosition * 1.5) : (stackPosition * 1.5);
+                const yOffset = stackPosition * 8;
+                card.style.transform = `translateX(0) translateY(${yOffset}px) rotate(${rotation}deg)`;
+                card.style.opacity = Math.max(0.6, 1 - (stackPosition * 0.15));
+            }
 
-/* =========================================
-   CARD STACK CONTAINER
-   ========================================= */
-#question-stack-container {
-  width: calc(100% - 60px);
-  max-width: 360px;
-  /* Enough height for the card + rotated stack peeking below */
-  height: 68vw;
-  max-height: 320px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  touch-action: none;
-}
+            card.innerHTML = `
+                <div class="placeholder-badge">${questions[i].placeholder}</div>
+                <div class="question">${questions[i].question}</div>
+            `;
+            questionStack.appendChild(card);
+        }
+    }
 
-#question-stack {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
+    renderStack();
 
-/* =========================================
-   CARD BASE STYLE
-   ========================================= */
-.quiz-card {
-  position: absolute;
-  width: 100%;
-  aspect-ratio: 5 / 6;
-  border-radius: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding: 28px 28px 32px 28px;
-  /* Rotation pivots from bottom center — gives the fanned deck look */
-  transform-origin: bottom center;
-  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease;
-  box-shadow:
-    0 8px 24px rgba(0,0,0,0.45),
-    0 2px 0 rgba(255,255,255,0.06) inset;
-  cursor: grab;
-  user-select: none;
-  -webkit-user-select: none;
-}
+    let isDragging = false;
+    let startX = 0;
+    let currentX = 0;
+    let topCard = null;
 
-.quiz-card:active {
-  cursor: grabbing;
-}
+    function handleDragStart(e) {
+        topCard = document.getElementById(`card-${currentStep}`);
+        if (!topCard) return;
+        isDragging = true;
+        startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+        topCard.style.transition = 'none';
+    }
 
-/* =========================================
-   CARD COLOR SCHEMES — ALTERNATING
-   ========================================= */
+    function handleDragMove(e) {
+        if (!isDragging || !topCard) return;
+        currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+        const deltaX = currentX - startX;
+        const rotation = deltaX * 0.05;
+        topCard.style.transform = `translateX(${deltaX}px) translateY(0px) rotate(${rotation}deg)`;
+    }
 
-/* LIGHT CARD */
-.quiz-card:nth-child(odd) {
-  background-color: var(--card-bg-light);
-}
-.quiz-card:nth-child(odd) .question {
-  color: #111111;
-}
-.quiz-card:nth-child(odd) .placeholder-badge {
-  background-color: #111111;
-  color: #ffffff;
-}
+    function handleDragEnd(e) {
+        if (!isDragging || !topCard) return;
+        isDragging = false;
+        const deltaX = currentX - startX;
+        topCard.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+        if (deltaX > 100) {
+            triggerSwipe('right');
+        } else if (deltaX < -100) {
+            triggerSwipe('left');
+        } else {
+            topCard.style.transform = 'translateX(0) translateY(0) rotate(0deg)';
+        }
+        topCard = null;
+    }
 
-/* DARK CARD */
-.quiz-card:nth-child(even) {
-  background-color: var(--card-bg-dark);
-}
-.quiz-card:nth-child(even) .question {
-  color: #ffffff;
-}
-.quiz-card:nth-child(even) .placeholder-badge {
-  background-color: #ffffff;
-  color: #111111;
-}
+    stackContainer.addEventListener('mousedown', handleDragStart);
+    stackContainer.addEventListener('mousemove', handleDragMove);
+    window.addEventListener('mouseup', handleDragEnd);
+    stackContainer.addEventListener('touchstart', handleDragStart, { passive: false });
+    stackContainer.addEventListener('touchmove', handleDragMove, { passive: false });
+    window.addEventListener('touchend', handleDragEnd);
 
-/* =========================================
-   PLACEHOLDER BADGE — pill shape, top left
-   ========================================= */
-.placeholder-badge {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  padding: 6px 14px;
-  border-radius: 100px;
-  font-size: 12px;
-  font-weight: 700;
-  font-family: var(--font-space);
-  letter-spacing: 0.3px;
-  text-transform: capitalize;
-  line-height: 1;
-}
+    function triggerSwipe(direction) {
+        const swipingCard = document.getElementById(`card-${currentStep}`);
+        if (!swipingCard) return;
+        swipingCard.classList.add(direction === 'left' ? 'swipe-left' : 'swipe-right');
+        setTimeout(() => {
+            currentStep++;
+            if (currentStep < questions.length) {
+                swipingCard.remove();
+                renderStack();
+            } else {
+                questionStack.remove();
+                swipeInstructions.classList.add('hidden');
+                finalContainer.classList.remove('hidden');
+            }
+        }, 400);
+    }
 
-/* =========================================
-   QUESTION TEXT — large, left-aligned
-   ========================================= */
-.quiz-card .question {
-  font-family: var(--font-funnel);
-  text-align: left;
-  font-size: clamp(22px, 6.5vw, 32px);
-  font-weight: 600;
-  line-height: 1.18;
-  word-break: break-word;
-  user-select: none;
-  -webkit-user-select: none;
-  width: 100%;
-}
+    viewAuraBtn.addEventListener('click', () => {
+        leadFormOverlay.classList.add('show');
+    });
 
-/* =========================================
-   STACK POSITIONING
-   X axis: stays centered (translateX 0)
-   Y axis: slight downward offset per layer
-   Z axis: rotation only — fanned deck effect
-   ========================================= */
+    leadFormOverlay.addEventListener('click', (e) => {
+        if (e.target === leadFormOverlay) {
+            leadFormOverlay.classList.remove('show');
+        }
+    });
+});
 
-.quiz-card:nth-child(1) {
-  z-index: 5;
-  transform: translateX(0) translateY(0) rotate(0deg);
-  opacity: 1;
-}
-
-.quiz-card:nth-child(2) {
-  z-index: 4;
-  transform: translateX(0) translateY(8px) rotate(-3.5deg);
-  opacity: 1;
-}
-
-.quiz-card:nth-child(3) {
-  z-index: 3;
-  transform: translateX(0) translateY(16px) rotate(4.5deg);
-  opacity: 1;
-}
-
-.quiz-card:nth-child(4) {
-  z-index: 2;
-  transform: translateX(0) translateY(24px) rotate(-6deg);
-  opacity: 0.85;
-}
-
-.quiz-card:nth-child(5) {
-  z-index: 1;
-  transform: translateX(0) translateY(32px) rotate(7deg);
-  opacity: 0.7;
-}
-
-/* =========================================
-   SWIPE ANIMATIONS
-   ========================================= */
-.swipe-left {
-  transform: translate3d(-180%, -10px, 0) rotate(-28deg) !important;
-  opacity: 0 !important;
-  transition: transform 0.38s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.28s ease !important;
-}
-
-.swipe-right {
-  transform: translate3d(180%, -10px, 0) rotate(28deg) !important;
-  opacity: 0 !important;
-  transition: transform 0.38s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.28s ease !important;
-}
-
-/* =========================================
-   SWIPE INSTRUCTIONS
-   ========================================= */
-#swipe-instructions {
-  position: absolute;
-  bottom: 32px;
-  width: 100%;
-  text-align: center;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.5);
-  font-weight: 600;
-  font-family: var(--font-space);
-  letter-spacing: 0.2px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
-#swipe-instructions::before {
-  content: '←';
-  font-size: 17px;
-  color: rgba(255, 90, 90, 0.8);
-}
-
-#swipe-instructions::after {
-  content: '→';
-  font-size: 17px;
-  color: rgba(80, 220, 80, 0.8);
-}
-
-/* =========================================
-   FINAL CONTAINER
-   ========================================= */
-#final-container {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0; left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-}
-
-.hidden { display: none !important; }
-
-.final-cta {
-  background-color: var(--sorell-orange);
-  color: #fff;
-  border: none;
-  padding: 18px 36px;
-  border-radius: 14px;
-  font-size: 17px;
-  font-family: var(--font-space);
-  font-weight: 700;
-  box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-.final-cta:active { transform: scale(0.96); }
-
-/* =========================================
-   BOTTOM SLIDING LEAD FORM
-   ========================================= */
-#lead-form-overlay {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0,0,0,0.85);
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-  z-index: 100;
-}
-
-#lead-form-overlay.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.lead-form-content {
-  width: 100%;
-  max-width: 500px;
-  background-color: #161616;
-  padding: 40px 30px;
-  border-radius: 30px 30px 0 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 -15px 40px rgba(0,0,0,0.8);
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  transform: translateY(100%);
-  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.2);
-}
-
-#lead-form-overlay.show .lead-form-content {
-  transform: translateY(0);
-}
-
-.form-title { color: var(--sorell-orange); font-size: 26px; font-weight: 800; }
-.form-subtitle { color: #888; font-size: 15px; margin-bottom: 10px; }
-
-#lead-form { display: flex; flex-direction: column; gap: 12px; }
-
-#lead-form input {
-  background: #222;
-  border: 1px solid #333;
-  color: white;
-  padding: 18px;
-  border-radius: 14px;
-  font-family: var(--font-space);
-  font-size: 16px;
-  outline: none;
-  transition: border 0.3s;
-}
-#lead-form input:focus { border-color: var(--sorell-orange); }
-
-#get-aura-btn {
-  background-color: var(--sorell-orange);
-  color: #fff;
-  border: none;
-  padding: 18px;
-  border-radius: 14px;
-  font-size: 16px;
-  font-weight: 800;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-/* =========================================
-   GLASSMORPHISM NAV
-   ========================================= */
-.glass-nav {
-  position: fixed;
-  top: 20px;
-  width: 90%;
-  max-width: 380px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 22px;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-radius: 100px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  z-index: 1000;
-}
-
-.nav-logo {
-  font-family: var(--font-space);
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--sorell-orange);
-}
-
-.nav-tag {
-  font-family: var(--font-space);
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.6);
+function handleFormSubmit(event) {
+    event.preventDefault();
+    const userName = document.getElementById('user-name').value;
+    const userPhone = document.getElementById('user-phone').value;
+    alert(`Captured - Name: ${userName}, Phone: ${userPhone}`);
 }
