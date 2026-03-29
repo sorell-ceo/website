@@ -2,6 +2,8 @@
 :root {
   --sorell-orange: #FF6600;
   --bg-dark: #000000;
+  --sorell-grey: #262626;
+  --sorell-neon: #39FF14; /* Neon Green */
   --card-bg-dark: #464646;
   --card-bg-light: #DFDFDF;
   --card-border: rgba(255, 255, 255, 0.1);
@@ -54,20 +56,21 @@ body {
     position: relative;
 }
 
+/* RADIAL STACK LOGIC */
 .quiz-card {
   position: absolute;
   width: 100%;
-  aspect-ratio: 6 / 7; 
+  aspect-ratio: 6 / 7;
   border-radius: 28px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 30px;
-  text-align: center;
-  transition: transform 0.5s ease, opacity 0.5s ease;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  cursor: grab;
+  padding: 40px 30px;
+  /* THE MAGIC: Rotate from the bottom center */
+  transform-origin: bottom center; 
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease;
+  box-shadow: 0 10px 50px rgba(0,0,0,0.8);
 }
 
 .quiz-card:active {
@@ -104,7 +107,8 @@ body {
 
 /* REFINED QUESTION TEXT */
 .quiz-card .question {
-    font-family: var(--font-funnel); 
+    font-family: var(--font-funnel);
+    text-align: left; /* Left Aligned as requested */
     font-size: 32px; 
     font-weight: 400; /* Reduced weight for a cleaner look */
     line-height: 1.15;
@@ -113,6 +117,11 @@ body {
     -webkit-user-select: none;
     padding: 0 10px;
 }
+
+/* THE 3-COLOR ROTATION */
+.quiz-card.color-orange { background-color: var(--sorell-orange); color: white; }
+.quiz-card.color-grey { background-color: var(--sorell-grey); color: white; }
+.quiz-card.color-neon { background-color: var(--sorell-neon); color: black; } /* Black text for Neon for contrast */
 
 /* THE STACK EFFECT */
 .quiz-card:nth-child(1) { z-index: 5; transform: translateY(0); }
@@ -243,4 +252,20 @@ body {
   font-weight: 800;
   cursor: pointer;
   margin-top: 10px;
+}
+
+.glass-nav {
+  position: fixed;
+  top: 20px;
+  width: 90%;
+  max-width: 400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
 }
