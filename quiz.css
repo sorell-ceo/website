@@ -75,7 +75,7 @@ body {
 #question-stack {
   width: 100%;
   position: relative;
-  aspect-ratio: 149 / 198;
+  aspect-ratio: 16 / 17;
 }
 
 /* =========================================
@@ -114,7 +114,7 @@ body {
   left: 18px;
   padding: 5px 13px;
   border-radius: 100px;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 700;
   font-family: var(--font-space);
   letter-spacing: 0.2px;
@@ -129,7 +129,7 @@ body {
   font-family: var(--font-funnel);
   text-align: left !important;
   font-size: clamp(24px, 7vw, 34px);
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.15;
   word-break: break-word;
   user-select: none;
@@ -156,7 +156,7 @@ body {
 
 .quiz-card:nth-child(2) {
   z-index: 4;
-  transform: translateX(0) translateY(0) rotate(-5deg);
+  transform: translateX(0) translateY(0) rotate(5deg);
   opacity: 1;
   background-color: var(--card-2-bg);
 }
@@ -165,7 +165,7 @@ body {
 
 .quiz-card:nth-child(3) {
   z-index: 3;
-  transform: translateX(0) translateY(0) rotate(6deg);
+  transform: translateX(0) translateY(0) rotate(10deg);
   opacity: 1;
   background-color: var(--card-3-bg);
 }
@@ -174,7 +174,7 @@ body {
 
 .quiz-card:nth-child(4) {
   z-index: 2;
-  transform: translateX(0) translateY(0) rotate(-9deg);
+  transform: translateX(0) translateY(0) rotate(15deg);
   opacity: 1;
   background-color: var(--card-4-bg);
 }
@@ -183,7 +183,7 @@ body {
 
 .quiz-card:nth-child(5) {
   z-index: 1;
-  transform: translateX(0) translateY(0) rotate(11deg);
+  transform: translateX(0) translateY(0) rotate(20deg);
   opacity: 1;
   background-color: var(--card-5-bg);
 }
