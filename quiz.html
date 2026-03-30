@@ -4,36 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sorell | Vibe Check</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="quiz.js"></script>
     <link rel="stylesheet" href="quiz.css">
-    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Space+Grotesk:wght@400;700&family=Inter:wght@400;700&family=Google+Sans+Flex:wght@400;700display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <!-- GSAP CDN — no install needed -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
-<body class="locked">
-
+<body>
     <div id="quiz-page">
-        
-        <div id="question-stack-container">
-            <div id="question-stack">
-                </div>
-        </div>
+
         <nav class="glass-nav">
-          <div class="nav-logo">Sorell.</div>
-          <div class="nav-tag">Vibe Check</div>
+            <div class="nav-logo">Sorell.</div>
+            <div class="nav-tag">Vibe Check</div>
         </nav>
 
-        <div id="swipe-instructions">Swipe Right for Yes, Left for No</div>
+        <div id="question-stack-container">
+            <div id="question-stack"></div>
+        </div>
+
+        <div id="swipe-instructions">No &nbsp;&nbsp; Yes</div>
 
         <div id="final-container" class="hidden">
             <button id="view-aura-btn" class="final-cta">View my College Aura</button>
-            
+
             <div id="lead-form-overlay">
                 <div class="lead-form-content">
                     <h2 class="form-title">STREAK SECURED</h2>
                     <p class="form-subtitle">Enter details to reveal your Campus Match</p>
                     <form id="lead-form" onsubmit="handleFormSubmit(event)">
-                        <input type="text" id="user-name" name="user_name" placeholder="Name" required>
-                        <input type="tel" id="user-phone" name="user_phone" placeholder="phone number" required>
+                        <input type="text"  id="user-name"  name="user_name"  placeholder="Name"         required>
+                        <input type="tel"   id="user-phone" name="user_phone" placeholder="Phone number" required>
                         <button type="submit" id="get-aura-btn">GET MY AURA</button>
                     </form>
                 </div>
@@ -42,6 +41,7 @@
 
     </div>
 
+    <!-- quiz.js at the bottom, loaded ONCE -->
     <script src="quiz.js"></script>
 </body>
 </html>
