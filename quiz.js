@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
        GOOGLE SHEETS PIPELINE — swap in your Apps Script URL
        when ready. Everything else is already wired.
     ═══════════════════════════════════════════════════════════ */
-    const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby0oFB3IIYVqJDv4n1QNqm6n3nvunW0yzk0ffLSfp6PDIvctcyKU1Kj71PAXeu9BBo4/exec';
 
     async function sendToSheets(payload) {
         try {
