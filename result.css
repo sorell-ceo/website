@@ -1,73 +1,408 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sorell | Your Aura Result</title>
-    <link rel="stylesheet" href="result.css">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&family=Funnel+Display:wght@700;800&display=swap" rel="stylesheet">
-</head>
-<body>
+/* =====================================================
+   ROOT TOKENS
+   ===================================================== */
+:root {
+    --sorell-orange:  #FF6600;
+    --bg-dark:        #0a0a0a;
+    --glass-bg:       rgba(255, 255, 255, 0.05);
+    --font-space:     'Space Grotesk', sans-serif;
+    --font-funnel:    'Funnel Display', sans-serif;
+}
 
-    <!-- ── GLASSMORPHISM NAV ── -->
-    <nav class="glass-nav">
-        <div class="nav-logo" onclick="window.location.href='index.html'">Sorell.</div>
-        <div class="nav-share" id="share-btn">Share ↗</div>
-    </nav>
+/* =====================================================
+   RESET & BASE
+   ===================================================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-    <!-- ── MAIN RESULT CARD (9:16 ratio, screenshot-ready) ── -->
-    <div id="result-wrapper">
+body {
+    background-color: var(--bg-dark);
+    font-family: var(--font-space);
+    color: white;
+    min-height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
 
-        <div id="result-card">
+    /* Subtle radial glow behind everything */
+    background-image:
+        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,102,0,0.12) 0%, transparent 70%);
+}
 
-            <!-- Noise texture overlay -->
-            <div class="card-noise"></div>
+/* =====================================================
+   GLASSMORPHISM NAV
+   ===================================================== */
+.glass-nav {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100vw - 40px);
+    max-width: 400px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 20px;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    z-index: 1000;
+    user-select: none;
+}
 
-            <!-- Top section: brand + archetype label -->
-            <div class="card-top">
-                <span class="brand-tag">SORELL × AURA ID</span>
-                <span class="archetype-badge" id="archetype-badge">—</span>
-            </div>
+.nav-logo {
+    font-family: var(--font-space);
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    cursor: pointer;
+}
 
-            <!-- Center: Big aura score -->
-            <div class="card-center">
-                <p class="score-label">YOUR AURA SCORE</p>
-                <h1 class="aura-score" id="aura-score-display">——</h1>
-                <p class="score-sublabel">out of 9,999</p>
-            </div>
+.nav-share {
+    font-family: var(--font-space);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--sorell-orange);
+    cursor: pointer;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid rgba(255,102,0,0.35);
+    transition: background 0.2s;
+    user-select: none;
+}
+.nav-share:active { background: rgba(255,102,0,0.15); }
 
-            <!-- Archetype name — the big identity line -->
-            <div class="card-identity">
-                <h2 class="archetype-name" id="archetype-name">Loading...</h2>
-                <p class="archetype-desc" id="archetype-desc">Calculating your campus DNA...</p>
-            </div>
+/* =====================================================
+   RESULT WRAPPER — centers the card + CTA stack
+   ===================================================== */
+#result-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 90px;    /* clears fixed nav */
+    padding-bottom: 48px;
+    gap: 20px;
+    min-height: 100vh;
+}
 
-            <!-- Stats bar row -->
-            <div class="stat-bars" id="stat-bars">
-                <!-- Injected by JS -->
-            </div>
+/* =====================================================
+   RESULT CARD — 9:16 aspect ratio, screenshot-ready
+   max-width 360px keeps it phone-sized on desktop too
+   ===================================================== */
+#result-card {
+    position: relative;
+    width: calc(100vw - 40px);
+    max-width: 360px;
+    aspect-ratio: 9 / 16;
 
-            <!-- Bottom: user name + dream city -->
-            <div class="card-bottom">
-                <div class="user-info">
-                    <span class="user-name" id="user-name-display">—</span>
-                    <span class="user-meta" id="user-meta-display">—</span>
-                </div>
-                <div class="sorell-watermark">sorell.in</div>
-            </div>
+    border-radius: 28px;
+    overflow: hidden;
+    isolation: isolate;
 
-        </div>
+    /* Default gradient — overridden per archetype via JS data-archetype attr */
+    background: linear-gradient(160deg, #1a1a1a 0%, #0d0d0d 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow:
+        0 30px 80px rgba(0,0,0,0.8),
+        0 0 0 1px rgba(255,255,255,0.04) inset;
 
-        <!-- Screenshot prompt — outside the card so it doesn't appear in share -->
-        <p class="screenshot-cta">📸 Screenshot & flex on your story</p>
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 28px 26px;
 
-        <!-- Retake button -->
-        <button class="retake-btn" onclick="window.location.href='quiz.html'">
-            Retake Vibe Check
-        </button>
+    transition: background 0.6s ease;
+}
 
-    </div>
+/* Per-archetype card gradient backgrounds */
+#result-card[data-archetype="silent-hustler"] {
+    background: linear-gradient(150deg, #0f0f1a 0%, #1a0a2e 50%, #0d0d0d 100%);
+}
+#result-card[data-archetype="campus-legend"] {
+    background: linear-gradient(150deg, #1a0800 0%, #2e1200 50%, #0d0d0d 100%);
+}
+#result-card[data-archetype="sigma-scholar"] {
+    background: linear-gradient(150deg, #000d1a 0%, #001a2e 50%, #0d0d0d 100%);
+}
+#result-card[data-archetype="vibe-architect"] {
+    background: linear-gradient(150deg, #0a1a00 0%, #1a2e00 50%, #0d0d0d 100%);
+}
+#result-card[data-archetype="ghost-mode"] {
+    background: linear-gradient(150deg, #0d0d0d 0%, #111111 50%, #0a0a0a 100%);
+}
+#result-card[data-archetype="main-character"] {
+    background: linear-gradient(150deg, #1a0800 0%, #2a0e00 30%, #1a0030 70%, #0d0d0d 100%);
+}
 
-    <script src="result.js"></script>
-</body>
-</html>
+/* ── Noise texture overlay on card ── */
+.card-noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+    mix-blend-mode: overlay;
+}
+
+/* All direct children sit above the noise */
+#result-card > *:not(.card-noise) { position: relative; z-index: 1; }
+
+/* =====================================================
+   CARD TOP — brand tag + archetype badge
+   ===================================================== */
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-tag {
+    font-family: var(--font-space);
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.archetype-badge {
+    font-family: var(--font-space);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--sorell-orange);
+    background: rgba(255,102,0,0.12);
+    border: 1px solid rgba(255,102,0,0.3);
+    border-radius: 100px;
+    padding: 4px 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* =====================================================
+   CARD CENTER — the big aura score
+   ===================================================== */
+.card-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.score-label {
+    font-family: var(--font-space);
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.aura-score {
+    font-family: var(--font-funnel);
+    font-size: clamp(68px, 18vw, 88px);
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1;
+    letter-spacing: -2px;
+
+    /* Glow effect on the number */
+    text-shadow:
+        0 0 40px rgba(255,102,0,0.5),
+        0 0 80px rgba(255,102,0,0.2);
+}
+
+/* Count-up animation class */
+.aura-score.counting {
+    animation: pulse-glow 0.1s ease infinite alternate;
+}
+@keyframes pulse-glow {
+    from { text-shadow: 0 0 40px rgba(255,102,0,0.4), 0 0 80px rgba(255,102,0,0.15); }
+    to   { text-shadow: 0 0 60px rgba(255,102,0,0.7), 0 0 100px rgba(255,102,0,0.3); }
+}
+
+.score-sublabel {
+    font-family: var(--font-space);
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+/* =====================================================
+   CARD IDENTITY — archetype name + description
+   ===================================================== */
+.card-identity {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.archetype-name {
+    font-family: var(--font-funnel);
+    font-size: clamp(28px, 7vw, 36px);
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+}
+
+.archetype-desc {
+    font-family: var(--font-space);
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.5;
+    max-width: 90%;
+}
+
+/* =====================================================
+   STAT BARS
+   ===================================================== */
+.stat-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stat-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.stat-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-name {
+    font-family: var(--font-space);
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.stat-value {
+    font-family: var(--font-space);
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.4);
+}
+
+.stat-track {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 100px;
+    overflow: hidden;
+}
+
+.stat-fill {
+    height: 100%;
+    border-radius: 100px;
+    background: var(--sorell-orange);
+    width: 0%; /* animated by JS */
+    transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Per-stat fill colors */
+.stat-fill.social      { background: linear-gradient(90deg, #FF6600, #ff8c00); }
+.stat-fill.ambition    { background: linear-gradient(90deg, #7c3aed, #a855f7); }
+.stat-fill.independence{ background: linear-gradient(90deg, #0ea5e9, #38bdf8); }
+.stat-fill.energy      { background: linear-gradient(90deg, #16a34a, #22c55e); }
+
+/* =====================================================
+   CARD BOTTOM — user name + watermark
+   ===================================================== */
+.card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.user-name {
+    font-family: var(--font-space);
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: capitalize;
+}
+
+.user-meta {
+    font-family: var(--font-space);
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.3px;
+}
+
+.sorell-watermark {
+    font-family: var(--font-space);
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.18);
+    letter-spacing: 1px;
+    text-transform: lowercase;
+}
+
+/* =====================================================
+   SCREENSHOT CTA + RETAKE BUTTON
+   ===================================================== */
+.screenshot-cta {
+    font-family: var(--font-space);
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    letter-spacing: 0.3px;
+    animation: blink-cta 2.5s ease infinite;
+}
+@keyframes blink-cta {
+    0%, 100% { opacity: 0.4; }
+    50%       { opacity: 0.9; }
+}
+
+.retake-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.5);
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-family: var(--font-space);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    letter-spacing: 0.3px;
+}
+.retake-btn:active {
+    border-color: var(--sorell-orange);
+    color: var(--sorell-orange);
+}
+
+/* =====================================================
+   ENTRANCE ANIMATION
+   ===================================================== */
+@keyframes card-enter {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+#result-card {
+    animation: card-enter 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
