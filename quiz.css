@@ -47,6 +47,7 @@
   --font-funnel:   'Funnel Display', sans-serif;
   --font-question: 'Funnel Display', sans-serif;
   --font-space:    'Space Grotesk', sans-serif;
+  --font-123: 'Google Sans', 'Product Sans', sans-serif;
 }
 
 /* =====================================================
@@ -82,7 +83,7 @@ body {
   background-color: #000000;
   /* Cards centered with nav clearance top, swipe text clearance bottom */
   padding-top: 90px;
-  padding-bottom: 80px;
+  padding-bottom: 130px;
   gap: 20px;
 }
 
@@ -158,7 +159,7 @@ body {
    QUESTION TEXT — left-aligned
    ===================================================== */
 .quiz-card .question {
-  font-family: var(--font-question);
+  font-family: var(--font-123);
   text-align: left !important;
   font-size: clamp(22px, 6.5vw, 32px);
   font-weight: 500;
