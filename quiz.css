@@ -29,6 +29,7 @@
   --bg-dark:           #000000;
   --font-funnel:       'Funnel Display', sans-serif;
   --font-space:        'Space Grotesk', sans-serif;
+  --font-google:       'Google Sans Flex' sans-serif;
 }
 
 /* =========================================
@@ -132,7 +133,7 @@ body {
    QUESTION TEXT — left aligned
    ========================================= */
 .quiz-card .question {
-  font-family: var(--font-funnel);
+  font-family: var(--font-google);
   text-align: left !important;
   font-size: clamp(24px, 7vw, 34px);
   font-weight: 350;
