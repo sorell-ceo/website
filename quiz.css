@@ -4,9 +4,9 @@
    ===================================================== */
 :root {
   /* ── Card 1 ── */
-  --card-1-bg:         #2D70C9;
+  --card-1-bg:         #2C2C2C;
   --card-1-text:       #FFFFFF;
-  --card-1-badge-bg:   #2C2C2C;
+  --card-1-badge-bg:   #FF6600;
   --card-1-badge-text: #ffffff;
 
   /* ── Card 2 ── */
