@@ -83,7 +83,7 @@ body {
   background-color: #000000;
   /* Cards centered with nav clearance top, swipe text clearance bottom */
   padding-top: 90px;
-  padding-bottom: 180px;
+  padding-bottom: 250px;
   gap: 20px;
 }
 
