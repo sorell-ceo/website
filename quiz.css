@@ -1,31 +1,57 @@
-/* =========================================
-   CARD COLORS — edit ONLY these hex values
-   ========================================= */
+/* =====================================================
+   CARD COLORS — edit ONLY these values per card.
+   To add card 6, 7, 8... just copy a block and
+   increment the number. CSS handles colors only —
+   positioning/rotation is 100% done by GSAP in JS.
+   ===================================================== */
 :root {
-  --card-1-bg:       #F0F0F0;
-  --card-2-bg:       #464646;
-  --card-3-bg:       #F0F0F0;
-  --card-4-bg:       #464646;
-  --card-5-bg:       #F0F0F0;
+  /* ── Card 1 ── */
+  --card-1-bg:         #F0F0F0;
+  --card-1-text:       #111111;
+  --card-1-badge-bg:   #111111;
+  --card-1-badge-text: #ffffff;
 
-  --card-1-text:     #111111;
-  --card-2-text:     #ffffff;
-  --card-3-text:     #111111;
-  --card-4-text:     #ffffff;
-  --card-5-text:     #111111;
+  /* ── Card 2 ── */
+  --card-2-bg:         #464646;
+  --card-2-text:       #ffffff;
+  --card-2-badge-bg:   #ffffff;
+  --card-2-badge-text: #111111;
 
-  --card-1-badge-bg: #111111; --card-1-badge-text: #ffffff;
-  --card-2-badge-bg: #ffffff; --card-2-badge-text: #111111;
-  --card-3-badge-bg: #111111; --card-3-badge-text: #ffffff;
-  --card-4-badge-bg: #ffffff; --card-4-badge-text: #111111;
-  --card-5-badge-bg: #111111; --card-5-badge-text: #ffffff;
+  /* ── Card 3 ── */
+  --card-3-bg:         #F0F0F0;
+  --card-3-text:       #111111;
+  --card-3-badge-bg:   #111111;
+  --card-3-badge-text: #ffffff;
 
+  /* ── Card 4 ── */
+  --card-4-bg:         #464646;
+  --card-4-text:       #ffffff;
+  --card-4-badge-bg:   #ffffff;
+  --card-4-badge-text: #111111;
+
+  /* ── Card 5 ── */
+  --card-5-bg:         #F0F0F0;
+  --card-5-text:       #111111;
+  --card-5-badge-bg:   #111111;
+  --card-5-badge-text: #ffffff;
+
+  /* ── Add card 6 here: ──
+  --card-6-bg:         #1a1a2e;
+  --card-6-text:       #ffffff;
+  --card-6-badge-bg:   #FF6600;
+  --card-6-badge-text: #ffffff;
+  */
+
+  /* ── Global tokens ── */
   --sorell-orange: #FF6600;
   --bg-dark:       #000000;
-  --font-funnel:   'Funnel Display', sans-serif;
+  --font-question: 'Google Sans', 'Product Sans', sans-serif;
   --font-space:    'Space Grotesk', sans-serif;
 }
 
+/* =====================================================
+   RESET & BASE
+   ===================================================== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -37,9 +63,9 @@ body {
   overflow: hidden;
 }
 
-/* =========================================
-   QUIZ PAGE
-   ========================================= */
+/* =====================================================
+   QUIZ PAGE — full screen, flex column
+   ===================================================== */
 #quiz-page {
   width: 100vw;
   height: 100vh;
@@ -48,38 +74,56 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
-  padding-top: 80px;
-  padding-bottom: 80px;
+  /* room for fixed nav at top, swipe hint at bottom */
+  padding-top: 90px;
+  padding-bottom: 70px;
+  gap: 16px;
 }
 
-/* =========================================
+/* =====================================================
+   BIG HEADING
+   ===================================================== */
+.quiz-heading {
+  font-family: var(--font-question);
+  font-size: clamp(22px, 6vw, 32px);
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  letter-spacing: -0.3px;
+  line-height: 1.1;
+  width: calc(100vw - 48px);
+  max-width: 360px;
+  flex-shrink: 0;
+}
+
+/* =====================================================
    CARD STACK CONTAINER
-   ========================================= */
+   ===================================================== */
 #question-stack-container {
   width: calc(100vw - 48px);
   max-width: 360px;
   position: relative;
-  padding-bottom: 40px;
   touch-action: none;
   flex-shrink: 0;
 }
 
+/* 4:5 aspect ratio */
 #question-stack {
   width: 100%;
   position: relative;
-  aspect-ratio: 16 / 17;
+  aspect-ratio: 4 / 5;
 }
 
-/* =========================================
-   CARD BASE — NO CSS transitions at all.
-   GSAP owns all animation on these elements.
-   ========================================= */
+/* =====================================================
+   CARD BASE
+   NO CSS transitions — GSAP owns everything here.
+   ===================================================== */
 .quiz-card {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  aspect-ratio: 6 / 7;
+  height: 100%;
   border-radius: 28px;
 
   display: flex;
@@ -90,26 +134,40 @@ body {
 
   transform-origin: bottom center;
 
-  /* NO transition property — GSAP controls everything */
-
-  /* GPU layer pre-promotion — eliminates the compositor lag on first move */
+  /* GPU pre-promotion — zero compositor lag on first drag */
   will-change: transform, opacity;
 
-  box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 2px 0 rgba(255,255,255,0.06) inset;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6),
+              0 2px 0 rgba(255,255,255,0.06) inset;
+
   cursor: grab;
   user-select: none;
   -webkit-user-select: none;
   overflow: hidden;
-
-  /* Start visible — GSAP sets positions immediately on init */
   opacity: 1;
-}
 
+  /* Tint overlay — GSAP drives its opacity during drag */
+  isolation: isolate;
+}
 .quiz-card:active { cursor: grabbing; }
 
-/* =========================================
-   PLACEHOLDER BADGE
-   ========================================= */
+/* Pseudo-element that becomes red/green tint during swipe */
+.quiz-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;           /* starts invisible, GSAP animates this */
+  pointer-events: none;
+  /* color set inline by JS — red or green */
+  background-color: transparent;
+  transition: none;     /* GSAP owns this too */
+  z-index: 1;
+}
+
+/* =====================================================
+   PLACEHOLDER BADGE — rounded pill, top-left
+   ===================================================== */
 .placeholder-badge {
   position: absolute;
   top: 18px;
@@ -122,28 +180,35 @@ body {
   letter-spacing: 0.2px;
   text-transform: capitalize;
   line-height: 1.4;
+  z-index: 2;           /* above tint overlay */
 }
 
-/* =========================================
-   QUESTION TEXT
-   ========================================= */
+/* =====================================================
+   QUESTION TEXT — Google Sans, left-aligned
+   ===================================================== */
 .quiz-card .question {
-  font-family: var(--font-funnel);
+  font-family: var(--font-question);
   text-align: left !important;
-  font-size: clamp(24px, 7vw, 34px);
-  font-weight: 350;
-  line-height: 1.15;
+  font-size: clamp(22px, 6.5vw, 32px);
+  font-weight: 500;
+  line-height: 1.2;
   word-break: break-word;
   user-select: none;
   -webkit-user-select: none;
   width: 100%;
   align-self: flex-start;
+  z-index: 2;           /* above tint overlay */
+  position: relative;
 }
 
-/* =========================================
+/* =====================================================
    INDIVIDUAL CARD COLORS
-   (positions/rotations are set by GSAP, not CSS)
-   ========================================= */
+   Positions/rotations → GSAP in quiz.js
+   Colors/badges       → here
+
+   TO ADD CARD 6: copy the block below, change "5" to "6",
+   and add --card-6-* variables in :root above.
+   ===================================================== */
 .quiz-card:nth-child(1) { background-color: var(--card-1-bg); }
 .quiz-card:nth-child(1) .question          { color: var(--card-1-text); }
 .quiz-card:nth-child(1) .placeholder-badge { background-color: var(--card-1-badge-bg); color: var(--card-1-badge-text); }
@@ -164,55 +229,50 @@ body {
 .quiz-card:nth-child(5) .question          { color: var(--card-5-text); }
 .quiz-card:nth-child(5) .placeholder-badge { background-color: var(--card-5-badge-bg); color: var(--card-5-badge-text); }
 
-/* =========================================
-   SWIPE INSTRUCTIONS — visible on mobile
-   ========================================= */
+/* ── Card 6 template (uncomment + add vars above) ──
+.quiz-card:nth-child(6) { background-color: var(--card-6-bg); }
+.quiz-card:nth-child(6) .question          { color: var(--card-6-text); }
+.quiz-card:nth-child(6) .placeholder-badge { background-color: var(--card-6-badge-bg); color: var(--card-6-badge-text); }
+*/
+
+/* =====================================================
+   SWIPE INSTRUCTIONS
+   ===================================================== */
 #swipe-instructions {
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
-  /* Solid white — no opacity fade that makes it invisible on dark bg */
-  color: #ffffff;
+  gap: 0;                 /* gap is handled by icon spacing */
+  width: calc(100vw - 48px);
+  max-width: 360px;
+  flex-shrink: 0;
+}
+
+.swipe-label {
+  font-family: var(--font-space);
   font-size: 13px;
   font-weight: 700;
-  font-family: var(--font-space);
-  letter-spacing: 0.3px;
-  /* Subtle pill background so it reads over any card color peeking behind */
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 100px;
-  padding: 10px 20px;
-  width: fit-content;
-  /* Center it horizontally */
-  margin: 0 auto;
-  left: 50%;
-  transform: translateX(-50%);
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+  padding: 0 18px;
 }
 
-#swipe-instructions::before {
-  content: '✕';
-  font-size: 14px;
+.swipe-icon {
+  font-size: 20px;
   font-weight: 900;
-  color: #ff5a5a;
+  display: inline-block;
+  /* equal flex so icons sit at equal distance from label */
+  flex: 1;
+  text-align: center;
 }
 
-#swipe-instructions::after {
-  content: '✓';
-  font-size: 14px;
-  font-weight: 900;
-  color: #50dc50;
-}
+.swipe-icon-left  { color: #ff5a5a; }
+.swipe-icon-right { color: #50dc50; }
 
-/* =========================================
+/* =====================================================
    FINAL CONTAINER
-   ========================================= */
+   ===================================================== */
 #final-container {
   width: 100%;
   height: 100%;
@@ -241,9 +301,9 @@ body {
 }
 .final-cta:active { transform: scale(0.96); }
 
-/* =========================================
+/* =====================================================
    BOTTOM SLIDING LEAD FORM
-   ========================================= */
+   ===================================================== */
 #lead-form-overlay {
   position: absolute;
   top: 0; left: 0;
@@ -278,10 +338,9 @@ body {
 #lead-form-overlay.show .lead-form-content {
   transform: translateY(0);
 }
-
-.form-title   { color: var(--sorell-orange); font-size: 26px; font-weight: 800; }
-.form-subtitle{ color: #888; font-size: 15px; margin-bottom: 10px; }
-#lead-form    { display: flex; flex-direction: column; gap: 12px; }
+.form-title    { color: var(--sorell-orange); font-size: 26px; font-weight: 800; }
+.form-subtitle { color: #888; font-size: 15px; margin-bottom: 10px; }
+#lead-form     { display: flex; flex-direction: column; gap: 12px; }
 #lead-form input {
   background: #222;
   border: 1px solid #333;
@@ -306,9 +365,9 @@ body {
   margin-top: 10px;
 }
 
-/* =========================================
+/* =====================================================
    GLASSMORPHISM NAV
-   ========================================= */
+   ===================================================== */
 .glass-nav {
   position: fixed;
   top: 16px;
