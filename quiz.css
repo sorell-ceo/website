@@ -1,40 +1,31 @@
 /* =========================================
    CARD COLORS — edit ONLY these hex values
-   to change each card individually
    ========================================= */
 :root {
-  /* Card backgrounds */
-  --card-1-bg:         #F0F0F0;   /* TOP card (active) */
-  --card-2-bg:         #464646;
-  --card-3-bg:         #F0F0F0;
-  --card-4-bg:         #464646;
-  --card-5-bg:         #F0F0F0;
+  --card-1-bg:       #F0F0F0;
+  --card-2-bg:       #464646;
+  --card-3-bg:       #F0F0F0;
+  --card-4-bg:       #464646;
+  --card-5-bg:       #F0F0F0;
 
-  /* Question text color per card */
-  --card-1-text:       #111111;
-  --card-2-text:       #ffffff;
-  --card-3-text:       #111111;
-  --card-4-text:       #ffffff;
-  --card-5-text:       #111111;
+  --card-1-text:     #111111;
+  --card-2-text:     #ffffff;
+  --card-3-text:     #111111;
+  --card-4-text:     #ffffff;
+  --card-5-text:     #111111;
 
-  /* Badge background + text per card */
-  --card-1-badge-bg:   #111111;   --card-1-badge-text: #ffffff;
-  --card-2-badge-bg:   #ffffff;   --card-2-badge-text: #111111;
-  --card-3-badge-bg:   #111111;   --card-3-badge-text: #ffffff;
-  --card-4-badge-bg:   #ffffff;   --card-4-badge-text: #111111;
-  --card-5-badge-bg:   #111111;   --card-5-badge-text: #ffffff;
+  --card-1-badge-bg: #111111; --card-1-badge-text: #ffffff;
+  --card-2-badge-bg: #ffffff; --card-2-badge-text: #111111;
+  --card-3-badge-bg: #111111; --card-3-badge-text: #ffffff;
+  --card-4-badge-bg: #ffffff; --card-4-badge-text: #111111;
+  --card-5-badge-bg: #111111; --card-5-badge-text: #ffffff;
 
-  /* Global tokens */
-  --sorell-orange:     #FF6600;
-  --bg-dark:           #000000;
-  --font-funnel:       'Funnel Display', sans-serif;
-  --font-space:        'Space Grotesk', sans-serif;
-  --font-google:       'Google Sans Flex' sans-serif;
+  --sorell-orange: #FF6600;
+  --bg-dark:       #000000;
+  --font-funnel:   'Funnel Display', sans-serif;
+  --font-space:    'Space Grotesk', sans-serif;
 }
 
-/* =========================================
-   RESET & BASE
-   ========================================= */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -80,7 +71,8 @@ body {
 }
 
 /* =========================================
-   CARD BASE STYLE
+   CARD BASE — NO CSS transitions at all.
+   GSAP owns all animation on these elements.
    ========================================= */
 .quiz-card {
   position: absolute;
@@ -89,31 +81,34 @@ body {
   width: 100%;
   aspect-ratio: 6 / 7;
   border-radius: 28px;
-  
+
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centered vertically */
-  align-items: flex-start; /* Left aligned text */
+  justify-content: center;
+  align-items: flex-start;
   padding: 30px;
-  
-  /* CRITICAL: Removed 'transition' property here so GSAP has full control */
-  transform-origin: bottom center; 
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 2px 0 rgba(255,255,255,0.06) inset;
-  
+
+  transform-origin: bottom center;
+
+  /* NO transition property — GSAP controls everything */
+
+  /* GPU layer pre-promotion — eliminates the compositor lag on first move */
+  will-change: transform, opacity;
+
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 2px 0 rgba(255,255,255,0.06) inset;
   cursor: grab;
   user-select: none;
   -webkit-user-select: none;
   overflow: hidden;
-  /* Ensure initial state is hidden before GSAP kicks in */
-  opacity: 0; 
+
+  /* Start visible — GSAP sets positions immediately on init */
+  opacity: 1;
 }
 
-.quiz-card:active {
-  cursor: grabbing;
-}
+.quiz-card:active { cursor: grabbing; }
 
 /* =========================================
-   PLACEHOLDER BADGE — pill, top left
+   PLACEHOLDER BADGE
    ========================================= */
 .placeholder-badge {
   position: absolute;
@@ -121,7 +116,7 @@ body {
   left: 18px;
   padding: 5px 13px;
   border-radius: 100px;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 700;
   font-family: var(--font-space);
   letter-spacing: 0.2px;
@@ -130,10 +125,10 @@ body {
 }
 
 /* =========================================
-   QUESTION TEXT — left aligned
+   QUESTION TEXT
    ========================================= */
 .quiz-card .question {
-  font-family: var(--font-google);
+  font-family: var(--font-funnel);
   text-align: left !important;
   font-size: clamp(24px, 7vw, 34px);
   font-weight: 350;
@@ -146,83 +141,73 @@ body {
 }
 
 /* =========================================
-   INDIVIDUAL CARD STYLES
-   Y-axis: identical for all — translateY(0)
-   Z-axis: rotation only, fanning out like
-   a held deck. Pivot = bottom center.
+   INDIVIDUAL CARD COLORS
+   (positions/rotations are set by GSAP, not CSS)
    ========================================= */
-
-.quiz-card:nth-child(1) {
-  z-index: 5;
-  transform: translateX(0) translateY(0) rotate(0deg);
-  opacity: 1;
-  background-color: var(--card-1-bg);
-}
+.quiz-card:nth-child(1) { background-color: var(--card-1-bg); }
 .quiz-card:nth-child(1) .question          { color: var(--card-1-text); }
 .quiz-card:nth-child(1) .placeholder-badge { background-color: var(--card-1-badge-bg); color: var(--card-1-badge-text); }
 
-.quiz-card:nth-child(2) {
-  z-index: 4;
-  transform: translateX(0) translateY(0) rotate(5deg);
-  opacity: 1;
-  background-color: var(--card-2-bg);
-}
+.quiz-card:nth-child(2) { background-color: var(--card-2-bg); }
 .quiz-card:nth-child(2) .question          { color: var(--card-2-text); }
 .quiz-card:nth-child(2) .placeholder-badge { background-color: var(--card-2-badge-bg); color: var(--card-2-badge-text); }
 
-.quiz-card:nth-child(3) {
-  z-index: 3;
-  transform: translateX(0) translateY(0) rotate(10deg);
-  opacity: 1;
-  background-color: var(--card-3-bg);
-}
+.quiz-card:nth-child(3) { background-color: var(--card-3-bg); }
 .quiz-card:nth-child(3) .question          { color: var(--card-3-text); }
 .quiz-card:nth-child(3) .placeholder-badge { background-color: var(--card-3-badge-bg); color: var(--card-3-badge-text); }
 
-.quiz-card:nth-child(4) {
-  z-index: 2;
-  transform: translateX(0) translateY(0) rotate(15deg);
-  opacity: 1;
-  background-color: var(--card-4-bg);
-}
+.quiz-card:nth-child(4) { background-color: var(--card-4-bg); }
 .quiz-card:nth-child(4) .question          { color: var(--card-4-text); }
 .quiz-card:nth-child(4) .placeholder-badge { background-color: var(--card-4-badge-bg); color: var(--card-4-badge-text); }
 
-.quiz-card:nth-child(5) {
-  z-index: 1;
-  transform: translateX(0) translateY(0) rotate(20deg);
-  opacity: 1;
-  background-color: var(--card-5-bg);
-}
+.quiz-card:nth-child(5) { background-color: var(--card-5-bg); }
 .quiz-card:nth-child(5) .question          { color: var(--card-5-text); }
 .quiz-card:nth-child(5) .placeholder-badge { background-color: var(--card-5-badge-bg); color: var(--card-5-badge-text); }
 
 /* =========================================
-   SWIPE INSTRUCTIONS
+   SWIPE INSTRUCTIONS — visible on mobile
    ========================================= */
 #swipe-instructions {
   position: absolute;
-  bottom: 28px;
+  bottom: 20px;
+  left: 0;
   width: 100%;
-  text-align: center;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.55);
-  font-weight: 600;
-  font-family: var(--font-space);
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  /* Solid white — no opacity fade that makes it invisible on dark bg */
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--font-space);
+  letter-spacing: 0.3px;
+  /* Subtle pill background so it reads over any card color peeking behind */
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 100px;
+  padding: 10px 20px;
+  width: fit-content;
+  /* Center it horizontally */
+  margin: 0 auto;
+  left: 50%;
+  transform: translateX(-50%);
 }
+
 #swipe-instructions::before {
-  content: '←';
-  font-size: 18px;
-  color: rgba(255, 80, 80, 0.85);
+  content: '✕';
+  font-size: 14px;
+  font-weight: 900;
+  color: #ff5a5a;
 }
+
 #swipe-instructions::after {
-  content: '→';
-  font-size: 18px;
-  color: rgba(80, 220, 80, 0.85);
+  content: '✓';
+  font-size: 14px;
+  font-weight: 900;
+  color: #50dc50;
 }
 
 /* =========================================
@@ -250,7 +235,7 @@ body {
   font-size: 17px;
   font-family: var(--font-space);
   font-weight: 700;
-  box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);
+  box-shadow: 0 8px 20px rgba(255,102,0,0.3);
   cursor: pointer;
   transition: transform 0.2s;
 }
@@ -263,7 +248,7 @@ body {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0,0,0,0.85);
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -282,8 +267,8 @@ body {
   background-color: #161616;
   padding: 40px 30px;
   border-radius: 30px 30px 0 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.8);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 -15px 40px rgba(0,0,0,0.8);
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -294,9 +279,9 @@ body {
   transform: translateY(0);
 }
 
-.form-title { color: var(--sorell-orange); font-size: 26px; font-weight: 800; }
-.form-subtitle { color: #888; font-size: 15px; margin-bottom: 10px; }
-#lead-form { display: flex; flex-direction: column; gap: 12px; }
+.form-title   { color: var(--sorell-orange); font-size: 26px; font-weight: 800; }
+.form-subtitle{ color: #888; font-size: 15px; margin-bottom: 10px; }
+#lead-form    { display: flex; flex-direction: column; gap: 12px; }
 #lead-form input {
   background: #222;
   border: 1px solid #333;
@@ -335,11 +320,11 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 13px 20px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255,255,255,0.06);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border-radius: 100px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,0.1);
   z-index: 1000;
 }
 .nav-logo {
@@ -351,5 +336,5 @@ body {
 .nav-tag {
   font-family: var(--font-space);
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255,255,255,0.6);
 }
