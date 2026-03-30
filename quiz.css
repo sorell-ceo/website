@@ -83,7 +83,7 @@ body {
   background-color: #000000;
   /* Cards centered with nav clearance top, swipe text clearance bottom */
   padding-top: 90px;
-  padding-bottom: 130px;
+  padding-bottom: 180px;
   gap: 20px;
 }
 
@@ -161,7 +161,7 @@ body {
 .quiz-card .question {
   font-family: var(--font-123);
   text-align: left !important;
-  font-size: clamp(22px, 6.5vw, 32px);
+  font-size: clamp(38px, 6.5vw, 32px);
   font-weight: 500;
   line-height: 1.2;
   word-break: break-word;
