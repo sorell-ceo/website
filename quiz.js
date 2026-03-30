@@ -1,53 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     /* ═══════════════════════════════════════════════════════════
-       GOOGLE SHEETS PIPELINE — swap in your Apps Script URL
-       when ready. Everything else is already wired.
+       GOOGLE SHEETS PIPELINE
     ═══════════════════════════════════════════════════════════ */
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby0oFB3IIYVqJDv4n1QNqm6n3nvunW0yzk0ffLSfp6PDIvctcyKU1Kj71PAXeu9BBo4/exec';
 
-    async function sendToSheets(payload) {
-        try {
-            await fetch(APPS_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors', // required for Apps Script
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
-            console.log('[Sorell] Lead sent to Sheets ✓', payload);
-        } catch (err) {
-            console.error('[Sorell] Sheets pipeline error:', err);
-        }
+    function sendToSheets(payload) {
+        // Fire and forget — never awaited, never blocks redirect
+        fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+        })
+        .then(() => console.log('[Sorell] Lead sent to Sheets ✓', payload))
+        .catch(err => console.error('[Sorell] Sheets pipeline error:', err));
     }
 
     /* ═══════════════════════════════════════════════════════════
        SCORING SYSTEM
-       Axes: social (0–4), ambition (0–2), independence (0–1), energy (0–1)
-       Right swipe = YES (+1 on mapped axis), Left = NO (0)
-       Special cards (stream Q5, location Q10) write strings, not numbers.
-
-       Archetype mapping is intentionally left open here —
-       raw scores go straight to Sheets. You can layer the
-       archetype logic on top once patterns emerge from real data.
     ═══════════════════════════════════════════════════════════ */
     const userScore = {
-        social:       0,   // Q1 + Q2 + Q3 + Q8
-        ambition:     0,   // Q4 + Q9
-        independence: 0,   // Q6
-        energy:       0,   // Q7
-        stream:       '',  // Q5 — set on swipe direction
-        currentCity:  '',  // Q10 dropdown
-        dreamCity:    '',  // Q10 dropdown
+        social:       0,
+        ambition:     0,
+        independence: 0,
+        energy:       0,
+        stream:       '',
+        currentCity:  '',
+        dreamCity:    '',
     };
 
     /* ═══════════════════════════════════════════════════════════
        QUESTIONS
-       type: 'swipe'   → standard card, right/left recorded
-       type: 'stream'  → swipe, but direction maps to stream string
-       type: 'location'→ special card with two dropdowns + confirm btn
-
-       scoreAxis: which key in userScore to increment on right swipe
-       rightLabel / leftLabel: shown on tint overlay (optional UX hint)
     ═══════════════════════════════════════════════════════════ */
     const questions = [
         {
@@ -123,13 +107,12 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     /* ═══════════════════════════════════════════════════════════
-       STACK ROTATIONS — FLIPPED to LEFT (negative degrees)
-       Index 0 = top card (always 0). Index 1 = one behind, etc.
+       STACK ROTATIONS — fanned LEFT
     ═══════════════════════════════════════════════════════════ */
     const STACK_ROTATIONS = [0, -5, -10, -15, -20, -24, -27];
 
     /* ═══════════════════════════════════════════════════════════
-       CITY OPTIONS — edit freely
+       CITY OPTIONS
     ═══════════════════════════════════════════════════════════ */
     const CITIES = [
         'Delhi / NCR',
@@ -180,7 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (q.type === 'location') {
                 card.classList.add('location-card');
                 card.innerHTML = buildLocationCard(q);
-                // location card is NOT draggable — pointer handled separately
             } else {
                 card.innerHTML = `
                     <div class="placeholder-badge">${q.placeholder}</div>
@@ -202,8 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function buildLocationCard(q) {
         const options = CITIES.map(c => `<option value="${c}">${c}</option>`).join('');
         return `
-            
-            <div class="question">${q.question}</div>
+            <div class="question" style="margin-top:0">${q.question}</div>
             <div class="location-selectors">
                 <div class="loc-group">
                     <label class="loc-label">I'm currently in</label>
@@ -227,7 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function attachLocationEvents() {
-        // Runs after cards are in the DOM
         const confirmBtn = document.getElementById('location-confirm-btn');
         if (!confirmBtn) return;
 
@@ -237,7 +217,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const dreamCity   = document.getElementById('dream-city-select').value;
 
             if (!currentCity || !dreamCity) {
-                // Shake the button if empty
                 confirmBtn.classList.add('shake');
                 setTimeout(() => confirmBtn.classList.remove('shake'), 500);
                 return;
@@ -246,7 +225,6 @@ document.addEventListener('DOMContentLoaded', () => {
             userScore.currentCity = currentCity;
             userScore.dreamCity   = dreamCity;
 
-            // Animate card out upward instead of sideways
             const card = document.getElementById(`card-${currentStep}`);
             gsap.to(card, {
                 y: -window.innerHeight,
@@ -257,7 +235,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Prevent drag start on location card
         const locCard = document.getElementById(`card-${questions.length - 1}`);
         if (locCard) {
             locCard.addEventListener('mousedown',  e => e.stopPropagation());
@@ -323,17 +300,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ═══════════════════════════════════════════════════════════
-       SCORING LOGIC — called when a swipe is committed
-       direction: 1 = right (YES), -1 = left (NO)
+       SCORING LOGIC
     ═══════════════════════════════════════════════════════════ */
     function recordSwipe(questionIndex, direction) {
         const q = questions[questionIndex];
 
-        if (q.type === 'swipe') {
-            if (direction === 1) {
-                userScore[q.scoreAxis] = (userScore[q.scoreAxis] || 0) + 1;
-            }
-            // Left swipe = 0 contribution, no action needed
+        if (q.type === 'swipe' && direction === 1) {
+            userScore[q.scoreAxis] = (userScore[q.scoreAxis] || 0) + 1;
         }
 
         if (q.type === 'stream') {
@@ -349,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function onDragStart(e) {
         if (currentStep >= questions.length) return;
         const q = questions[currentStep];
-        if (q.type === 'location') return; // location card handled separately
+        if (q.type === 'location') return;
 
         const targetCard = e.target.closest('.quiz-card');
         if (!targetCard || targetCard.id !== `card-${currentStep}`) return;
@@ -410,10 +383,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const throwX   = window.innerWidth * 1.6 * direction;
         const throwRot = 30 * direction;
 
-        // Record score BEFORE advancing step
         recordSwipe(currentStep, direction);
 
-        // Haptic feedback (mobile)
         if (navigator.vibrate) navigator.vibrate(15);
 
         gsap.to(card, {
@@ -432,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ═══════════════════════════════════════════════════════════
-       END STATE — show final CTA
+       END STATE
     ═══════════════════════════════════════════════════════════ */
     function advanceToEnd() {
         questionStack.style.display = 'none';
@@ -508,69 +479,58 @@ document.addEventListener('DOMContentLoaded', () => {
     startIconAnim();
 
     /* ═══════════════════════════════════════════════════════════
-       EXPOSE handleFormSubmit globally (called from quiz.html)
+       FORM SUBMIT — fires Sheets in background, redirects instantly
     ═══════════════════════════════════════════════════════════ */
-    window.handleFormSubmit = async function(event) {
+    window.handleFormSubmit = function(event) {
         event.preventDefault();
 
         const userName  = document.getElementById('user-name').value.trim();
         const userPhone = document.getElementById('user-phone').value.trim();
-        const submitBtn = document.getElementById('get-aura-btn');
 
         if (!userName || !userPhone) return;
 
-        // ── Build the full payload ──────────────────────────
+        // ── Build aura score ────────────────────────────────
+        const auraScore = Math.min(
+            8000
+            + (userScore.social       * 400)
+            + (userScore.ambition     * 300)
+            + (userScore.independence * 200)
+            + (userScore.energy       * 100),
+            9999
+        );
+
+        // ── Build full payload ──────────────────────────────
         const payload = {
-            // Identity
-            name:         userName,
-            phone:        userPhone,
-            timestamp:    new Date().toISOString(),
-
-            // Raw scores (axes)
-            score_social:       userScore.social,        // max 4
-            score_ambition:     userScore.ambition,      // max 2
-            score_independence: userScore.independence,  // max 1
-            score_energy:       userScore.energy,        // max 1
-
-            // Qualitative fields
-            stream:       userScore.stream,
-            current_city: userScore.currentCity,
-            dream_city:   userScore.dreamCity,
-
-            // Derived aura score — weighted, capped at 9999, min 8000
-            // Formula: base 8000 + (social*400) + (ambition*300) + (independence*200) + (energy*100)
-            // Designed to always feel "high" for screenshot culture
-            aura_score: Math.min(
-                8000
-                + (userScore.social       * 400)
-                + (userScore.ambition     * 300)
-                + (userScore.independence * 200)
-                + (userScore.energy       * 100),
-                9999
-            ),
+            name:               userName,
+            phone:              userPhone,
+            timestamp:          new Date().toISOString(),
+            score_social:       userScore.social,
+            score_ambition:     userScore.ambition,
+            score_independence: userScore.independence,
+            score_energy:       userScore.energy,
+            stream:             userScore.stream,
+            current_city:       userScore.currentCity,
+            dream_city:         userScore.dreamCity,
+            aura_score:         auraScore,
         };
 
-        // ── UI: loading state ───────────────────────────────
-        submitBtn.textContent    = 'SENDING...';
-        submitBtn.disabled       = true;
-        submitBtn.style.opacity  = '0.7';
+        // ── Fire to Sheets — non-blocking ───────────────────
+        sendToSheets(payload);
 
-        // ── Fire to Sheets ──────────────────────────────────
-        await sendToSheets(payload);
-
-        // ── Redirect to result page with URL params ─────────
+        // ── Build result URL params ─────────────────────────
         const params = new URLSearchParams({
-            name:       payload.name,
-            aura:       payload.aura_score,
-            stream:     payload.stream,
-            city:       payload.dream_city,
-            social:     payload.score_social,
-            ambition:   payload.score_ambition,
-            energy:     payload.score_energy,
-            independent: payload.score_independence,
+            name:        userName,
+            aura:        auraScore,
+            stream:      userScore.stream,
+            city:        userScore.dreamCity,
+            social:      userScore.social,
+            ambition:    userScore.ambition,
+            energy:      userScore.energy,
+            independent: userScore.independence,
         });
 
-        window.location.href = `result.html?${params.toString()}`;
+        // ── Redirect immediately ────────────────────────────
+        window.location.href = 'result.html?' + params.toString();
     };
 
 });
