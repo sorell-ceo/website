@@ -142,7 +142,8 @@ body {
   align-items: flex-start;
   padding: 30px;
 
-  transform-origin: bottom center;
+  /* REPLACE this line in .quiz-card */
+  transform-origin: center center;  /* was: bottom center */
   will-change: transform, opacity;
 
   box-shadow: 0 12px 40px rgba(0,0,0,0.6),
@@ -491,3 +492,4 @@ body {
   transition: opacity 0.2s;
 }
 .nav-home:active { opacity: 0.7; }
+.nav-home { user-select: none; -webkit-user-select: none; }
