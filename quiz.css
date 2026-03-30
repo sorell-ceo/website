@@ -5,7 +5,7 @@
    ===================================================== */
 :root {
   /* ── Card 1 ── */
-  --card-1-bg:         #F0F0F0;
+  --card-1-bg:         #E3EFFF;
   --card-1-text:       #111111;
   --card-1-badge-bg:   #111111;
   --card-1-badge-text: #ffffff;
@@ -74,16 +74,13 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
-  /* BG image — 1080×1920 designed for mobile */
   background-image: url('assets/quiz-page-bg.png');
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
-  /* Fallback color while image loads */
   background-color: #000000;
-  /* Cards centered with nav clearance top, swipe text clearance bottom */
   padding-top: 90px;
-  padding-bottom: 80px;
+  padding-bottom: 0; /* remove bottom padding — swipe text is now absolute */
   gap: 20px;
 }
 
@@ -96,8 +93,8 @@ body {
   position: relative;
   touch-action: none;
   flex-shrink: 0;
+  margin-top: 8vh;  /* pushes it below center — 8vh adapts to any screen height */
 }
-
 /* 4:5 aspect ratio */
 #question-stack {
   width: 100%;
@@ -208,15 +205,17 @@ body {
    SWIPE INSTRUCTIONS — larger, legible over any bg
    ===================================================== */
 #swipe-instructions {
+  position: absolute;   /* taken out of flex flow */
+  bottom: 20px;         /* exactly 20px from bottom edge */
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
   width: calc(100vw - 48px);
   max-width: 360px;
-  flex-shrink: 0;
   gap: 0;
 }
-
 .swipe-label {
   font-family: var(--font-space);
   font-size: 16px;          /* increased from 13px */
@@ -357,7 +356,7 @@ body {
   background: rgba(255,255,255,0.06);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
-  border-radius: 100px;
+  border-radius: 40px;
   border: 1px solid rgba(255,255,255,0.1);
   z-index: 1000;
 }
