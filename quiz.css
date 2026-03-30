@@ -93,7 +93,7 @@ body {
   position: relative;
   touch-action: none;
   flex-shrink: 0;
-  margin-top: 8vh;  /* pushes it below center — 8vh adapts to any screen height */
+  margin-top: 4vh;  /* pushes it below center — 8vh adapts to any screen height */
 }
 /* 4:5 aspect ratio */
 #question-stack {
@@ -206,7 +206,7 @@ body {
    ===================================================== */
 #swipe-instructions {
   position: absolute;   /* taken out of flex flow */
-  bottom: 20px;         /* exactly 20px from bottom edge */
+  bottom: 50px;         /* exactly 20px from bottom edge */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
