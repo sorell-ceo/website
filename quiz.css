@@ -1,6 +1,5 @@
 /* =====================================================
    CARD COLORS — edit ONLY these values per card.
-   To add card 6, 7, 8... copy a block + increment.
    CSS handles colors only — GSAP handles positions.
    ===================================================== */
 :root {
@@ -29,17 +28,40 @@
   --card-4-badge-text: #111111;
 
   /* ── Card 5 ── */
-  --card-5-bg:         #E3EFFF;
-  --card-5-text:       #111111;
-  --card-5-badge-bg:   #111111;
+  --card-5-bg:         #1a1a2e;
+  --card-5-text:       #ffffff;
+  --card-5-badge-bg:   #FF6600;
   --card-5-badge-text: #ffffff;
 
-  /* ── Add card 6+ here:
-  --card-6-bg:         #1a1a2e;
-  --card-6-text:       #ffffff;
-  --card-6-badge-bg:   #FF6600;
+  /* ── Card 6 ── */
+  --card-6-bg:         #E3EFFF;
+  --card-6-text:       #111111;
+  --card-6-badge-bg:   #111111;
   --card-6-badge-text: #ffffff;
-  ── */
+
+  /* ── Card 7 ── */
+  --card-7-bg:         #2C2C2C;
+  --card-7-text:       #DDDDDD;
+  --card-7-badge-bg:   #ffffff;
+  --card-7-badge-text: #111111;
+
+  /* ── Card 8 ── */
+  --card-8-bg:         #E3EFFF;
+  --card-8-text:       #111111;
+  --card-8-badge-bg:   #111111;
+  --card-8-badge-text: #ffffff;
+
+  /* ── Card 9 ── */
+  --card-9-bg:         #2C2C2C;
+  --card-9-text:       #DDDDDD;
+  --card-9-badge-bg:   #ffffff;
+  --card-9-badge-text: #111111;
+
+  /* ── Card 10 — Location (special, dark + orange accent) ── */
+  --card-10-bg:         #0d0d0d;
+  --card-10-text:       #ffffff;
+  --card-10-badge-bg:   #FF6600;
+  --card-10-badge-text: #ffffff;
 
   /* ── Global tokens ── */
   --sorell-orange: #FF6600;
@@ -47,7 +69,7 @@
   --font-funnel:   'Funnel Display', sans-serif;
   --font-question: 'Funnel Display', sans-serif;
   --font-space:    'Space Grotesk', sans-serif;
-  --font-123: 'Google Sans', 'Product Sans', sans-serif;
+  --font-123:      'Google Sans', 'Product Sans', sans-serif;
 }
 
 /* =====================================================
@@ -64,7 +86,7 @@ body {
 }
 
 /* =====================================================
-   QUIZ PAGE — background image, full screen
+   QUIZ PAGE
    ===================================================== */
 #quiz-page {
   width: 100vw;
@@ -80,7 +102,7 @@ body {
   background-repeat: no-repeat;
   background-color: #000000;
   padding-top: 90px;
-  padding-bottom: 0; /* remove bottom padding — swipe text is now absolute */
+  padding-bottom: 0;
   gap: 20px;
 }
 
@@ -93,8 +115,9 @@ body {
   position: relative;
   touch-action: none;
   flex-shrink: 0;
-  margin-top: 0vh;  /* pushes it below center — 8vh adapts to any screen height */
+  margin-top: 0vh;
 }
+
 /* 4:5 aspect ratio */
 #question-stack {
   width: 100%;
@@ -103,7 +126,7 @@ body {
 }
 
 /* =====================================================
-   CARD BASE — GSAP owns all animation, no CSS transitions
+   CARD BASE
    ===================================================== */
 .quiz-card {
   position: absolute;
@@ -134,8 +157,12 @@ body {
 }
 .quiz-card:active { cursor: grabbing; }
 
+/* Location card overrides cursor — not draggable */
+.quiz-card.location-card { cursor: default; }
+.quiz-card.location-card:active { cursor: default; }
+
 /* =====================================================
-   PLACEHOLDER BADGE — pill, top-left
+   PLACEHOLDER BADGE
    ===================================================== */
 .placeholder-badge {
   position: absolute;
@@ -153,12 +180,12 @@ body {
 }
 
 /* =====================================================
-   QUESTION TEXT — left-aligned
+   QUESTION TEXT
    ===================================================== */
 .quiz-card .question {
   font-family: var(--font-123);
   text-align: left !important;
-  font-size: clamp(36px, 6.5vw, 32px);
+  font-size: clamp(28px, 6.5vw, 34px);
   font-weight: 500;
   line-height: 1.2;
   word-break: break-word;
@@ -168,45 +195,136 @@ body {
   align-self: flex-start;
   z-index: 2;
   position: relative;
+  margin-top: 12px; /* pushes below badge */
 }
 
 /* =====================================================
-   INDIVIDUAL CARD COLORS
-   To add card 6: copy block, change "5"→"6",
-   add --card-6-* vars in :root above.
+   INDIVIDUAL CARD COLORS — 10 cards
    ===================================================== */
-.quiz-card:nth-child(1) { background-color: var(--card-1-bg); }
-.quiz-card:nth-child(1) .question          { color: var(--card-1-text); }
-.quiz-card:nth-child(1) .placeholder-badge { background-color: var(--card-1-badge-bg); color: var(--card-1-badge-text); }
+.quiz-card:nth-child(1)  { background-color: var(--card-1-bg); }
+.quiz-card:nth-child(1)  .question          { color: var(--card-1-text); }
+.quiz-card:nth-child(1)  .placeholder-badge { background-color: var(--card-1-badge-bg);  color: var(--card-1-badge-text); }
 
-.quiz-card:nth-child(2) { background-color: var(--card-2-bg); }
-.quiz-card:nth-child(2) .question          { color: var(--card-2-text); }
-.quiz-card:nth-child(2) .placeholder-badge { background-color: var(--card-2-badge-bg); color: var(--card-2-badge-text); }
+.quiz-card:nth-child(2)  { background-color: var(--card-2-bg); }
+.quiz-card:nth-child(2)  .question          { color: var(--card-2-text); }
+.quiz-card:nth-child(2)  .placeholder-badge { background-color: var(--card-2-badge-bg);  color: var(--card-2-badge-text); }
 
-.quiz-card:nth-child(3) { background-color: var(--card-3-bg); }
-.quiz-card:nth-child(3) .question          { color: var(--card-3-text); }
-.quiz-card:nth-child(3) .placeholder-badge { background-color: var(--card-3-badge-bg); color: var(--card-3-badge-text); }
+.quiz-card:nth-child(3)  { background-color: var(--card-3-bg); }
+.quiz-card:nth-child(3)  .question          { color: var(--card-3-text); }
+.quiz-card:nth-child(3)  .placeholder-badge { background-color: var(--card-3-badge-bg);  color: var(--card-3-badge-text); }
 
-.quiz-card:nth-child(4) { background-color: var(--card-4-bg); }
-.quiz-card:nth-child(4) .question          { color: var(--card-4-text); }
-.quiz-card:nth-child(4) .placeholder-badge { background-color: var(--card-4-badge-bg); color: var(--card-4-badge-text); }
+.quiz-card:nth-child(4)  { background-color: var(--card-4-bg); }
+.quiz-card:nth-child(4)  .question          { color: var(--card-4-text); }
+.quiz-card:nth-child(4)  .placeholder-badge { background-color: var(--card-4-badge-bg);  color: var(--card-4-badge-text); }
 
-.quiz-card:nth-child(5) { background-color: var(--card-5-bg); }
-.quiz-card:nth-child(5) .question          { color: var(--card-5-text); }
-.quiz-card:nth-child(5) .placeholder-badge { background-color: var(--card-5-badge-bg); color: var(--card-5-badge-text); }
+.quiz-card:nth-child(5)  { background-color: var(--card-5-bg); }
+.quiz-card:nth-child(5)  .question          { color: var(--card-5-text); }
+.quiz-card:nth-child(5)  .placeholder-badge { background-color: var(--card-5-badge-bg);  color: var(--card-5-badge-text); }
 
-/* Card 6 template — uncomment + add vars above:
-.quiz-card:nth-child(6) { background-color: var(--card-6-bg); }
-.quiz-card:nth-child(6) .question          { color: var(--card-6-text); }
-.quiz-card:nth-child(6) .placeholder-badge { background-color: var(--card-6-badge-bg); color: var(--card-6-badge-text); }
-*/
+.quiz-card:nth-child(6)  { background-color: var(--card-6-bg); }
+.quiz-card:nth-child(6)  .question          { color: var(--card-6-text); }
+.quiz-card:nth-child(6)  .placeholder-badge { background-color: var(--card-6-badge-bg);  color: var(--card-6-badge-text); }
+
+.quiz-card:nth-child(7)  { background-color: var(--card-7-bg); }
+.quiz-card:nth-child(7)  .question          { color: var(--card-7-text); }
+.quiz-card:nth-child(7)  .placeholder-badge { background-color: var(--card-7-badge-bg);  color: var(--card-7-badge-text); }
+
+.quiz-card:nth-child(8)  { background-color: var(--card-8-bg); }
+.quiz-card:nth-child(8)  .question          { color: var(--card-8-text); }
+.quiz-card:nth-child(8)  .placeholder-badge { background-color: var(--card-8-badge-bg);  color: var(--card-8-badge-text); }
+
+.quiz-card:nth-child(9)  { background-color: var(--card-9-bg); }
+.quiz-card:nth-child(9)  .question          { color: var(--card-9-text); }
+.quiz-card:nth-child(9)  .placeholder-badge { background-color: var(--card-9-badge-bg);  color: var(--card-9-badge-text); }
+
+.quiz-card:nth-child(10) { background-color: var(--card-10-bg); }
+.quiz-card:nth-child(10) .question          { color: var(--card-10-text); font-size: clamp(22px, 5vw, 26px); }
+.quiz-card:nth-child(10) .placeholder-badge { background-color: var(--card-10-badge-bg); color: var(--card-10-badge-text); }
 
 /* =====================================================
-   SWIPE INSTRUCTIONS — larger, legible over any bg
+   LOCATION CARD — dropdown UI
+   ===================================================== */
+.location-selectors {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  margin-top: 20px;
+  z-index: 3;
+  position: relative;
+}
+
+.loc-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.loc-label {
+  font-family: var(--font-space);
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.loc-select {
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #ffffff;
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-family: var(--font-space);
+  font-size: 15px;
+  font-weight: 600;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  /* Custom dropdown arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23FF6600' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+  transition: border-color 0.2s;
+}
+.loc-select:focus { border-color: var(--sorell-orange); }
+.loc-select option { background: #1a1a1a; color: #fff; }
+
+.loc-confirm-btn {
+  background: var(--sorell-orange);
+  color: #fff;
+  border: none;
+  padding: 16px;
+  border-radius: 14px;
+  font-family: var(--font-space);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: transform 0.15s, opacity 0.15s;
+  letter-spacing: 0.3px;
+}
+.loc-confirm-btn:active { transform: scale(0.97); }
+
+/* Shake animation for empty submit */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+.loc-confirm-btn.shake { animation: shake 0.4s ease; }
+
+/* =====================================================
+   SWIPE INSTRUCTIONS
    ===================================================== */
 #swipe-instructions {
-  position: absolute;   /* taken out of flex flow */
-  bottom: 70px;         /* exactly 20px from bottom edge */
+  position: absolute;
+  bottom: 70px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -218,13 +336,11 @@ body {
 }
 .swipe-label {
   font-family: var(--font-space);
-  font-size: 16px;          /* increased from 13px */
+  font-size: 16px;
   font-weight: 700;
   color: #ffffff;
   letter-spacing: 0.4px;
   white-space: nowrap;
-  padding: 0 20px;
-  /* subtle frosted pill so text reads over any background */
   background: rgba(255,255,255,0.10);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -232,7 +348,6 @@ body {
   border-radius: 100px;
   padding: 10px 24px;
 }
-
 .swipe-icon {
   font-size: 22px;
   font-weight: 900;
@@ -240,7 +355,6 @@ body {
   flex: 1;
   text-align: center;
 }
-
 .swipe-icon-left  { color: #ff5a5a; }
 .swipe-icon-right { color: #50dc50; }
 
@@ -337,6 +451,7 @@ body {
   font-weight: 800;
   cursor: pointer;
   margin-top: 10px;
+  transition: opacity 0.2s;
 }
 
 /* =====================================================
@@ -360,16 +475,12 @@ body {
   border: 1px solid rgba(255,255,255,0.1);
   z-index: 1000;
 }
-
-/* "Sorell." — plain white */
 .nav-logo {
   font-family: var(--font-space);
   font-size: 20px;
   font-weight: 700;
   color: #ffffff;
 }
-
-/* "Home" — Funnel Display, signature orange, clickable */
 .nav-home {
   font-family: var(--font-funnel);
   font-size: 16px;
