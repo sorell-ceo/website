@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function buildLocationCard(q) {
         const options = CITIES.map(c => `<option value="${c}">${c}</option>`).join('');
         return `
-            <div class="placeholder-badge">${q.placeholder}</div>
+            
             <div class="question">${q.question}</div>
             <div class="location-selectors">
                 <div class="loc-group">
