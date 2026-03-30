@@ -93,7 +93,7 @@ body {
   position: relative;
   touch-action: none;
   flex-shrink: 0;
-  margin-top: 2vh;  /* pushes it below center — 8vh adapts to any screen height */
+  margin-top: 0vh;  /* pushes it below center — 8vh adapts to any screen height */
 }
 /* 4:5 aspect ratio */
 #question-stack {
