@@ -145,7 +145,7 @@ body {
   top: 18px;
   left: 18px;
   padding: 5px 13px;
-  border-radius: 100px;
+  border-radius: 80px;
   font-size: 13px;
   font-weight: 700;
   font-family: var(--font-space);
@@ -214,7 +214,7 @@ body {
   width: calc(100vw - 48px);
   max-width: 360px;
   flex-shrink: 0;
-  margin-top: 12px; /* add this line — push it further from the cards */
+  margin-bottom: 12px; /* add this line — push it further from the cards */
   gap: 0;
 }
 
