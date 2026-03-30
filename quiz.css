@@ -1,8 +1,7 @@
 /* =====================================================
    CARD COLORS — edit ONLY these values per card.
-   To add card 6, 7, 8... just copy a block and
-   increment the number. CSS handles colors only —
-   positioning/rotation is 100% done by GSAP in JS.
+   To add card 6, 7, 8... copy a block + increment.
+   CSS handles colors only — GSAP handles positions.
    ===================================================== */
 :root {
   /* ── Card 1 ── */
@@ -35,17 +34,18 @@
   --card-5-badge-bg:   #111111;
   --card-5-badge-text: #ffffff;
 
-  /* ── Add card 6 here: ──
+  /* ── Add card 6+ here:
   --card-6-bg:         #1a1a2e;
   --card-6-text:       #ffffff;
   --card-6-badge-bg:   #FF6600;
   --card-6-badge-text: #ffffff;
-  */
+  ── */
 
   /* ── Global tokens ── */
   --sorell-orange: #FF6600;
   --bg-dark:       #000000;
-  --font-question: 'Google Sans', 'Product Sans', sans-serif;
+  --font-funnel:   'Funnel Display', sans-serif;
+  --font-question: 'Funnel Display', sans-serif;
   --font-space:    'Space Grotesk', sans-serif;
 }
 
@@ -55,7 +55,6 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  background-color: var(--bg-dark);
   font-family: var(--font-space);
   color: white;
   width: 100vw;
@@ -64,7 +63,7 @@ body {
 }
 
 /* =====================================================
-   QUIZ PAGE — full screen, flex column
+   QUIZ PAGE — background image, full screen
    ===================================================== */
 #quiz-page {
   width: 100vw;
@@ -74,26 +73,17 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
-  /* room for fixed nav at top, swipe hint at bottom */
+  /* BG image — 1080×1920 designed for mobile */
+  background-image: url('assets/quiz-page-bg.png');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  /* Fallback color while image loads */
+  background-color: #000000;
+  /* Cards centered with nav clearance top, swipe text clearance bottom */
   padding-top: 90px;
-  padding-bottom: 70px;
-  gap: 16px;
-}
-
-/* =====================================================
-   BIG HEADING
-   ===================================================== */
-.quiz-heading {
-  font-family: var(--font-question);
-  font-size: clamp(22px, 6vw, 32px);
-  font-weight: 700;
-  color: #ffffff;
-  text-align: center;
-  letter-spacing: -0.3px;
-  line-height: 1.1;
-  width: calc(100vw - 48px);
-  max-width: 360px;
-  flex-shrink: 0;
+  padding-bottom: 80px;
+  gap: 20px;
 }
 
 /* =====================================================
@@ -115,8 +105,7 @@ body {
 }
 
 /* =====================================================
-   CARD BASE
-   NO CSS transitions — GSAP owns everything here.
+   CARD BASE — GSAP owns all animation, no CSS transitions
    ===================================================== */
 .quiz-card {
   position: absolute;
@@ -133,8 +122,6 @@ body {
   padding: 30px;
 
   transform-origin: bottom center;
-
-  /* GPU pre-promotion — zero compositor lag on first drag */
   will-change: transform, opacity;
 
   box-shadow: 0 12px 40px rgba(0,0,0,0.6),
@@ -145,28 +132,12 @@ body {
   -webkit-user-select: none;
   overflow: hidden;
   opacity: 1;
-
-  /* Tint overlay — GSAP drives its opacity during drag */
   isolation: isolate;
 }
 .quiz-card:active { cursor: grabbing; }
 
-/* Pseudo-element that becomes red/green tint during swipe */
-.quiz-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  opacity: 0;           /* starts invisible, GSAP animates this */
-  pointer-events: none;
-  /* color set inline by JS — red or green */
-  background-color: transparent;
-  transition: none;     /* GSAP owns this too */
-  z-index: 1;
-}
-
 /* =====================================================
-   PLACEHOLDER BADGE — rounded pill, top-left
+   PLACEHOLDER BADGE — pill, top-left
    ===================================================== */
 .placeholder-badge {
   position: absolute;
@@ -180,11 +151,11 @@ body {
   letter-spacing: 0.2px;
   text-transform: capitalize;
   line-height: 1.4;
-  z-index: 2;           /* above tint overlay */
+  z-index: 2;
 }
 
 /* =====================================================
-   QUESTION TEXT — Google Sans, left-aligned
+   QUESTION TEXT — left-aligned
    ===================================================== */
 .quiz-card .question {
   font-family: var(--font-question);
@@ -197,17 +168,14 @@ body {
   -webkit-user-select: none;
   width: 100%;
   align-self: flex-start;
-  z-index: 2;           /* above tint overlay */
+  z-index: 2;
   position: relative;
 }
 
 /* =====================================================
    INDIVIDUAL CARD COLORS
-   Positions/rotations → GSAP in quiz.js
-   Colors/badges       → here
-
-   TO ADD CARD 6: copy the block below, change "5" to "6",
-   and add --card-6-* variables in :root above.
+   To add card 6: copy block, change "5"→"6",
+   add --card-6-* vars in :root above.
    ===================================================== */
 .quiz-card:nth-child(1) { background-color: var(--card-1-bg); }
 .quiz-card:nth-child(1) .question          { color: var(--card-1-text); }
@@ -229,40 +197,46 @@ body {
 .quiz-card:nth-child(5) .question          { color: var(--card-5-text); }
 .quiz-card:nth-child(5) .placeholder-badge { background-color: var(--card-5-badge-bg); color: var(--card-5-badge-text); }
 
-/* ── Card 6 template (uncomment + add vars above) ──
+/* Card 6 template — uncomment + add vars above:
 .quiz-card:nth-child(6) { background-color: var(--card-6-bg); }
 .quiz-card:nth-child(6) .question          { color: var(--card-6-text); }
 .quiz-card:nth-child(6) .placeholder-badge { background-color: var(--card-6-badge-bg); color: var(--card-6-badge-text); }
 */
 
 /* =====================================================
-   SWIPE INSTRUCTIONS
+   SWIPE INSTRUCTIONS — larger, legible over any bg
    ===================================================== */
 #swipe-instructions {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0;                 /* gap is handled by icon spacing */
   width: calc(100vw - 48px);
   max-width: 360px;
   flex-shrink: 0;
+  gap: 0;
 }
 
 .swipe-label {
   font-family: var(--font-space);
-  font-size: 13px;
+  font-size: 16px;          /* increased from 13px */
   font-weight: 700;
-  color: rgba(255,255,255,0.75);
+  color: #ffffff;
   letter-spacing: 0.4px;
   white-space: nowrap;
-  padding: 0 18px;
+  padding: 0 20px;
+  /* subtle frosted pill so text reads over any background */
+  background: rgba(255,255,255,0.10);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 100px;
+  padding: 10px 24px;
 }
 
 .swipe-icon {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 900;
   display: inline-block;
-  /* equal flex so icons sit at equal distance from label */
   flex: 1;
   text-align: center;
 }
@@ -386,14 +360,23 @@ body {
   border: 1px solid rgba(255,255,255,0.1);
   z-index: 1000;
 }
+
+/* "Sorell." — plain white */
 .nav-logo {
   font-family: var(--font-space);
   font-size: 20px;
   font-weight: 700;
+  color: #ffffff;
+}
+
+/* "Home" — Funnel Display, signature orange, clickable */
+.nav-home {
+  font-family: var(--font-funnel);
+  font-size: 16px;
+  font-weight: 600;
   color: var(--sorell-orange);
+  cursor: pointer;
+  letter-spacing: 0.2px;
+  transition: opacity 0.2s;
 }
-.nav-tag {
-  font-family: var(--font-space);
-  font-size: 13px;
-  color: rgba(255,255,255,0.6);
-}
+.nav-home:active { opacity: 0.7; }
