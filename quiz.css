@@ -93,7 +93,7 @@ body {
   position: relative;
   touch-action: none;
   flex-shrink: 0;
-  margin-top: 4vh;  /* pushes it below center — 8vh adapts to any screen height */
+  margin-top: 2vh;  /* pushes it below center — 8vh adapts to any screen height */
 }
 /* 4:5 aspect ratio */
 #question-stack {
@@ -206,7 +206,7 @@ body {
    ===================================================== */
 #swipe-instructions {
   position: absolute;   /* taken out of flex flow */
-  bottom: 50px;         /* exactly 20px from bottom edge */
+  bottom: 70px;         /* exactly 20px from bottom edge */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -356,7 +356,7 @@ body {
   background: rgba(255,255,255,0.06);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
-  border-radius: 40px;
+  border-radius: 20px;
   border: 1px solid rgba(255,255,255,0.1);
   z-index: 1000;
 }
