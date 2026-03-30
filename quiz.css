@@ -4,34 +4,34 @@
    ===================================================== */
 :root {
   /* ── Card 1 ── */
-  --card-1-bg:         #E3EFFF;
-  --card-1-text:       #111111;
-  --card-1-badge-bg:   #111111;
+  --card-1-bg:         #2D70C9;
+  --card-1-text:       #FFFFFF;
+  --card-1-badge-bg:   #2C2C2C;
   --card-1-badge-text: #ffffff;
 
   /* ── Card 2 ── */
-  --card-2-bg:         #2C2C2C;
-  --card-2-text:       #DDDDDD;
-  --card-2-badge-bg:   #ffffff;
-  --card-2-badge-text: #111111;
+  --card-2-bg:         #E3EFFF;
+  --card-2-text:       #111111;
+  --card-2-badge-bg:   #111111;
+  --card-2-badge-text: #FFFFFF;
 
   /* ── Card 3 ── */
-  --card-3-bg:         #E3EFFF;
-  --card-3-text:       #111111;
-  --card-3-badge-bg:   #111111;
-  --card-3-badge-text: #ffffff;
+  --card-3-bg:         #2C2C2C;
+  --card-3-text:       #DDDDDD;
+  --card-3-badge-bg:   #FFFFFF;
+  --card-3-badge-text: #111111;
 
   /* ── Card 4 ── */
-  --card-4-bg:         #2C2C2C;
-  --card-4-text:       #DDDDDD;
-  --card-4-badge-bg:   #ffffff;
-  --card-4-badge-text: #111111;
+  --card-4-bg:         #E3EFFF;
+  --card-4-text:       #111111;
+  --card-4-badge-bg:   #111111;
+  --card-4-badge-text: #FFFFFF;
 
   /* ── Card 5 ── */
-  --card-5-bg:         #1a1a2e;
-  --card-5-text:       #ffffff;
-  --card-5-badge-bg:   #FF6600;
-  --card-5-badge-text: #ffffff;
+  --card-5-bg:         #2C2C2C;
+  --card-5-text:       #DDDDDD;
+  --card-5-badge-bg:   #FFFFFF;
+  --card-5-badge-text: #111111;
 
   /* ── Card 6 ── */
   --card-6-bg:         #E3EFFF;
@@ -58,10 +58,10 @@
   --card-9-badge-text: #111111;
 
   /* ── Card 10 — Location (special, dark + orange accent) ── */
-  --card-10-bg:         #0d0d0d;
-  --card-10-text:       #ffffff;
-  --card-10-badge-bg:   #FF6600;
-  --card-10-badge-text: #ffffff;
+  --card-10-bg:         #E3EFFF;
+  --card-10-text:       #111111;
+  --card-10-badge-bg:   #111111;
+  --card-10-badge-text: #E3EFFF;
 
   /* ── Global tokens ── */
   --sorell-orange: #FF6600;
