@@ -83,7 +83,7 @@ body {
   background-color: #000000;
   /* Cards centered with nav clearance top, swipe text clearance bottom */
   padding-top: 90px;
-  padding-bottom: 250px;
+  padding-bottom: 80px;
   gap: 20px;
 }
 
@@ -214,6 +214,7 @@ body {
   width: calc(100vw - 48px);
   max-width: 360px;
   flex-shrink: 0;
+  margin-top: 12px; /* add this line — push it further from the cards */
   gap: 0;
 }
 
