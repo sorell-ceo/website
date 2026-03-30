@@ -15,99 +15,175 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     let currentStep = 0;
+    let cards = [];
+    
+    // Drag State
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    function initQuiz() {
+        renderStack();
+        attachDragEvents();
+    }
 
     function renderStack() {
         questionStack.innerHTML = '';
+        cards = [];
         
-        for (let i = questions.length - 1; i >= currentStep; i--) {
+        // Build cards backwards so the first question is on top of the DOM stack
+        for (let i = questions.length - 1; i >= 0; i--) {
             const card = document.createElement('div');
-            const stackPosition = i - currentStep;
-            
             card.className = 'quiz-card';
             card.id = `card-${i}`;
-            
-            if (stackPosition === 0) {
-                card.style.zIndex = 5;
-                card.style.transform = 'translateX(0) translateY(0) rotate(0deg)';
-                card.style.opacity = 1;
-            } else {
-                card.style.zIndex = 5 - stackPosition;
-                const rotation = stackPosition % 2 === 0 ? -(stackPosition * 1.5) : (stackPosition * 1.5);
-                const yOffset = stackPosition * 8;
-                card.style.transform = `translateX(0) translateY(${yOffset}px) rotate(${rotation}deg)`;
-                card.style.opacity = Math.max(0.6, 1 - (stackPosition * 0.15));
-            }
 
             card.innerHTML = `
                 <div class="placeholder-badge">${questions[i].placeholder}</div>
                 <div class="question">${questions[i].question}</div>
             `;
             questionStack.appendChild(card);
+            cards.unshift(card); // Unshift makes cards[0] the first question
         }
+
+        updateStackAnim();
     }
 
-    renderStack();
+    // THE GSAP ANIMATION ENGINE
+    function updateStackAnim() {
+        cards.forEach((card, index) => {
+            let stackPos = index - currentStep;
 
-    let isDragging = false;
-    let startX = 0;
-    let currentX = 0;
-    let topCard = null;
+            if (stackPos < 0) return; // Ignore cards already swiped
+
+            if (stackPos === 0) {
+                // Top Card (Active) - Snaps into the center
+                gsap.to(card, {
+                    x: 0,
+                    y: 0,
+                    rotation: 0,
+                    opacity: 1,
+                    zIndex: 10,
+                    duration: 0.5,
+                    ease: "back.out(1.2)"
+                });
+            } else {
+                // Background Cards - Fans them out using your alternating math
+                const rotation = stackPos % 2 === 0 ? -(stackPos * 1.5) : (stackPos * 1.5);
+                const yOffset = stackPos * 8;
+                
+                gsap.to(card, {
+                    x: 0,
+                    y: yOffset,
+                    rotation: rotation,
+                    opacity: Math.max(0.6, 1 - (stackPos * 0.15)),
+                    zIndex: 10 - stackPos,
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            }
+        });
+    }
+
+    // EVENT POSITION NORMALIZER (Mouse vs Touch)
+    function getEventPos(e) {
+        return e.type.includes('mouse') 
+            ? { x: e.pageX, y: e.pageY } 
+            : { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
 
     function handleDragStart(e) {
-        topCard = document.getElementById(`card-${currentStep}`);
-        if (!topCard) return;
+        if (currentStep >= questions.length) return;
+
+        // Ensure we only drag the active top card
+        const targetCard = e.target.closest('.quiz-card');
+        if (!targetCard || targetCard.id !== `card-${currentStep}`) return;
+
         isDragging = true;
-        startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-        topCard.style.transition = 'none';
+        const pos = getEventPos(e);
+        startX = pos.x;
+        startY = pos.y;
+        currentX = 0;
+        currentY = 0;
+
+        // INSTANTLY kill GSAP transitions on grab so it doesn't fight the finger
+        gsap.killTweensOf(targetCard);
     }
 
     function handleDragMove(e) {
-        if (!isDragging || !topCard) return;
-        currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-        const deltaX = currentX - startX;
-        const rotation = deltaX * 0.05;
-        topCard.style.transform = `translateX(${deltaX}px) translateY(0px) rotate(${rotation}deg)`;
+        if (!isDragging) return;
+        
+        const pos = getEventPos(e);
+        currentX = pos.x - startX;
+        currentY = pos.y - startY;
+
+        const rotation = currentX * 0.05;
+        const topCard = cards[currentStep];
+
+        // gsap.set() moves the card instantly without any delay/transition
+        gsap.set(topCard, {
+            x: currentX,
+            y: currentY,
+            rotation: rotation
+        });
     }
 
-    function handleDragEnd(e) {
-        if (!isDragging || !topCard) return;
+    function handleDragEnd() {
+        if (!isDragging) return;
         isDragging = false;
-        const deltaX = currentX - startX;
-        topCard.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
-        if (deltaX > 100) {
-            triggerSwipe('right');
-        } else if (deltaX < -100) {
-            triggerSwipe('left');
+
+        const topCard = cards[currentStep];
+        const threshold = window.innerWidth * 0.25; // Swipe requires moving 25% of screen width
+
+        if (currentX > threshold) {
+            swipeCardOut(topCard, 1); // Swiped Right
+        } else if (currentX < -threshold) {
+            swipeCardOut(topCard, -1); // Swiped Left
         } else {
-            topCard.style.transform = 'translateX(0) translateY(0) rotate(0deg)';
+            updateStackAnim(); // Didn't swipe far enough, snap back to center
         }
-        topCard = null;
     }
 
-    stackContainer.addEventListener('mousedown', handleDragStart);
-    stackContainer.addEventListener('mousemove', handleDragMove);
-    window.addEventListener('mouseup', handleDragEnd);
-    stackContainer.addEventListener('touchstart', handleDragStart, { passive: false });
-    stackContainer.addEventListener('touchmove', handleDragMove, { passive: false });
-    window.addEventListener('touchend', handleDragEnd);
+    function swipeCardOut(card, direction) {
+        const throwX = window.innerWidth * direction * 1.5;
+        const throwRotation = 45 * direction;
 
-    function triggerSwipe(direction) {
-        const swipingCard = document.getElementById(`card-${currentStep}`);
-        if (!swipingCard) return;
-        swipingCard.classList.add(direction === 'left' ? 'swipe-left' : 'swipe-right');
-        setTimeout(() => {
-            currentStep++;
-            if (currentStep < questions.length) {
-                swipingCard.remove();
-                renderStack();
-            } else {
-                questionStack.remove();
-                swipeInstructions.classList.add('hidden');
-                finalContainer.classList.remove('hidden');
+        // GSAP Hardware-accelerated throw animation
+        gsap.to(card, {
+            x: throwX,
+            rotation: throwRotation,
+            opacity: 0,
+            duration: 0.4,
+            ease: "power2.in",
+            onComplete: () => {
+                card.style.display = 'none'; // Clear from view completely
+                currentStep++;
+                
+                if (currentStep >= questions.length) {
+                    questionStack.style.display = 'none';
+                    swipeInstructions.classList.add('hidden');
+                    finalContainer.classList.remove('hidden');
+                } else {
+                    updateStackAnim(); // Fan out the next set of cards
+                }
             }
-        }, 400);
+        });
     }
 
+    function attachDragEvents() {
+        // Touch
+        stackContainer.addEventListener('touchstart', handleDragStart, { passive: false });
+        document.addEventListener('touchmove', handleDragMove, { passive: false });
+        document.addEventListener('touchend', handleDragEnd);
+
+        // Mouse
+        stackContainer.addEventListener('mousedown', handleDragStart);
+        document.addEventListener('mousemove', handleDragMove);
+        window.addEventListener('mouseup', handleDragEnd);
+    }
+
+    // UI BUTTON LISTENERS
     viewAuraBtn.addEventListener('click', () => {
         leadFormOverlay.classList.add('show');
     });
@@ -117,8 +193,12 @@ document.addEventListener('DOMContentLoaded', () => {
             leadFormOverlay.classList.remove('show');
         }
     });
+
+    // Boot up the quiz
+    initQuiz();
 });
 
+// FORM SUBMIT INTERCEPTOR
 function handleFormSubmit(event) {
     event.preventDefault();
     const userName = document.getElementById('user-name').value;
