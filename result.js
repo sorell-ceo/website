@@ -77,11 +77,11 @@ const STAT_CONFIG = [
 ───────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
 
-    /* ── 1. Parse URL params ── */
+    /* ── 1. Parse URL params with Safety Fallbacks ── */
     const params = new URLSearchParams(window.location.search);
 
-    const userName = params.get('name')        || 'Anonymous';
-    const auraScore = parseInt(params.get('aura') || '8000', 10);
+    const userName  = params.get('name')        || 'Main Character';
+    const auraScore = parseInt(params.get('aura') || '8500', 10);
     const stream    = params.get('stream')     || '';
     const dreamCity = params.get('city')       || '';
 
@@ -92,59 +92,70 @@ document.addEventListener('DOMContentLoaded', () => {
         energy:       parseInt(params.get('energy')      || '0', 10),
     };
 
-    // result.js - UPDATED population logic
-/* ── 2. Resolve archetype ── */
-const archetype = ARCHETYPES.find(a => a.match(scores)) || ARCHETYPES[5]; // Safety fallback
+    /* ── 2. Resolve archetype (First Match or Ghost Mode) ── */
+    // Safety: If find() returns undefined, it defaults to the last archetype (Ghost Mode)
+    const archetype = ARCHETYPES.find(a => a.match(scores)) || ARCHETYPES[ARCHETYPES.length - 1];
 
-/* ── 3. Populate card ── */
-const card = document.getElementById('result-card');
-card.setAttribute('data-archetype', archetype.id);
+    /* ── 3. Populate card INSTANTLY ── */
+    const card = document.getElementById('result-card');
+    if (card) {
+        card.setAttribute('data-archetype', archetype.id);
+        
+        // Populate all text elements
+        const elements = {
+            'archetype-badge':    archetype.badge,
+            'archetype-name':     archetype.name,
+            'archetype-desc':     archetype.desc,
+            'user-name-display':  capitalize(userName),
+            'aura-score-display': auraScore.toLocaleString('en-IN')
+        };
 
-// FILL THESE INSTANTLY to avoid the "Blank Dash" look
-document.getElementById('archetype-badge').textContent   = archetype.badge;
-document.getElementById('archetype-name').textContent    = archetype.name;
-document.getElementById('archetype-desc').textContent    = archetype.desc;
-document.getElementById('user-name-display').textContent = capitalize(userName);
-document.getElementById('aura-score-display').textContent = auraScore.toLocaleString('en-IN'); // Initial display
+        // Safety Loop: ensures we don't crash if an ID is missing in HTML
+        for (const [id, value] of Object.entries(elements)) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        }
 
-const metaParts = [stream, dreamCity].filter(Boolean);
-document.getElementById('user-meta-display').textContent = metaParts.length ? metaParts.join(' · ') : 'Sorell Verified';
+        // Meta line: stream + dream city
+        const metaEl = document.getElementById('user-meta-display');
+        if (metaEl) {
+            const metaParts = [stream, dreamCity].filter(Boolean);
+            metaEl.textContent = metaParts.length ? metaParts.join(' · ') : 'Sorell Verified';
+        }
+    }
 
-    /* ── 4. Build stat bars (starts at 0, animates after paint) ── */
+    /* ── 4. Build stat bars ── */
     const statBarsEl = document.getElementById('stat-bars');
-    statBarsEl.innerHTML = STAT_CONFIG.map(stat => `
-        <div class="stat-row">
-            <div class="stat-meta">
-                <span class="stat-name">${stat.label}</span>
-                <span class="stat-value">${scores[stat.key]} / ${stat.max}</span>
+    if (statBarsEl) {
+        statBarsEl.innerHTML = STAT_CONFIG.map(stat => `
+            <div class="stat-row">
+                <div class="stat-meta">
+                    <span class="stat-name">${stat.label}</span>
+                    <span class="stat-value">${scores[stat.key] || 0} / ${stat.max}</span>
+                </div>
+                <div class="stat-track">
+                    <div class="stat-fill ${stat.cssClass}" id="fill-${stat.key}"></div>
+                </div>
             </div>
-            <div class="stat-track">
-                <div class="stat-fill ${stat.cssClass}" id="fill-${stat.key}"></div>
-            </div>
-        </div>
-    `).join('');
+        `).join('');
+    }
 
-    /* ── 5. Animate everything after first paint ── */
-    requestAnimationFrame(() => {
-        // Slight delay so CSS transitions fire visibly
-        setTimeout(() => {
+    /* ── 5. Animate fills & counter after a short delay ── */
+    setTimeout(() => {
+        STAT_CONFIG.forEach(stat => {
+            const fillEl = document.getElementById(`fill-${stat.key}`);
+            if (fillEl) {
+                const pct = stat.max > 0 ? Math.round((scores[stat.key] / stat.max) * 100) : 0;
+                fillEl.style.width = `${Math.min(pct, 100)}%`;
+            }
+        });
+        animateScore(auraScore);
+    }, 400);
 
-            // Animate stat bar fills
-            STAT_CONFIG.forEach(stat => {
-                const fillEl = document.getElementById(`fill-${stat.key}`);
-                if (fillEl) {
-                    const pct = stat.max > 0
-                        ? Math.round((scores[stat.key] / stat.max) * 100)
-                        : 0;
-                    fillEl.style.width = `${pct}%`;
-                }
-            });
-
-            // Animate score count-up
-            animateScore(auraScore);
-
-        }, 300);
-    });
+    /* ── 6. Share button ── */
+    const shareBtn = document.getElementById('share-btn');
+    if (shareBtn) shareBtn.addEventListener('click', handleShare);
+});
 
     /* ── 6. Share button ── */
     document.getElementById('share-btn').addEventListener('click', handleShare);
