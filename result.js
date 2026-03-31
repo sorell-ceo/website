@@ -92,22 +92,23 @@ document.addEventListener('DOMContentLoaded', () => {
         energy:       parseInt(params.get('energy')      || '0', 10),
     };
 
-    /* ── 2. Resolve archetype ── */
-    const archetype = ARCHETYPES.find(a => a.match(scores));
+    // result.js - UPDATED population logic
+/* ── 2. Resolve archetype ── */
+const archetype = ARCHETYPES.find(a => a.match(scores)) || ARCHETYPES[5]; // Safety fallback
 
-    /* ── 3. Populate card ── */
-    const card = document.getElementById('result-card');
-    card.setAttribute('data-archetype', archetype.id);
+/* ── 3. Populate card ── */
+const card = document.getElementById('result-card');
+card.setAttribute('data-archetype', archetype.id);
 
-    document.getElementById('archetype-badge').textContent   = archetype.badge;
-    document.getElementById('archetype-name').textContent    = archetype.name;
-    document.getElementById('archetype-desc').textContent    = archetype.desc;
-    document.getElementById('user-name-display').textContent = capitalize(userName);
+// FILL THESE INSTANTLY to avoid the "Blank Dash" look
+document.getElementById('archetype-badge').textContent   = archetype.badge;
+document.getElementById('archetype-name').textContent    = archetype.name;
+document.getElementById('archetype-desc').textContent    = archetype.desc;
+document.getElementById('user-name-display').textContent = capitalize(userName);
+document.getElementById('aura-score-display').textContent = auraScore.toLocaleString('en-IN'); // Initial display
 
-    // Meta line: stream + dream city
-    const metaParts = [stream, dreamCity].filter(Boolean);
-    document.getElementById('user-meta-display').textContent =
-        metaParts.length ? metaParts.join(' · ') : 'Sorell Verified';
+const metaParts = [stream, dreamCity].filter(Boolean);
+document.getElementById('user-meta-display').textContent = metaParts.length ? metaParts.join(' · ') : 'Sorell Verified';
 
     /* ── 4. Build stat bars (starts at 0, animates after paint) ── */
     const statBarsEl = document.getElementById('stat-bars');
