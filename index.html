@@ -1,367 +1,324 @@
-import { useState, useEffect, useRef } from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Instagram Growth Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f4f0;min-height:100vh;padding:1.5rem 1rem 3rem}
+input,select,button{font-family:inherit}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+:root{
+--bg:#ffffff;--bg2:#f5f4f0;--bg3:#eeedea;
+--text:#1a1a18;--text2:#6b6a65;--text3:#9a9893;
+--border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.2);
+--radius:10px;--radius-lg:14px
+}
+@media(prefers-color-scheme:dark){
+:root{
+--bg:#1e1e1c;--bg2:#161614;--bg3:#2a2a28;
+--text:#f0efe8;--text2:#a0a09a;--text3:#6b6a65;
+--border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.2)
+}
+body{background:#111110}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const{useState,useEffect,useRef}=React;
 
-const STORAGE_KEY = "ig_growth_data_v1";
-
-const defaultData = {
-  handle: "@yourhandle",
-  goal: 1000,
-  entries: [],
-  posts: [],
-  streak: { lastCheckin: null, count: 0 },
+const STORAGE_KEY="ig_growth_v2";
+const DEF={handle:"@yourhandle",goal:1000,entries:[],posts:[],streak:{lastCheckin:null,count:0}};
+const P={
+  purple:"#7F77DD",purpleL:"#EEEDFE",purpleD:"#3C3489",
+  teal:"#1D9E75",tealL:"#E1F5EE",tealD:"#085041",
+  coral:"#D85A30",coralL:"#FAECE7",
+  amber:"#BA7517",amberL:"#FAEEDA",
+  gray:"#888780",grayL:"#F1EFE8"
 };
 
-function loadData() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? { ...defaultData, ...JSON.parse(raw) } : defaultData;
-  } catch { return defaultData; }
-}
-function saveData(d) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch {}
-}
+function load(){try{const r=localStorage.getItem(STORAGE_KEY);return r?{...DEF,...JSON.parse(r)}:DEF}catch{return DEF}}
+function save(d){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(d))}catch{}}
 
-const PALETTE = {
-  purple: "#7F77DD", purpleLight: "#EEEDFE", purpleDark: "#3C3489",
-  teal: "#1D9E75", tealLight: "#E1F5EE", tealDark: "#085041",
-  coral: "#D85A30", coralLight: "#FAECE7",
-  amber: "#BA7517", amberLight: "#FAEEDA",
-  gray: "#888780", grayLight: "#F1EFE8",
-};
+function App(){
+  const[data,setData]=useState(load);
+  const[tab,setTab]=useState("dashboard");
+  const[newF,setNewF]=useState("");
+  const[newPost,setNewPost]=useState({title:"",type:"Reel",deadline:"",done:false});
+  const[editH,setEditH]=useState(false);
+  const[hInput,setHInput]=useState(data.handle);
+  const[goalInput,setGoalInput]=useState(data.goal);
+  const[flash,setFlash]=useState("");
+  const canvasRef=useRef(null);
 
-export default function App() {
-  const [data, setData] = useState(loadData);
-  const [tab, setTab] = useState("dashboard");
-  const [newFollowers, setNewFollowers] = useState("");
-  const [newPost, setNewPost] = useState({ title: "", type: "Reel", deadline: "", done: false });
-  const [editHandle, setEditHandle] = useState(false);
-  const [handleInput, setHandleInput] = useState(data.handle);
-  const [goalInput, setGoalInput] = useState(data.goal);
-  const [flash, setFlash] = useState("");
-  const canvasRef = useRef(null);
+  useEffect(()=>{save(data)},[data]);
+  useEffect(()=>{if(tab==="dashboard")setTimeout(drawChart,50)},[data.entries,tab]);
 
-  useEffect(() => { saveData(data); }, [data]);
+  const upd=patch=>setData(d=>({...d,...patch}));
 
-  useEffect(() => {
-    if (tab === "dashboard") drawChart();
-  }, [data.entries, tab]);
+  function showFlash(msg){setFlash(msg);setTimeout(()=>setFlash(""),2500)}
 
-  function update(patch) { setData(d => ({ ...d, ...patch })); }
-
-  function logFollowers() {
-    const n = parseInt(newFollowers);
-    if (isNaN(n) || n < 0) return;
-    const today = new Date().toISOString().slice(0, 10);
-    const entries = [...data.entries.filter(e => e.date !== today), { date: today, count: n }]
-      .sort((a, b) => a.date.localeCompare(b.date));
-    update({ entries });
-    setNewFollowers("");
-    setFlash("Follower count saved!");
-    setTimeout(() => setFlash(""), 2000);
+  function logFollowers(){
+    const n=parseInt(newF);
+    if(isNaN(n)||n<0)return;
+    const today=new Date().toISOString().slice(0,10);
+    const entries=[...data.entries.filter(e=>e.date!==today),{date:today,count:n}].sort((a,b)=>a.date.localeCompare(b.date));
+    upd({entries});setNewF("");showFlash("Follower count saved!");
   }
 
-  function checkin() {
-    const today = new Date().toISOString().slice(0, 10);
-    const { lastCheckin, count } = data.streak;
-    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-    if (lastCheckin === today) { setFlash("Already checked in today!"); setTimeout(() => setFlash(""), 2000); return; }
-    const newCount = lastCheckin === yesterday ? count + 1 : 1;
-    update({ streak: { lastCheckin: today, count: newCount } });
-    setFlash(`Day ${newCount} streak! Keep going!`);
-    setTimeout(() => setFlash(""), 2500);
+  function checkin(){
+    const today=new Date().toISOString().slice(0,10);
+    const yest=new Date(Date.now()-86400000).toISOString().slice(0,10);
+    const{lastCheckin,count}=data.streak;
+    if(lastCheckin===today){showFlash("Already checked in today!");return}
+    const nc=lastCheckin===yest?count+1:1;
+    upd({streak:{lastCheckin:today,count:nc}});
+    showFlash(`Day ${nc} streak! Keep going!`);
   }
 
-  function addPost() {
-    if (!newPost.title.trim()) return;
-    const posts = [...data.posts, { ...newPost, id: Date.now() }];
-    update({ posts });
-    setNewPost({ title: "", type: "Reel", deadline: "", done: false });
+  function addPost(){
+    if(!newPost.title.trim())return;
+    upd({posts:[...data.posts,{...newPost,id:Date.now()}]});
+    setNewPost({title:"",type:"Reel",deadline:"",done:false});
   }
 
-  function togglePost(id) {
-    update({ posts: data.posts.map(p => p.id === id ? { ...p, done: !p.done } : p) });
-  }
-
-  function removePost(id) {
-    update({ posts: data.posts.filter(p => p.id !== id) });
-  }
-
-  const latest = data.entries.length ? data.entries[data.entries.length - 1].count : 0;
-  const prev = data.entries.length > 1 ? data.entries[data.entries.length - 2].count : 0;
-  const weekGain = (() => {
-    if (data.entries.length < 2) return 0;
-    const wAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
-    const old = [...data.entries].reverse().find(e => e.date <= wAgo);
-    return old ? latest - old.count : latest - data.entries[0].count;
+  const today=new Date().toISOString().slice(0,10);
+  const latest=data.entries.length?data.entries[data.entries.length-1].count:0;
+  const weekGain=(()=>{
+    if(data.entries.length<2)return 0;
+    const wAgo=new Date(Date.now()-7*86400000).toISOString().slice(0,10);
+    const old=[...data.entries].reverse().find(e=>e.date<=wAgo);
+    return old?latest-old.count:latest-data.entries[0].count;
   })();
-  const progress = Math.min(100, Math.round((latest / data.goal) * 100));
-  const todayChecked = data.streak.lastCheckin === new Date().toISOString().slice(0, 10);
+  const progress=Math.min(100,Math.round((latest/data.goal)*100));
+  const todayChecked=data.streak.lastCheckin===today;
 
-  function drawChart() {
-    const canvas = canvasRef.current;
-    if (!canvas || !data.entries.length) return;
-    const ctx = canvas.getContext("2d");
-    const W = canvas.offsetWidth || 600;
-    const H = 160;
-    canvas.width = W;
-    canvas.height = H;
-    ctx.clearRect(0, 0, W, H);
-
-    const entries = data.entries.slice(-14);
-    const vals = entries.map(e => e.count);
-    const minV = Math.min(...vals);
-    const maxV = Math.max(...vals, minV + 1);
-    const pad = { l: 40, r: 16, t: 16, b: 28 };
-    const cW = W - pad.l - pad.r;
-    const cH = H - pad.t - pad.b;
-
-    const x = i => pad.l + (i / (entries.length - 1 || 1)) * cW;
-    const y = v => pad.t + cH - ((v - minV) / (maxV - minV)) * cH;
-
-    // Grid
-    ctx.strokeStyle = "rgba(136,135,128,0.15)";
-    ctx.lineWidth = 0.5;
-    [0, 0.5, 1].forEach(t => {
-      const yy = pad.t + t * cH;
-      ctx.beginPath(); ctx.moveTo(pad.l, yy); ctx.lineTo(W - pad.r, yy); ctx.stroke();
-      const val = Math.round(maxV - t * (maxV - minV));
-      ctx.fillStyle = "rgba(136,135,128,0.7)";
-      ctx.font = "10px sans-serif";
-      ctx.textAlign = "right";
-      ctx.fillText(val, pad.l - 4, yy + 3.5);
+  function drawChart(){
+    const canvas=canvasRef.current;
+    if(!canvas||data.entries.length<2)return;
+    const ctx=canvas.getContext("2d");
+    const W=canvas.offsetWidth||600;const H=160;
+    canvas.width=W;canvas.height=H;ctx.clearRect(0,0,W,H);
+    const entries=data.entries.slice(-14);
+    const vals=entries.map(e=>e.count);
+    const minV=Math.min(...vals),maxV=Math.max(...vals,minV+1);
+    const pad={l:42,r:16,t:16,b:28};
+    const cW=W-pad.l-pad.r,cH=H-pad.t-pad.b;
+    const xp=i=>pad.l+(i/(entries.length-1||1))*cW;
+    const yp=v=>pad.t+cH-((v-minV)/(maxV-minV))*cH;
+    ctx.strokeStyle="rgba(136,135,128,0.15)";ctx.lineWidth=0.5;
+    [0,0.5,1].forEach(t=>{
+      const yy=pad.t+t*cH;
+      ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(W-pad.r,yy);ctx.stroke();
+      ctx.fillStyle="rgba(136,135,128,0.7)";ctx.font="10px sans-serif";ctx.textAlign="right";
+      ctx.fillText(Math.round(maxV-t*(maxV-minV)),pad.l-4,yy+3.5);
     });
-
-    // Area fill
-    const grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + cH);
-    grad.addColorStop(0, "rgba(127,119,221,0.22)");
-    grad.addColorStop(1, "rgba(127,119,221,0.0)");
+    const grad=ctx.createLinearGradient(0,pad.t,0,pad.t+cH);
+    grad.addColorStop(0,"rgba(127,119,221,0.22)");grad.addColorStop(1,"rgba(127,119,221,0)");
     ctx.beginPath();
-    entries.forEach((e, i) => i === 0 ? ctx.moveTo(x(i), y(e.count)) : ctx.lineTo(x(i), y(e.count)));
-    ctx.lineTo(x(entries.length - 1), pad.t + cH);
-    ctx.lineTo(x(0), pad.t + cH);
-    ctx.closePath();
-    ctx.fillStyle = grad;
-    ctx.fill();
-
-    // Line
-    ctx.beginPath();
-    ctx.strokeStyle = PALETTE.purple;
-    ctx.lineWidth = 2;
-    ctx.lineJoin = "round";
-    entries.forEach((e, i) => i === 0 ? ctx.moveTo(x(i), y(e.count)) : ctx.lineTo(x(i), y(e.count)));
-    ctx.stroke();
-
-    // Dots
-    entries.forEach((e, i) => {
-      ctx.beginPath();
-      ctx.arc(x(i), y(e.count), 3.5, 0, Math.PI * 2);
-      ctx.fillStyle = "#fff";
-      ctx.fill();
-      ctx.strokeStyle = PALETTE.purple;
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
+    entries.forEach((e,i)=>i===0?ctx.moveTo(xp(i),yp(e.count)):ctx.lineTo(xp(i),yp(e.count)));
+    ctx.lineTo(xp(entries.length-1),pad.t+cH);ctx.lineTo(xp(0),pad.t+cH);ctx.closePath();
+    ctx.fillStyle=grad;ctx.fill();
+    ctx.beginPath();ctx.strokeStyle=P.purple;ctx.lineWidth=2;ctx.lineJoin="round";
+    entries.forEach((e,i)=>i===0?ctx.moveTo(xp(i),yp(e.count)):ctx.lineTo(xp(i),yp(e.count)));ctx.stroke();
+    entries.forEach((e,i)=>{
+      ctx.beginPath();ctx.arc(xp(i),yp(e.count),3.5,0,Math.PI*2);
+      ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle=P.purple;ctx.lineWidth=1.5;ctx.stroke();
     });
-
-    // X labels
-    ctx.fillStyle = "rgba(136,135,128,0.8)";
-    ctx.font = "9px sans-serif";
-    ctx.textAlign = "center";
-    entries.forEach((e, i) => {
-      if (entries.length <= 7 || i % 2 === 0) {
-        ctx.fillText(e.date.slice(5), x(i), H - 6);
-      }
-    });
+    ctx.fillStyle="rgba(136,135,128,0.8)";ctx.font="9px sans-serif";ctx.textAlign="center";
+    entries.forEach((e,i)=>{if(entries.length<=7||i%2===0)ctx.fillText(e.date.slice(5),xp(i),H-6)});
   }
 
-  const tabs = ["dashboard", "planner", "goals"];
-  const tabLabel = { dashboard: "Dashboard", planner: "Content Planner", goals: "Goals" };
-  const postTypes = ["Reel", "Post", "Story", "Collab", "Live"];
-  const milestones = [100, 500, 1000, 5000, 10000].filter(m => m <= data.goal * 1.5);
+  const postTypes=["Reel","Post","Story","Collab","Live"];
+  const milestones=[100,500,1000,5000,10000].filter(m=>m<=data.goal*1.5);
+  const typeColors={Reel:[P.purple,P.purpleL],Post:[P.teal,P.tealL],Story:[P.amber,P.amberL],Collab:[P.coral,P.coralL],Live:["#D4537E","#FBEAF0"]};
 
-  return (
-    <div style={{ fontFamily: "var(--font-sans)", padding: "1.25rem 1rem 2rem", maxWidth: 680, margin: "0 auto" }}>
-      <h2 className="sr-only">Instagram Growth Dashboard</h2>
+  const s={
+    wrap:{maxWidth:680,margin:"0 auto",fontFamily:"inherit"},
+    card:{background:"var(--bg)",border:"0.5px solid var(--border)",borderRadius:"var(--radius-lg)",padding:"1rem 1.25rem"},
+    label:{fontSize:11,fontWeight:500,marginBottom:4},
+    bigNum:{fontSize:22,fontWeight:500},
+    inp:{fontSize:14,padding:"7px 12px",borderRadius:8,border:"0.5px solid var(--border)",background:"var(--bg3)",color:"var(--text)",outline:"none",width:"100%"},
+    btn:(bg,col)=>({padding:"7px 18px",borderRadius:8,background:bg,color:col,border:"none",fontWeight:500,cursor:"pointer",fontSize:14}),
+    tab:(active)=>({fontSize:13,fontWeight:active?500:400,padding:"7px 16px",background:"transparent",border:"none",cursor:"pointer",
+      color:active?P.purple:"var(--text2)",borderBottom:active?`2px solid ${P.purple}`:"2px solid transparent",marginBottom:-1,transition:"color .2s"})
+  };
 
+  return(
+    <div style={s.wrap}>
       {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 36, height: 36, borderRadius: "50%", background: PALETTE.purpleLight, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={PALETTE.purple} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill={PALETTE.purple} stroke="none"/>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"1.25rem"}}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <div style={{width:38,height:38,borderRadius:"50%",background:P.purpleL,display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={P.purple} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill={P.purple} stroke="none"/>
             </svg>
           </div>
-          {editHandle
-            ? <input value={handleInput} onChange={e => setHandleInput(e.target.value)}
-                onBlur={() => { update({ handle: handleInput }); setEditHandle(false); }}
-                onKeyDown={e => e.key === "Enter" && (update({ handle: handleInput }), setEditHandle(false))}
-                style={{ fontSize: 16, fontWeight: 500, border: "none", borderBottom: `1.5px solid ${PALETTE.purple}`, outline: "none", background: "transparent", width: 160, color: "var(--color-text-primary)" }} autoFocus />
-            : <span onClick={() => setEditHandle(true)} style={{ fontSize: 16, fontWeight: 500, cursor: "pointer", color: "var(--color-text-primary)" }}>{data.handle}</span>
+          {editH
+            ?<input value={hInput} onChange={e=>setHInput(e.target.value)}
+               onBlur={()=>{upd({handle:hInput});setEditH(false)}}
+               onKeyDown={e=>e.key==="Enter"&&(upd({handle:hInput}),setEditH(false))}
+               style={{fontSize:16,fontWeight:500,border:"none",borderBottom:`1.5px solid ${P.purple}`,outline:"none",background:"transparent",color:"var(--text)",width:160}} autoFocus/>
+            :<span onClick={()=>setEditH(true)} style={{fontSize:16,fontWeight:500,cursor:"pointer",color:"var(--text)"}}>{data.handle}</span>
           }
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ fontSize: 11, color: "var(--color-text-secondary)", background: todayChecked ? PALETTE.tealLight : PALETTE.grayLight, padding: "4px 10px", borderRadius: 20, fontWeight: 500, color: todayChecked ? PALETTE.tealDark : PALETTE.gray }}>
-            {data.streak.count > 0 ? `${data.streak.count}d streak` : "no streak"}
+        <div style={{display:"flex",gap:8,alignItems:"center"}}>
+          <div style={{fontSize:11,padding:"4px 10px",borderRadius:20,fontWeight:500,background:todayChecked?P.tealL:P.grayL,color:todayChecked?P.tealD:P.gray}}>
+            {data.streak.count>0?`${data.streak.count}d streak`:"no streak"}
           </div>
-          <button onClick={checkin} style={{ fontSize: 12, padding: "5px 12px", borderRadius: 20, background: todayChecked ? PALETTE.tealLight : PALETTE.purple, color: todayChecked ? PALETTE.tealDark : "#fff", border: "none", cursor: "pointer", fontWeight: 500 }}>
-            {todayChecked ? "Posted today!" : "Check in"}
+          <button onClick={checkin} style={{...s.btn(todayChecked?P.tealL:P.purple,todayChecked?P.tealD:"#fff"),fontSize:12,padding:"5px 12px",borderRadius:20}}>
+            {todayChecked?"Posted today!":"Check in"}
           </button>
         </div>
       </div>
 
-      {/* Flash */}
-      {flash && <div style={{ marginBottom: 12, padding: "8px 14px", background: PALETTE.tealLight, color: PALETTE.tealDark, borderRadius: 8, fontSize: 13, fontWeight: 500 }}>{flash}</div>}
+      {flash&&<div style={{marginBottom:12,padding:"8px 14px",background:P.tealL,color:P.tealD,borderRadius:8,fontSize:13,fontWeight:500}}>{flash}</div>}
 
       {/* Tabs */}
-      <div style={{ display: "flex", gap: 4, marginBottom: "1.25rem", borderBottom: "0.5px solid var(--color-border-tertiary)", paddingBottom: 0 }}>
-        {tabs.map(t => (
-          <button key={t} onClick={() => setTab(t)} style={{
-            fontSize: 13, fontWeight: tab === t ? 500 : 400, padding: "6px 14px",
-            background: "transparent", border: "none", cursor: "pointer",
-            color: tab === t ? PALETTE.purple : "var(--color-text-secondary)",
-            borderBottom: tab === t ? `2px solid ${PALETTE.purple}` : "2px solid transparent",
-            marginBottom: -1
-          }}>{tabLabel[t]}</button>
+      <div style={{display:"flex",gap:2,borderBottom:"0.5px solid var(--border)",marginBottom:"1.25rem"}}>
+        {["dashboard","planner","goals"].map(t=>(
+          <button key={t} onClick={()=>setTab(t)} style={s.tab(tab===t)}>
+            {t==="dashboard"?"Dashboard":t==="planner"?"Content Planner":"Goals"}
+          </button>
         ))}
       </div>
 
-      {/* DASHBOARD TAB */}
-      {tab === "dashboard" && (
-        <div>
-          {/* Stat Cards */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 10, marginBottom: "1.25rem" }}>
-            {[
-              { label: "Followers", val: latest.toLocaleString(), color: PALETTE.purple, bg: PALETTE.purpleLight },
-              { label: "This week", val: weekGain >= 0 ? `+${weekGain}` : weekGain, color: weekGain >= 0 ? PALETTE.teal : PALETTE.coral, bg: weekGain >= 0 ? PALETTE.tealLight : PALETTE.coralLight },
-              { label: "Goal", val: `${progress}%`, color: PALETTE.amber, bg: PALETTE.amberLight },
-              { label: "Streak", val: `${data.streak.count}d`, color: PALETTE.teal, bg: PALETTE.tealLight },
-            ].map(s => (
-              <div key={s.label} style={{ background: s.bg, borderRadius: 10, padding: "12px 14px" }}>
-                <div style={{ fontSize: 11, color: s.color, opacity: 0.7, marginBottom: 4, fontWeight: 500 }}>{s.label}</div>
-                <div style={{ fontSize: 22, fontWeight: 500, color: s.color }}>{s.val}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Chart */}
-          <div style={{ background: "var(--color-background-primary)", border: "0.5px solid var(--color-border-tertiary)", borderRadius: 12, padding: "1rem 1rem 0.5rem", marginBottom: "1.25rem" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-              <span style={{ fontSize: 13, fontWeight: 500, color: "var(--color-text-secondary)" }}>Follower growth</span>
-              <span style={{ fontSize: 11, color: "var(--color-text-secondary)" }}>last 14 days</span>
+      {/* DASHBOARD */}
+      {tab==="dashboard"&&<>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(130px,1fr))",gap:10,marginBottom:"1.25rem"}}>
+          {[
+            {label:"Followers",val:latest.toLocaleString(),c:P.purple,bg:P.purpleL},
+            {label:"This week",val:weekGain>=0?`+${weekGain}`:weekGain,c:weekGain>=0?P.teal:P.coral,bg:weekGain>=0?P.tealL:P.coralL},
+            {label:"Goal",val:`${progress}%`,c:P.amber,bg:P.amberL},
+            {label:"Streak",val:`${data.streak.count}d`,c:P.teal,bg:P.tealL},
+          ].map(s=>(
+            <div key={s.label} style={{background:s.bg,borderRadius:10,padding:"12px 14px"}}>
+              <div style={{fontSize:11,color:s.c,opacity:.7,marginBottom:4,fontWeight:500}}>{s.label}</div>
+              <div style={{fontSize:22,fontWeight:500,color:s.c}}>{s.val}</div>
             </div>
-            {data.entries.length < 2
-              ? <div style={{ height: 160, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--color-text-secondary)", fontSize: 13 }}>Log at least 2 days to see your chart</div>
-              : <canvas ref={canvasRef} style={{ width: "100%", display: "block" }} />
-            }
-          </div>
-
-          {/* Log followers */}
-          <div style={{ background: "var(--color-background-primary)", border: "0.5px solid var(--color-border-tertiary)", borderRadius: 12, padding: "1rem 1.25rem" }}>
-            <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 10, color: "var(--color-text-secondary)" }}>Log today's followers</div>
-            <div style={{ display: "flex", gap: 8 }}>
-              <input type="number" placeholder="e.g. 42" value={newFollowers} onChange={e => setNewFollowers(e.target.value)}
-                onKeyDown={e => e.key === "Enter" && logFollowers()}
-                style={{ flex: 1, fontSize: 15, padding: "7px 12px", borderRadius: 8, border: "0.5px solid var(--color-border-tertiary)", background: "var(--color-background-secondary)", color: "var(--color-text-primary)" }} />
-              <button onClick={logFollowers} style={{ padding: "7px 18px", borderRadius: 8, background: PALETTE.purple, color: "#fff", border: "none", fontWeight: 500, cursor: "pointer", fontSize: 14 }}>Save</button>
-            </div>
-          </div>
+          ))}
         </div>
-      )}
 
-      {/* PLANNER TAB */}
-      {tab === "planner" && (
-        <div>
-          <div style={{ background: "var(--color-background-primary)", border: "0.5px solid var(--color-border-tertiary)", borderRadius: 12, padding: "1rem 1.25rem", marginBottom: "1rem" }}>
-            <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 12, color: "var(--color-text-secondary)" }}>Add content idea</div>
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              <input placeholder="Content title or idea..." value={newPost.title} onChange={e => setNewPost(p => ({ ...p, title: e.target.value }))}
-                style={{ flex: "2 1 160px", fontSize: 14, padding: "7px 12px", borderRadius: 8, border: "0.5px solid var(--color-border-tertiary)", background: "var(--color-background-secondary)", color: "var(--color-text-primary)" }} />
-              <select value={newPost.type} onChange={e => setNewPost(p => ({ ...p, type: e.target.value }))}
-                style={{ flex: "0 1 100px", fontSize: 14, padding: "7px 10px", borderRadius: 8, border: "0.5px solid var(--color-border-tertiary)", background: "var(--color-background-secondary)", color: "var(--color-text-primary)" }}>
-                {postTypes.map(t => <option key={t}>{t}</option>)}
-              </select>
-              <input type="date" value={newPost.deadline} onChange={e => setNewPost(p => ({ ...p, deadline: e.target.value }))}
-                style={{ flex: "1 1 130px", fontSize: 14, padding: "7px 10px", borderRadius: 8, border: "0.5px solid var(--color-border-tertiary)", background: "var(--color-background-secondary)", color: "var(--color-text-primary)" }} />
-              <button onClick={addPost} style={{ padding: "7px 18px", borderRadius: 8, background: PALETTE.purple, color: "#fff", border: "none", fontWeight: 500, cursor: "pointer", fontSize: 14 }}>Add</button>
-            </div>
+        <div style={{...s.card,marginBottom:"1.25rem"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+            <span style={{fontSize:13,fontWeight:500,color:"var(--text2)"}}>Follower growth</span>
+            <span style={{fontSize:11,color:"var(--text2)"}}>last 14 days</span>
           </div>
-
-          {data.posts.length === 0
-            ? <div style={{ textAlign: "center", color: "var(--color-text-secondary)", fontSize: 14, padding: "2rem 0" }}>No content planned yet. Add your first idea above!</div>
-            : data.posts.map(p => {
-              const overdue = p.deadline && !p.done && p.deadline < new Date().toISOString().slice(0, 10);
-              const typeColors = { Reel: [PALETTE.purple, PALETTE.purpleLight], Post: [PALETTE.teal, PALETTE.tealLight], Story: [PALETTE.amber, PALETTE.amberLight], Collab: [PALETTE.coral, PALETTE.coralLight], Live: ["#D4537E", "#FBEAF0"] };
-              const [tc, tb] = typeColors[p.type] || [PALETTE.gray, PALETTE.grayLight];
-              return (
-                <div key={p.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderRadius: 10, border: "0.5px solid var(--color-border-tertiary)", marginBottom: 6, background: p.done ? "var(--color-background-secondary)" : "var(--color-background-primary)", opacity: p.done ? 0.6 : 1 }}>
-                  <input type="checkbox" checked={p.done} onChange={() => togglePost(p.id)} style={{ width: 16, height: 16, cursor: "pointer" }} />
-                  <span style={{ flex: 1, fontSize: 14, textDecoration: p.done ? "line-through" : "none", color: "var(--color-text-primary)" }}>{p.title}</span>
-                  <span style={{ fontSize: 11, fontWeight: 500, padding: "2px 8px", borderRadius: 10, background: tb, color: tc }}>{p.type}</span>
-                  {p.deadline && <span style={{ fontSize: 11, color: overdue ? PALETTE.coral : "var(--color-text-secondary)" }}>{overdue ? "overdue · " : ""}{p.deadline}</span>}
-                  <button onClick={() => removePost(p.id)} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-text-secondary)", fontSize: 16, lineHeight: 1, padding: "0 2px" }}>×</button>
-                </div>
-              );
-            })
+          {data.entries.length<2
+            ?<div style={{height:160,display:"flex",alignItems:"center",justifyContent:"center",color:"var(--text2)",fontSize:13}}>Log at least 2 days to see your chart</div>
+            :<canvas ref={canvasRef} style={{width:"100%",display:"block"}}/>
           }
+        </div>
 
-          <div style={{ marginTop: "1.25rem", display: "flex", gap: 8, flexWrap: "wrap" }}>
-            {[
-              { label: "Total", val: data.posts.length, bg: PALETTE.purpleLight, color: PALETTE.purpleDark },
-              { label: "Done", val: data.posts.filter(p => p.done).length, bg: PALETTE.tealLight, color: PALETTE.tealDark },
-              { label: "Pending", val: data.posts.filter(p => !p.done).length, bg: PALETTE.amberLight, color: PALETTE.amber },
-            ].map(s => (
-              <div key={s.label} style={{ background: s.bg, borderRadius: 8, padding: "8px 14px", display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 18, fontWeight: 500, color: s.color }}>{s.val}</span>
-                <span style={{ fontSize: 12, color: s.color, opacity: 0.75 }}>{s.label}</span>
-              </div>
-            ))}
+        <div style={s.card}>
+          <div style={{fontSize:13,fontWeight:500,color:"var(--text2)",marginBottom:10}}>Log today's followers</div>
+          <div style={{display:"flex",gap:8}}>
+            <input type="number" placeholder="e.g. 42" value={newF} onChange={e=>setNewF(e.target.value)}
+              onKeyDown={e=>e.key==="Enter"&&logFollowers()}
+              style={{...s.inp,flex:1}}/>
+            <button onClick={logFollowers} style={s.btn(P.purple,"#fff")}>Save</button>
           </div>
         </div>
-      )}
+      </>}
 
-      {/* GOALS TAB */}
-      {tab === "goals" && (
-        <div>
-          <div style={{ background: "var(--color-background-primary)", border: "0.5px solid var(--color-border-tertiary)", borderRadius: 12, padding: "1rem 1.25rem", marginBottom: "1.25rem" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-              <span style={{ fontSize: 13, fontWeight: 500, color: "var(--color-text-secondary)" }}>Main goal</span>
-              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <input type="number" value={goalInput} onChange={e => setGoalInput(parseInt(e.target.value) || 1000)}
-                  style={{ width: 80, fontSize: 14, padding: "5px 10px", borderRadius: 8, border: "0.5px solid var(--color-border-tertiary)", background: "var(--color-background-secondary)", color: "var(--color-text-primary)", textAlign: "right" }} />
-                <button onClick={() => update({ goal: goalInput })} style={{ padding: "5px 12px", borderRadius: 8, background: PALETTE.purple, color: "#fff", border: "none", fontWeight: 500, cursor: "pointer", fontSize: 13 }}>Set</button>
-              </div>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "var(--color-text-secondary)", marginBottom: 6 }}>
-              <span>{latest.toLocaleString()} followers</span>
-              <span>{data.goal.toLocaleString()} goal</span>
-            </div>
-            <div style={{ height: 14, background: PALETTE.purpleLight, borderRadius: 8, overflow: "hidden" }}>
-              <div style={{ height: "100%", width: `${progress}%`, background: `linear-gradient(90deg, ${PALETTE.purple}, ${PALETTE.teal})`, borderRadius: 8, transition: "width 0.6s ease" }} />
-            </div>
-            <div style={{ textAlign: "right", fontSize: 12, color: PALETTE.purple, marginTop: 4, fontWeight: 500 }}>{progress}%</div>
+      {/* PLANNER */}
+      {tab==="planner"&&<>
+        <div style={{...s.card,marginBottom:"1rem"}}>
+          <div style={{fontSize:13,fontWeight:500,color:"var(--text2)",marginBottom:12}}>Add content idea</div>
+          <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+            <input placeholder="Title or idea..." value={newPost.title} onChange={e=>setNewPost(p=>({...p,title:e.target.value}))}
+              style={{...s.inp,flex:"2 1 160px",width:"auto"}}/>
+            <select value={newPost.type} onChange={e=>setNewPost(p=>({...p,type:e.target.value}))}
+              style={{...s.inp,flex:"0 1 100px",width:"auto"}}>
+              {postTypes.map(t=><option key={t}>{t}</option>)}
+            </select>
+            <input type="date" value={newPost.deadline} onChange={e=>setNewPost(p=>({...p,deadline:e.target.value}))}
+              style={{...s.inp,flex:"1 1 130px",width:"auto"}}/>
+            <button onClick={addPost} style={s.btn(P.purple,"#fff")}>Add</button>
           </div>
+        </div>
 
-          <div style={{ fontSize: 13, fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: 10 }}>Milestones</div>
-          {milestones.map(m => {
-            const done = latest >= m;
-            const pct = Math.min(100, Math.round((latest / m) * 100));
-            return (
-              <div key={m} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", borderRadius: 10, border: "0.5px solid var(--color-border-tertiary)", marginBottom: 8, background: done ? PALETTE.tealLight : "var(--color-background-primary)" }}>
-                <div style={{ width: 28, height: 28, borderRadius: "50%", background: done ? PALETTE.teal : PALETTE.purpleLight, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>
-                  {done ? <span style={{ color: "#fff", fontWeight: 700 }}>✓</span> : <span style={{ color: PALETTE.purple, fontSize: 11, fontWeight: 600 }}>{pct}%</span>}
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 14, fontWeight: 500, color: done ? PALETTE.tealDark : "var(--color-text-primary)" }}>{m.toLocaleString()} followers</div>
-                  {!done && (
-                    <div style={{ height: 5, background: PALETTE.purpleLight, borderRadius: 4, marginTop: 5, overflow: "hidden" }}>
-                      <div style={{ height: "100%", width: `${pct}%`, background: PALETTE.purple, borderRadius: 4 }} />
-                    </div>
-                  )}
-                </div>
-                {done && <span style={{ fontSize: 11, fontWeight: 500, color: PALETTE.tealDark, background: "rgba(29,158,117,0.15)", padding: "2px 10px", borderRadius: 10 }}>Reached!</span>}
+        {data.posts.length===0
+          ?<div style={{textAlign:"center",color:"var(--text2)",fontSize:14,padding:"2rem 0"}}>No content planned yet. Add your first idea above!</div>
+          :data.posts.map(p=>{
+            const overdue=p.deadline&&!p.done&&p.deadline<today;
+            const[tc,tb]=typeColors[p.type]||[P.gray,P.grayL];
+            return(
+              <div key={p.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",borderRadius:10,border:"0.5px solid var(--border)",marginBottom:6,background:p.done?"var(--bg3)":"var(--bg)",opacity:p.done?.6:1}}>
+                <input type="checkbox" checked={p.done} onChange={()=>upd({posts:data.posts.map(x=>x.id===p.id?{...x,done:!x.done}:x)})} style={{width:16,height:16,cursor:"pointer"}}/>
+                <span style={{flex:1,fontSize:14,textDecoration:p.done?"line-through":"none",color:"var(--text)"}}>{p.title}</span>
+                <span style={{fontSize:11,fontWeight:500,padding:"2px 8px",borderRadius:10,background:tb,color:tc}}>{p.type}</span>
+                {p.deadline&&<span style={{fontSize:11,color:overdue?P.coral:"var(--text2)"}}>{overdue?"overdue · ":""}{p.deadline}</span>}
+                <button onClick={()=>upd({posts:data.posts.filter(x=>x.id!==p.id)})} style={{background:"none",border:"none",cursor:"pointer",color:"var(--text2)",fontSize:18,lineHeight:1,padding:"0 2px"}}>×</button>
               </div>
             );
-          })}
+          })
+        }
+        <div style={{marginTop:"1.25rem",display:"flex",gap:8,flexWrap:"wrap"}}>
+          {[
+            {label:"Total",val:data.posts.length,bg:P.purpleL,c:P.purpleD},
+            {label:"Done",val:data.posts.filter(p=>p.done).length,bg:P.tealL,c:P.tealD},
+            {label:"Pending",val:data.posts.filter(p=>!p.done).length,bg:P.amberL,c:P.amber},
+          ].map(s=>(
+            <div key={s.label} style={{background:s.bg,borderRadius:8,padding:"8px 14px",display:"flex",alignItems:"center",gap:8}}>
+              <span style={{fontSize:18,fontWeight:500,color:s.c}}>{s.val}</span>
+              <span style={{fontSize:12,color:s.c,opacity:.75}}>{s.label}</span>
+            </div>
+          ))}
         </div>
-      )}
+      </>}
+
+      {/* GOALS */}
+      {tab==="goals"&&<>
+        <div style={{...s.card,marginBottom:"1.25rem"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+            <span style={{fontSize:13,fontWeight:500,color:"var(--text2)"}}>Main follower goal</span>
+            <div style={{display:"flex",gap:8,alignItems:"center"}}>
+              <input type="number" value={goalInput} onChange={e=>setGoalInput(parseInt(e.target.value)||1000)}
+                style={{...s.inp,width:80,textAlign:"right"}}/>
+              <button onClick={()=>upd({goal:goalInput})} style={{...s.btn(P.purple,"#fff"),padding:"5px 12px",fontSize:13}}>Set</button>
+            </div>
+          </div>
+          <div style={{display:"flex",justifyContent:"space-between",fontSize:12,color:"var(--text2)",marginBottom:6}}>
+            <span>{latest.toLocaleString()} followers</span><span>{data.goal.toLocaleString()} goal</span>
+          </div>
+          <div style={{height:14,background:P.purpleL,borderRadius:8,overflow:"hidden"}}>
+            <div style={{height:"100%",width:`${progress}%`,background:`linear-gradient(90deg,${P.purple},${P.teal})`,borderRadius:8,transition:"width .6s ease"}}/>
+          </div>
+          <div style={{textAlign:"right",fontSize:12,color:P.purple,marginTop:4,fontWeight:500}}>{progress}%</div>
+        </div>
+
+        <div style={{fontSize:13,fontWeight:500,color:"var(--text2)",marginBottom:10}}>Milestones</div>
+        {milestones.map(m=>{
+          const done=latest>=m;
+          const pct=Math.min(100,Math.round((latest/m)*100));
+          return(
+            <div key={m} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 14px",borderRadius:10,border:"0.5px solid var(--border)",marginBottom:8,background:done?P.tealL:"var(--bg)"}}>
+              <div style={{width:28,height:28,borderRadius:"50%",background:done?P.teal:P.purpleL,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                {done?<span style={{color:"#fff",fontWeight:700,fontSize:14}}>✓</span>:<span style={{color:P.purple,fontSize:11,fontWeight:600}}>{pct}%</span>}
+              </div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:14,fontWeight:500,color:done?P.tealD:"var(--text)"}}>{m.toLocaleString()} followers</div>
+                {!done&&<div style={{height:5,background:P.purpleL,borderRadius:4,marginTop:5,overflow:"hidden"}}>
+                  <div style={{height:"100%",width:`${pct}%`,background:P.purple,borderRadius:4}}/>
+                </div>}
+              </div>
+              {done&&<span style={{fontSize:11,fontWeight:500,color:P.tealD,background:"rgba(29,158,117,0.15)",padding:"2px 10px",borderRadius:10}}>Reached!</span>}
+            </div>
+          );
+        })}
+      </>}
     </div>
   );
 }
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
