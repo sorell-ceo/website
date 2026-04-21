@@ -590,6 +590,9 @@
     .header { padding: 16px; }
     .logo { font-size: 22px; }
     .follower-badge { display: none; }
+    .timeline-bar { grid-column: 1 / -1; }
+    .tl-custom-wrap { margin-left: 0; width: 100%; flex-wrap: wrap; }
+    .tl-date-input { width: 120px; }
   }
 
   @media (max-width: 600px) {
@@ -685,6 +688,96 @@
   .tab-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(200, 245, 124, 0.08); }
   .tab-btn:hover:not(.active) { border-color: var(--muted); color: var(--text); }
 
+  /* TIMELINE BAR */
+  .timeline-bar {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 20px;
+    flex-wrap: wrap;
+  }
+
+  .timeline-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-right: 8px;
+    white-space: nowrap;
+  }
+
+  .tl-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 5px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.18s;
+    white-space: nowrap;
+  }
+
+  .tl-btn:hover:not(.active) { border-color: var(--muted); color: var(--text); }
+  .tl-btn.active {
+    border-color: var(--accent);
+    color: #0a0a0f;
+    background: var(--accent);
+    font-weight: 600;
+  }
+
+  .tl-divider {
+    width: 1px;
+    height: 18px;
+    background: var(--border);
+    margin: 0 4px;
+  }
+
+  .tl-custom-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  .tl-date-input {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 5px 10px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 130px;
+  }
+
+  .tl-date-input:focus { border-color: var(--accent2); }
+
+  .tl-apply-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--accent2);
+    border-radius: 7px;
+    padding: 5px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .tl-apply-btn:hover { border-color: var(--accent2); background: rgba(124,156,245,0.1); }
+
   /* ANIMATE IN */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
@@ -753,9 +846,30 @@
     </div>
   </div>
 
+  <!-- TIMELINE BAR -->
+  <div class="timeline-bar" id="timeline-bar">
+    <span class="timeline-label">Timeline</span>
+    <button class="tl-btn active" data-days="7" onclick="setTimeline(7, this)">7D</button>
+    <button class="tl-btn" data-days="14" onclick="setTimeline(14, this)">14D</button>
+    <button class="tl-btn" data-days="30" onclick="setTimeline(30, this)">1M</button>
+    <button class="tl-btn" data-days="60" onclick="setTimeline(60, this)">2M</button>
+    <button class="tl-btn" data-days="90" onclick="setTimeline(90, this)">3M</button>
+    <button class="tl-btn" data-days="180" onclick="setTimeline(180, this)">6M</button>
+    <button class="tl-btn" data-days="365" onclick="setTimeline(365, this)">1Y</button>
+    <div class="tl-divider"></div>
+    <button class="tl-btn" data-days="0" onclick="setTimeline(0, this)">All</button>
+    <div class="tl-custom-wrap">
+      <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;">CUSTOM</span>
+      <input type="date" class="tl-date-input" id="tl-from" placeholder="From">
+      <span style="color:var(--muted);font-size:12px;">→</span>
+      <input type="date" class="tl-date-input" id="tl-to" placeholder="To">
+      <button class="tl-apply-btn" onclick="applyCustomTimeline()">Apply</button>
+    </div>
+  </div>
+
   <!-- VIEWS CHART -->
   <div class="chart-card">
-    <div class="section-title">Views Per Reel</div>
+    <div class="section-title" id="views-chart-title">Views Per Reel</div>
     <div class="chart-wrap">
       <canvas id="viewsChart"></canvas>
     </div>
@@ -794,7 +908,7 @@
   <!-- FOLLOWER CHART -->
   <div class="chart-card">
     <div style="display:flex;align-items:center;justify-content:space-between">
-      <div class="section-title">Follower Growth</div>
+      <div class="section-title" id="follower-chart-title">Follower Growth</div>
       <button class="action-btn" onclick="openFollowerModal()">+ Log Today</button>
     </div>
     <div class="chart-wrap">
@@ -948,6 +1062,71 @@ function getData() {
 function saveReels(reels) { DB.set('reels', reels); }
 function saveFollowerLog(log) { DB.set('followerLog', log); }
 
+// ─── TIMELINE STATE ──────────────────────────────────────────────────────────
+// tlDays: number of days back (0 = all time), or null if custom range
+// tlFrom / tlTo: ISO date strings for custom range
+
+let tlDays = 7;
+let tlFrom = null;
+let tlTo   = null;
+
+function getTimelineRange() {
+  if (tlFrom && tlTo) return { from: tlFrom, to: tlTo };
+  if (tlDays === 0) return { from: '2000-01-01', to: '9999-12-31' };
+  const to = new Date();
+  const from = new Date();
+  from.setDate(from.getDate() - (tlDays - 1));
+  return {
+    from: from.toISOString().slice(0, 10),
+    to:   to.toISOString().slice(0, 10)
+  };
+}
+
+function getTimelineLabel() {
+  if (tlFrom && tlTo) return tlFrom + ' → ' + tlTo;
+  if (tlDays === 0) return 'All Time';
+  if (tlDays === 7) return 'Last 7 Days';
+  if (tlDays === 14) return 'Last 14 Days';
+  if (tlDays === 30) return 'Last Month';
+  if (tlDays === 60) return 'Last 2 Months';
+  if (tlDays === 90) return 'Last 3 Months';
+  if (tlDays === 180) return 'Last 6 Months';
+  if (tlDays === 365) return 'Last Year';
+  return 'Last ' + tlDays + ' Days';
+}
+
+function setTimeline(days, btn) {
+  tlDays = days;
+  tlFrom = null;
+  tlTo   = null;
+  // Clear custom inputs
+  document.getElementById('tl-from').value = '';
+  document.getElementById('tl-to').value = '';
+  // Update active button
+  document.querySelectorAll('.tl-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  refresh();
+}
+
+function applyCustomTimeline() {
+  const from = document.getElementById('tl-from').value;
+  const to   = document.getElementById('tl-to').value;
+  if (!from || !to) { showToast('⚠ Pick both From and To dates'); return; }
+  if (from > to) { showToast('⚠ From must be before To'); return; }
+  tlFrom = from;
+  tlTo   = to;
+  tlDays = null;
+  // Deactivate preset buttons
+  document.querySelectorAll('.tl-btn').forEach(b => b.classList.remove('active'));
+  refresh();
+}
+
+// Filter array of objects with a .date field by current timeline
+function filterByTimeline(arr) {
+  const { from, to } = getTimelineRange();
+  return arr.filter(item => item.date >= from && item.date <= to);
+}
+
 // ─── CHART INSTANCES ─────────────────────────────────────────────────────────
 
 let viewsChartInst = null;
@@ -995,11 +1174,15 @@ const CATEGORY_COLORS = {
 
 function renderCharts() {
   const { reels, followerLog } = getData();
+  const tlLabel = getTimelineLabel();
 
-  // VIEWS CHART
-  const sorted = [...reels].sort((a,b) => a.date.localeCompare(b.date));
-  const labels = sorted.map(r => r.date.slice(5)); // MM-DD
-  const values = sorted.map(r => r.views);
+  // ── VIEWS CHART (filtered by timeline) ──
+  const reelsSorted = [...reels].sort((a,b) => a.date.localeCompare(b.date));
+  const reelsFiltered = filterByTimeline(reelsSorted);
+  const vLabels = reelsFiltered.map(r => r.date.slice(5));
+  const vValues = reelsFiltered.map(r => r.views);
+
+  document.getElementById('views-chart-title').textContent = 'Views Per Reel — ' + tlLabel;
 
   if (viewsChartInst) viewsChartInst.destroy();
   const vc = document.getElementById('viewsChart').getContext('2d');
@@ -1010,10 +1193,10 @@ function renderCharts() {
   viewsChartInst = new Chart(vc, {
     type: 'bar',
     data: {
-      labels,
+      labels: vLabels,
       datasets: [{
         label: 'Views',
-        data: values,
+        data: vValues,
         backgroundColor: grad1,
         borderColor: '#7c9cf5',
         borderWidth: 2,
@@ -1031,22 +1214,25 @@ function renderCharts() {
           borderColor: '#2a2a38',
           borderWidth: 1,
           callbacks: {
-            title: (items) => sorted[items[0].dataIndex]?.topic || '',
+            title: (items) => reelsFiltered[items[0].dataIndex]?.topic || '',
             label: (item) => ' ' + fmt(item.raw) + ' views'
           }
         }
       },
       scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, maxTicksLimit: 12 } },
         y: { grid: { color: '#1a1a24' }, ticks: { callback: v => fmt(v), font: { size: 10 } } }
       }
     }
   });
 
-  // FOLLOWER CHART
-  const flSorted = [...followerLog].sort((a,b) => a.date.localeCompare(b.date)).slice(-30);
-  const flLabels = flSorted.map(f => f.date.slice(5));
-  const flValues = flSorted.map(f => f.count);
+  // ── FOLLOWER CHART (filtered by timeline) ──
+  const flSorted = [...followerLog].sort((a,b) => a.date.localeCompare(b.date));
+  const flFiltered = filterByTimeline(flSorted);
+  const flLabels = flFiltered.map(f => f.date.slice(5));
+  const flValues = flFiltered.map(f => f.count);
+
+  document.getElementById('follower-chart-title').textContent = 'Follower Growth — ' + tlLabel;
 
   if (followerChartInst) followerChartInst.destroy();
   const fc = document.getElementById('followerChart').getContext('2d');
@@ -1065,7 +1251,7 @@ function renderCharts() {
         backgroundColor: grad2,
         fill: true,
         tension: 0.4,
-        pointRadius: 3,
+        pointRadius: flFiltered.length > 60 ? 1 : 3,
         pointBackgroundColor: '#c8f57c',
         pointBorderColor: '#0a0a0f',
         pointBorderWidth: 2,
@@ -1085,7 +1271,7 @@ function renderCharts() {
         }
       },
       scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, maxTicksLimit: 12 } },
         y: { grid: { color: '#1a1a24' }, ticks: { callback: v => fmt(v), font: { size: 10 } } }
       }
     }
@@ -1097,41 +1283,52 @@ function renderCharts() {
 function renderStats() {
   const { reels, followerLog, goal, currentFollowers } = getData();
 
-  const totalViews = reels.reduce((s, r) => s + r.views, 0);
-  const avgViews = reels.length ? Math.round(totalViews / reels.length) : 0;
+  // Stats scoped to timeline
+  const reelsInWindow   = filterByTimeline(reels);
+  const totalViews = reelsInWindow.reduce((s, r) => s + r.views, 0);
+  const avgViews   = reelsInWindow.length ? Math.round(totalViews / reelsInWindow.length) : 0;
 
-  document.getElementById('stat-reels').textContent = reels.length;
+  document.getElementById('stat-reels').textContent = reelsInWindow.length;
   document.getElementById('stat-views').textContent = fmt(totalViews);
   document.getElementById('stat-avg-views').textContent = 'avg ' + fmt(avgViews) + ' / reel';
 
-  // Follower delta
-  const flSorted = [...followerLog].sort((a,b) => a.date.localeCompare(b.date));
-  const latest = flSorted[flSorted.length - 1]?.count ?? currentFollowers;
-  const prev   = flSorted[flSorted.length - 2]?.count ?? null;
-  const delta  = prev !== null ? latest - prev : null;
+  // Follower data: always show latest total, delta from window start vs end
+  const flSorted   = [...followerLog].sort((a,b) => a.date.localeCompare(b.date));
+  const flFiltered = filterByTimeline(flSorted);
+  const latest     = flSorted[flSorted.length - 1]?.count ?? currentFollowers;
+  const windowFirst = flFiltered[0]?.count ?? null;
+  const windowLast  = flFiltered[flFiltered.length - 1]?.count ?? null;
+  const delta = (windowFirst !== null && windowLast !== null && flFiltered.length > 1)
+    ? windowLast - windowFirst : null;
 
   document.getElementById('stat-followers').textContent = fmt(latest);
   document.getElementById('hdr-followers').textContent = fmt(latest);
 
   const deltaEl = document.getElementById('stat-follower-delta');
+  const tlLabel = getTimelineLabel();
   if (delta === null) {
     deltaEl.className = 'stat-delta neutral'; deltaEl.textContent = '— log more days';
   } else if (delta > 0) {
-    deltaEl.className = 'stat-delta up'; deltaEl.textContent = '+' + delta + ' yesterday';
+    deltaEl.className = 'stat-delta up'; deltaEl.textContent = '+' + delta.toLocaleString() + ' in window';
   } else if (delta < 0) {
-    deltaEl.className = 'stat-delta down'; deltaEl.textContent = delta + ' yesterday';
+    deltaEl.className = 'stat-delta down'; deltaEl.textContent = delta.toLocaleString() + ' in window';
   } else {
-    deltaEl.className = 'stat-delta neutral'; deltaEl.textContent = '0 change yesterday';
+    deltaEl.className = 'stat-delta neutral'; deltaEl.textContent = '0 change in window';
   }
 
-  // Consistency (posts in last 7 days)
-  const sevenDaysAgo = new Date(); sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
-  const recentPosts = reels.filter(r => new Date(r.date) >= sevenDaysAgo).length;
-  const consistency = Math.round((recentPosts / 7) * 100);
+  // Consistency: posts in window vs days in window
+  const { from, to } = getTimelineRange();
+  const fromD = new Date(from), toD = new Date(to);
+  const daysInWindow = Math.max(1, Math.round((toD - fromD) / 86400000) + 1);
+  const cappedDays = Math.min(daysInWindow, 365); // cap for very long windows
+  const postsInWindow = reelsInWindow.length;
+  // target = 1 per 3 days for a reasonable baseline, or 1/day if <30 days
+  const targetPosts = daysInWindow <= 30 ? daysInWindow : Math.ceil(daysInWindow / 3);
+  const consistency = Math.min(100, Math.round((postsInWindow / targetPosts) * 100));
   document.getElementById('stat-streak').textContent = consistency + '%';
-  document.getElementById('stat-streak-sub').textContent = recentPosts + ' posts last 7 days';
+  document.getElementById('stat-streak-sub').textContent = postsInWindow + ' posts in ' + getTimelineLabel().toLowerCase();
 
-  // Goal ring
+  // Goal ring — always all-time followers
   const goalPct = Math.min(100, Math.round((latest / goal) * 100));
   const circumference = 251.2;
   const offset = circumference - (circumference * goalPct / 100);
@@ -1145,19 +1342,27 @@ function renderStats() {
   document.getElementById('hdr-goal-label').textContent =
     goal >= 1000000 ? (goal/1000000).toFixed(1)+'M' : goal >= 1000 ? (goal/1000).toFixed(0)+'K' : goal;
 
-  // Streak dots (last 14 days)
+  // Streak dots — scaled to timeline
   const dotsEl = document.getElementById('streak-dots');
   dotsEl.innerHTML = '';
+  const dotDays = Math.min(daysInWindow, 60); // show max 60 dots
   const todayStr = today();
-  for (let i = 13; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
+
+  // Recalculate from end of window
+  const endDate = new Date(to);
+  for (let i = dotDays - 1; i >= 0; i--) {
+    const d = new Date(endDate); d.setDate(d.getDate() - i);
     const ds = d.toISOString().slice(0, 10);
     const posted = reels.some(r => r.date === ds);
     const div = document.createElement('div');
-    div.className = 'streak-dot' + (posted ? ' posted' : '') + (ds === todayStr ? ' today' : '');
+    const size = dotDays > 30 ? '12px' : '20px';
+    div.style.cssText = `width:${size};height:${size};border-radius:3px;background:${posted ? 'var(--accent)' : 'var(--border)'};transition:background 0.3s;flex-shrink:0;${ds === todayStr ? 'box-shadow:0 0 0 2px var(--accent2)' : ''}`;
     div.title = ds;
     dotsEl.appendChild(div);
   }
+  // Update label
+  const streakLabel = dotsEl.previousElementSibling;
+  if (streakLabel) streakLabel.textContent = getTimelineLabel() + (dotDays < daysInWindow ? ' (last ' + dotDays + ' shown)' : '');
 }
 
 // ─── TABLE ───────────────────────────────────────────────────────────────────
@@ -1168,7 +1373,9 @@ function renderTable() {
   const tbody = document.getElementById('reels-tbody');
   const empty = document.getElementById('empty-state');
 
-  const filtered = reels
+  // Apply timeline filter AND search query
+  const timelineReels = filterByTimeline(reels);
+  const filtered = timelineReels
     .filter(r => r.topic.toLowerCase().includes(query) || r.category.toLowerCase().includes(query))
     .sort((a, b) => b.date.localeCompare(a.date));
 
@@ -1179,7 +1386,7 @@ function renderTable() {
   }
   empty.style.display = 'none';
 
-  const maxViews = Math.max(...reels.map(r => r.views), 1);
+  const maxViews = Math.max(...filtered.map(r => r.views), 1);
 
   tbody.innerHTML = filtered.map((r, idx) => {
     const cat = CATEGORY_COLORS[r.category] || CATEGORY_COLORS.Other;
@@ -1319,7 +1526,6 @@ function saveSettings() {
   if (!isNaN(goal) && goal > 0) DB.set('goal', goal);
   if (!isNaN(cf) && cf >= 0) {
     DB.set('currentFollowers', cf);
-    // Also log it with today's date
     const { followerLog } = getData();
     const existing = followerLog.findIndex(f => f.date === today());
     if (existing >= 0) followerLog[existing].count = cf;
@@ -1351,6 +1557,7 @@ function refresh() {
 // ─── INIT ────────────────────────────────────────────────────────────────────
 
 document.getElementById('inp-date').value = today();
+document.getElementById('tl-to').value = today();
 
 refresh();
 </script>
