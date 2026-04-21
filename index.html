@@ -1,324 +1,1358 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Instagram Growth Dashboard</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRID — Instagram Growth Tracker</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f4f0;min-height:100vh;padding:1.5rem 1rem 3rem}
-input,select,button{font-family:inherit}
-input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
-:root{
---bg:#ffffff;--bg2:#f5f4f0;--bg3:#eeedea;
---text:#1a1a18;--text2:#6b6a65;--text3:#9a9893;
---border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.2);
---radius:10px;--radius-lg:14px
-}
-@media(prefers-color-scheme:dark){
-:root{
---bg:#1e1e1c;--bg2:#161614;--bg3:#2a2a28;
---text:#f0efe8;--text2:#a0a09a;--text3:#6b6a65;
---border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.2)
-}
-body{background:#111110}
-}
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #2a2a38;
+    --accent: #c8f57c;
+    --accent2: #7c9cf5;
+    --accent3: #f57c9c;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --danger: #f57c7c;
+    --gold: #f5c57c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(10, 10, 15, 0.92);
+    backdrop-filter: blur(20px);
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--accent);
+  }
+
+  .logo span {
+    color: var(--muted);
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    display: block;
+    letter-spacing: 3px;
+    margin-top: -4px;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .follower-badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .follower-badge .count {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .goal-progress {
+    width: 80px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .goal-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 2px;
+    transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* MAIN LAYOUT */
+  .main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 20px;
+  }
+
+  /* STAT CARDS */
+  .stats-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .stat-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--card-accent, var(--accent));
+    border-radius: 16px 16px 0 0;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 12px;
+  }
+
+  .stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    line-height: 1;
+    color: var(--text);
+  }
+
+  .stat-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    font-weight: 300;
+  }
+
+  .stat-delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-top: 8px;
+  }
+
+  .stat-delta.up { background: rgba(200, 245, 124, 0.12); color: var(--accent); }
+  .stat-delta.down { background: rgba(245, 124, 124, 0.12); color: var(--danger); }
+  .stat-delta.neutral { background: rgba(107, 107, 128, 0.15); color: var(--muted); }
+
+  /* GOAL CARD */
+  .goal-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  .goal-ring-wrap {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .goal-ring {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+  }
+
+  .goal-ring svg {
+    transform: rotate(-90deg);
+  }
+
+  .goal-ring-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .goal-ring-pct {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .goal-ring-label {
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .goal-details { flex: 1; }
+
+  .goal-milestone {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .goal-target {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .goal-remaining {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .goal-edit-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .goal-edit-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* CHART AREAS */
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    grid-column: span 2;
+  }
+
+  .chart-card.full { grid-column: 1 / -1; }
+  .chart-card.single { grid-column: span 1; }
+
+  .chart-wrap {
+    position: relative;
+    height: 200px;
+    margin-top: 16px;
+  }
+
+  /* ADD REEL FORM */
+  .add-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    grid-column: span 1;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .form-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-input:focus { border-color: var(--accent); }
+  .form-input::placeholder { color: var(--muted); }
+
+  select.form-input option {
+    background: var(--surface2);
+  }
+
+  .btn-primary {
+    width: 100%;
+    background: var(--accent);
+    color: #0a0a0f;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+  }
+
+  .btn-primary:hover {
+    background: #d8ff8a;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(200, 245, 124, 0.2);
+  }
+
+  .btn-primary:active { transform: translateY(0); }
+
+  /* REELS TABLE */
+  .table-card {
+    grid-column: 1 / -1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    overflow: hidden;
+  }
+
+  .table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .table-search {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+    width: 200px;
+    transition: border-color 0.2s;
+  }
+
+  .table-search:focus { border-color: var(--accent); }
+  .table-search::placeholder { color: var(--muted); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 14px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(42, 42, 56, 0.5);
+    vertical-align: middle;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+  .topic-pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .view-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .view-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    max-width: 80px;
+  }
+
+  .view-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 2px;
+  }
+
+  .view-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .action-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .action-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .action-btn.del:hover { border-color: var(--danger); color: var(--danger); }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px;
+    width: 400px;
+    max-width: 90vw;
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .modal-overlay.active .modal {
+    transform: scale(1) translateY(0);
+  }
+
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+  }
+
+  .modal-close {
+    float: right;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+
+  .modal-close:hover { color: var(--text); }
+
+  /* STREAK */
+  .streak-dots {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .streak-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    background: var(--border);
+    transition: background 0.3s;
+    position: relative;
+  }
+
+  .streak-dot.posted { background: var(--accent); }
+  .streak-dot.today { box-shadow: 0 0 0 2px var(--accent2); }
+
+  /* CONSISTENCY SCORE */
+  .consistency-bar {
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+
+  .consistency-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .main {
+      grid-template-columns: 1fr;
+      padding: 16px;
+      gap: 14px;
+    }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .chart-card { grid-column: 1 / -1; }
+    .add-card { grid-column: 1 / -1; }
+    .table-card { grid-column: 1 / -1; overflow-x: auto; }
+    .header { padding: 16px; }
+    .logo { font-size: 22px; }
+    .follower-badge { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .stat-value { font-size: 36px; }
+    table { min-width: 600px; }
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 12px;
+    padding: 14px 20px;
+    font-size: 13px;
+    z-index: 500;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 48px;
+    color: var(--muted);
+  }
+
+  .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; line-height: 1.6; }
+
+  /* Follower log */
+  .follower-log-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .follower-log-item:last-child { border-bottom: none; }
+
+  .follower-log-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .follower-log-count {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--accent);
+  }
+
+  .follower-delta {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .follower-delta.pos { background: rgba(200, 245, 124, 0.12); color: var(--accent); }
+  .follower-delta.neg { background: rgba(245, 124, 124, 0.12); color: var(--danger); }
+  .follower-delta.neu { background: rgba(107, 107, 128, 0.15); color: var(--muted); }
+
+  .tab-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+  }
+
+  .tab-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .tab-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(200, 245, 124, 0.08); }
+  .tab-btn:hover:not(.active) { border-color: var(--muted); color: var(--text); }
+
+  /* ANIMATE IN */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .stat-card, .chart-card, .add-card, .table-card, .goal-card {
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .stat-card:nth-child(1) { animation-delay: 0.05s; }
+  .stat-card:nth-child(2) { animation-delay: 0.1s; }
+  .stat-card:nth-child(3) { animation-delay: 0.15s; }
+  .stat-card:nth-child(4) { animation-delay: 0.2s; }
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const{useState,useEffect,useRef}=React;
 
-const STORAGE_KEY="ig_growth_v2";
-const DEF={handle:"@yourhandle",goal:1000,entries:[],posts:[],streak:{lastCheckin:null,count:0}};
-const P={
-  purple:"#7F77DD",purpleL:"#EEEDFE",purpleD:"#3C3489",
-  teal:"#1D9E75",tealL:"#E1F5EE",tealD:"#085041",
-  coral:"#D85A30",coralL:"#FAECE7",
-  amber:"#BA7517",amberL:"#FAEEDA",
-  gray:"#888780",grayL:"#F1EFE8"
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+    GRID
+    <span>INSTAGRAM TRACKER</span>
+  </div>
+  <div class="header-right">
+    <div class="follower-badge">
+      <div>
+        <div style="font-size:10px;color:var(--muted);letter-spacing:1px;font-family:'DM Mono',monospace;">FOLLOWERS</div>
+        <div class="count" id="hdr-followers">0</div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--muted);letter-spacing:1px;font-family:'DM Mono',monospace;margin-bottom:4px;">GOAL <span id="hdr-goal-label">10K</span></div>
+        <div class="goal-progress">
+          <div class="goal-progress-fill" id="hdr-goal-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <button class="goal-edit-btn" onclick="openGoalModal()">⚙ Settings</button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- STATS ROW -->
+  <div class="stats-row">
+    <div class="stat-card" style="--card-accent: var(--accent)">
+      <div class="stat-label">Total Reels</div>
+      <div class="stat-value" id="stat-reels">0</div>
+      <div class="stat-sub">uploaded to date</div>
+    </div>
+    <div class="stat-card" style="--card-accent: var(--accent2)">
+      <div class="stat-label">Total Views</div>
+      <div class="stat-value" id="stat-views">0</div>
+      <div class="stat-sub" id="stat-avg-views">avg 0 / reel</div>
+    </div>
+    <div class="stat-card" style="--card-accent: var(--gold)">
+      <div class="stat-label">Followers</div>
+      <div class="stat-value" id="stat-followers">0</div>
+      <div id="stat-follower-delta" class="stat-delta neutral">— no change</div>
+    </div>
+    <div class="stat-card" style="--card-accent: var(--accent3)">
+      <div class="stat-label">Consistency</div>
+      <div class="stat-value" id="stat-streak">0%</div>
+      <div class="stat-sub" id="stat-streak-sub">posts last 7 days</div>
+    </div>
+  </div>
+
+  <!-- VIEWS CHART -->
+  <div class="chart-card">
+    <div class="section-title">Views Per Reel</div>
+    <div class="chart-wrap">
+      <canvas id="viewsChart"></canvas>
+    </div>
+  </div>
+
+  <!-- GOAL CARD -->
+  <div class="goal-card">
+    <div class="section-title">Goal Progress</div>
+    <div class="goal-ring-wrap">
+      <div class="goal-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="40" fill="none" stroke="var(--border)" stroke-width="8"/>
+          <circle cx="50" cy="50" r="40" fill="none" stroke="var(--accent)" stroke-width="8"
+            stroke-dasharray="251.2" stroke-dashoffset="251.2"
+            stroke-linecap="round" id="goal-ring-circle" style="transition:stroke-dashoffset 1s cubic-bezier(0.34,1.56,0.64,1)"/>
+        </svg>
+        <div class="goal-ring-center">
+          <div class="goal-ring-pct" id="goal-pct">0%</div>
+          <div class="goal-ring-label">DONE</div>
+        </div>
+      </div>
+      <div class="goal-details">
+        <div class="goal-milestone">TARGET</div>
+        <div class="goal-target" id="goal-target-label">10,000</div>
+        <div class="goal-remaining" id="goal-remaining-label">— followers needed</div>
+        <button class="goal-edit-btn" onclick="openGoalModal()">Edit Goal</button>
+      </div>
+    </div>
+    <!-- Streak dots -->
+    <div style="margin-top:20px;">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:8px;">Last 14 Days</div>
+      <div class="streak-dots" id="streak-dots"></div>
+    </div>
+  </div>
+
+  <!-- FOLLOWER CHART -->
+  <div class="chart-card">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="section-title">Follower Growth</div>
+      <button class="action-btn" onclick="openFollowerModal()">+ Log Today</button>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="followerChart"></canvas>
+    </div>
+  </div>
+
+  <!-- ADD REEL -->
+  <div class="add-card">
+    <div class="section-title">Log Reel</div>
+    <div class="form-group">
+      <label class="form-label">Upload Date</label>
+      <input type="date" class="form-input" id="inp-date">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Topic / Title</label>
+      <input type="text" class="form-input" id="inp-topic" placeholder="e.g. AI Tools for Beginners">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select class="form-input" id="inp-category">
+        <option value="Educational">Educational</option>
+        <option value="Tutorial">Tutorial</option>
+        <option value="Trend">Trend</option>
+        <option value="Motivational">Motivational</option>
+        <option value="BTS">Behind The Scenes</option>
+        <option value="Personal">Personal</option>
+        <option value="Product">Product</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Initial Views</label>
+      <input type="number" class="form-input" id="inp-views" placeholder="0" min="0">
+    </div>
+    <button class="btn-primary" onclick="addReel()">LOG REEL</button>
+  </div>
+
+  <!-- REELS TABLE -->
+  <div class="table-card">
+    <div class="table-header">
+      <div class="section-title" style="margin:0">All Reels</div>
+      <input type="text" class="table-search" id="table-search" placeholder="Search reels..." oninput="renderTable()">
+    </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Topic</th>
+            <th>Category</th>
+            <th>Views</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="reels-tbody">
+        </tbody>
+      </table>
+      <div id="empty-state" class="empty-state" style="display:none">
+        <div class="icon">🎬</div>
+        <p>No reels logged yet.<br>Add your first reel above to start tracking your growth.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- GOAL MODAL -->
+<div class="modal-overlay" id="goal-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('goal-modal')">✕</button>
+    <div class="modal-title">Settings</div>
+    <div class="form-group">
+      <label class="form-label">Follower Goal</label>
+      <input type="number" class="form-input" id="inp-goal" placeholder="10000" min="1">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Current Followers (manual)</label>
+      <input type="number" class="form-input" id="inp-current-followers" placeholder="0" min="0">
+    </div>
+    <button class="btn-primary" onclick="saveSettings()">SAVE SETTINGS</button>
+  </div>
+</div>
+
+<!-- FOLLOWER LOG MODAL -->
+<div class="modal-overlay" id="follower-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('follower-modal')">✕</button>
+    <div class="modal-title">Log Followers</div>
+    <div class="form-group">
+      <label class="form-label">Date</label>
+      <input type="date" class="form-input" id="fl-date">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Total Followers (today's count)</label>
+      <input type="number" class="form-input" id="fl-count" placeholder="e.g. 1234" min="0">
+    </div>
+    <div style="margin-bottom:20px;">
+      <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Recent Log</div>
+      <div id="follower-log-list"></div>
+    </div>
+    <button class="btn-primary" onclick="logFollowers()">LOG FOLLOWERS</button>
+  </div>
+</div>
+
+<!-- UPDATE VIEWS MODAL -->
+<div class="modal-overlay" id="views-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('views-modal')">✕</button>
+    <div class="modal-title">Update Views</div>
+    <input type="hidden" id="uv-id">
+    <div class="form-group">
+      <label class="form-label">Topic</label>
+      <div id="uv-topic" style="color:var(--muted);font-size:13px;padding:8px 0;"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Current Views</label>
+      <input type="number" class="form-input" id="uv-views" placeholder="0" min="0">
+    </div>
+    <button class="btn-primary" onclick="updateViews()">UPDATE</button>
+  </div>
+</div>
+
+<script>
+// ─── DATA LAYER ──────────────────────────────────────────────────────────────
+
+const DB = {
+  get(key, fallback) {
+    try { const v = localStorage.getItem('grid_' + key); return v !== null ? JSON.parse(v) : fallback; }
+    catch { return fallback; }
+  },
+  set(key, val) {
+    try { localStorage.setItem('grid_' + key, JSON.stringify(val)); }
+    catch { console.warn('Storage full'); }
+  }
 };
 
-function load(){try{const r=localStorage.getItem(STORAGE_KEY);return r?{...DEF,...JSON.parse(r)}:DEF}catch{return DEF}}
-function save(d){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(d))}catch{}}
-
-function App(){
-  const[data,setData]=useState(load);
-  const[tab,setTab]=useState("dashboard");
-  const[newF,setNewF]=useState("");
-  const[newPost,setNewPost]=useState({title:"",type:"Reel",deadline:"",done:false});
-  const[editH,setEditH]=useState(false);
-  const[hInput,setHInput]=useState(data.handle);
-  const[goalInput,setGoalInput]=useState(data.goal);
-  const[flash,setFlash]=useState("");
-  const canvasRef=useRef(null);
-
-  useEffect(()=>{save(data)},[data]);
-  useEffect(()=>{if(tab==="dashboard")setTimeout(drawChart,50)},[data.entries,tab]);
-
-  const upd=patch=>setData(d=>({...d,...patch}));
-
-  function showFlash(msg){setFlash(msg);setTimeout(()=>setFlash(""),2500)}
-
-  function logFollowers(){
-    const n=parseInt(newF);
-    if(isNaN(n)||n<0)return;
-    const today=new Date().toISOString().slice(0,10);
-    const entries=[...data.entries.filter(e=>e.date!==today),{date:today,count:n}].sort((a,b)=>a.date.localeCompare(b.date));
-    upd({entries});setNewF("");showFlash("Follower count saved!");
-  }
-
-  function checkin(){
-    const today=new Date().toISOString().slice(0,10);
-    const yest=new Date(Date.now()-86400000).toISOString().slice(0,10);
-    const{lastCheckin,count}=data.streak;
-    if(lastCheckin===today){showFlash("Already checked in today!");return}
-    const nc=lastCheckin===yest?count+1:1;
-    upd({streak:{lastCheckin:today,count:nc}});
-    showFlash(`Day ${nc} streak! Keep going!`);
-  }
-
-  function addPost(){
-    if(!newPost.title.trim())return;
-    upd({posts:[...data.posts,{...newPost,id:Date.now()}]});
-    setNewPost({title:"",type:"Reel",deadline:"",done:false});
-  }
-
-  const today=new Date().toISOString().slice(0,10);
-  const latest=data.entries.length?data.entries[data.entries.length-1].count:0;
-  const weekGain=(()=>{
-    if(data.entries.length<2)return 0;
-    const wAgo=new Date(Date.now()-7*86400000).toISOString().slice(0,10);
-    const old=[...data.entries].reverse().find(e=>e.date<=wAgo);
-    return old?latest-old.count:latest-data.entries[0].count;
-  })();
-  const progress=Math.min(100,Math.round((latest/data.goal)*100));
-  const todayChecked=data.streak.lastCheckin===today;
-
-  function drawChart(){
-    const canvas=canvasRef.current;
-    if(!canvas||data.entries.length<2)return;
-    const ctx=canvas.getContext("2d");
-    const W=canvas.offsetWidth||600;const H=160;
-    canvas.width=W;canvas.height=H;ctx.clearRect(0,0,W,H);
-    const entries=data.entries.slice(-14);
-    const vals=entries.map(e=>e.count);
-    const minV=Math.min(...vals),maxV=Math.max(...vals,minV+1);
-    const pad={l:42,r:16,t:16,b:28};
-    const cW=W-pad.l-pad.r,cH=H-pad.t-pad.b;
-    const xp=i=>pad.l+(i/(entries.length-1||1))*cW;
-    const yp=v=>pad.t+cH-((v-minV)/(maxV-minV))*cH;
-    ctx.strokeStyle="rgba(136,135,128,0.15)";ctx.lineWidth=0.5;
-    [0,0.5,1].forEach(t=>{
-      const yy=pad.t+t*cH;
-      ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(W-pad.r,yy);ctx.stroke();
-      ctx.fillStyle="rgba(136,135,128,0.7)";ctx.font="10px sans-serif";ctx.textAlign="right";
-      ctx.fillText(Math.round(maxV-t*(maxV-minV)),pad.l-4,yy+3.5);
-    });
-    const grad=ctx.createLinearGradient(0,pad.t,0,pad.t+cH);
-    grad.addColorStop(0,"rgba(127,119,221,0.22)");grad.addColorStop(1,"rgba(127,119,221,0)");
-    ctx.beginPath();
-    entries.forEach((e,i)=>i===0?ctx.moveTo(xp(i),yp(e.count)):ctx.lineTo(xp(i),yp(e.count)));
-    ctx.lineTo(xp(entries.length-1),pad.t+cH);ctx.lineTo(xp(0),pad.t+cH);ctx.closePath();
-    ctx.fillStyle=grad;ctx.fill();
-    ctx.beginPath();ctx.strokeStyle=P.purple;ctx.lineWidth=2;ctx.lineJoin="round";
-    entries.forEach((e,i)=>i===0?ctx.moveTo(xp(i),yp(e.count)):ctx.lineTo(xp(i),yp(e.count)));ctx.stroke();
-    entries.forEach((e,i)=>{
-      ctx.beginPath();ctx.arc(xp(i),yp(e.count),3.5,0,Math.PI*2);
-      ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle=P.purple;ctx.lineWidth=1.5;ctx.stroke();
-    });
-    ctx.fillStyle="rgba(136,135,128,0.8)";ctx.font="9px sans-serif";ctx.textAlign="center";
-    entries.forEach((e,i)=>{if(entries.length<=7||i%2===0)ctx.fillText(e.date.slice(5),xp(i),H-6)});
-  }
-
-  const postTypes=["Reel","Post","Story","Collab","Live"];
-  const milestones=[100,500,1000,5000,10000].filter(m=>m<=data.goal*1.5);
-  const typeColors={Reel:[P.purple,P.purpleL],Post:[P.teal,P.tealL],Story:[P.amber,P.amberL],Collab:[P.coral,P.coralL],Live:["#D4537E","#FBEAF0"]};
-
-  const s={
-    wrap:{maxWidth:680,margin:"0 auto",fontFamily:"inherit"},
-    card:{background:"var(--bg)",border:"0.5px solid var(--border)",borderRadius:"var(--radius-lg)",padding:"1rem 1.25rem"},
-    label:{fontSize:11,fontWeight:500,marginBottom:4},
-    bigNum:{fontSize:22,fontWeight:500},
-    inp:{fontSize:14,padding:"7px 12px",borderRadius:8,border:"0.5px solid var(--border)",background:"var(--bg3)",color:"var(--text)",outline:"none",width:"100%"},
-    btn:(bg,col)=>({padding:"7px 18px",borderRadius:8,background:bg,color:col,border:"none",fontWeight:500,cursor:"pointer",fontSize:14}),
-    tab:(active)=>({fontSize:13,fontWeight:active?500:400,padding:"7px 16px",background:"transparent",border:"none",cursor:"pointer",
-      color:active?P.purple:"var(--text2)",borderBottom:active?`2px solid ${P.purple}`:"2px solid transparent",marginBottom:-1,transition:"color .2s"})
+function getData() {
+  return {
+    reels: DB.get('reels', []),
+    followerLog: DB.get('followerLog', []),
+    goal: DB.get('goal', 10000),
+    currentFollowers: DB.get('currentFollowers', 0)
   };
-
-  return(
-    <div style={s.wrap}>
-      {/* Header */}
-      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"1.25rem"}}>
-        <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <div style={{width:38,height:38,borderRadius:"50%",background:P.purpleL,display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={P.purple} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill={P.purple} stroke="none"/>
-            </svg>
-          </div>
-          {editH
-            ?<input value={hInput} onChange={e=>setHInput(e.target.value)}
-               onBlur={()=>{upd({handle:hInput});setEditH(false)}}
-               onKeyDown={e=>e.key==="Enter"&&(upd({handle:hInput}),setEditH(false))}
-               style={{fontSize:16,fontWeight:500,border:"none",borderBottom:`1.5px solid ${P.purple}`,outline:"none",background:"transparent",color:"var(--text)",width:160}} autoFocus/>
-            :<span onClick={()=>setEditH(true)} style={{fontSize:16,fontWeight:500,cursor:"pointer",color:"var(--text)"}}>{data.handle}</span>
-          }
-        </div>
-        <div style={{display:"flex",gap:8,alignItems:"center"}}>
-          <div style={{fontSize:11,padding:"4px 10px",borderRadius:20,fontWeight:500,background:todayChecked?P.tealL:P.grayL,color:todayChecked?P.tealD:P.gray}}>
-            {data.streak.count>0?`${data.streak.count}d streak`:"no streak"}
-          </div>
-          <button onClick={checkin} style={{...s.btn(todayChecked?P.tealL:P.purple,todayChecked?P.tealD:"#fff"),fontSize:12,padding:"5px 12px",borderRadius:20}}>
-            {todayChecked?"Posted today!":"Check in"}
-          </button>
-        </div>
-      </div>
-
-      {flash&&<div style={{marginBottom:12,padding:"8px 14px",background:P.tealL,color:P.tealD,borderRadius:8,fontSize:13,fontWeight:500}}>{flash}</div>}
-
-      {/* Tabs */}
-      <div style={{display:"flex",gap:2,borderBottom:"0.5px solid var(--border)",marginBottom:"1.25rem"}}>
-        {["dashboard","planner","goals"].map(t=>(
-          <button key={t} onClick={()=>setTab(t)} style={s.tab(tab===t)}>
-            {t==="dashboard"?"Dashboard":t==="planner"?"Content Planner":"Goals"}
-          </button>
-        ))}
-      </div>
-
-      {/* DASHBOARD */}
-      {tab==="dashboard"&&<>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(130px,1fr))",gap:10,marginBottom:"1.25rem"}}>
-          {[
-            {label:"Followers",val:latest.toLocaleString(),c:P.purple,bg:P.purpleL},
-            {label:"This week",val:weekGain>=0?`+${weekGain}`:weekGain,c:weekGain>=0?P.teal:P.coral,bg:weekGain>=0?P.tealL:P.coralL},
-            {label:"Goal",val:`${progress}%`,c:P.amber,bg:P.amberL},
-            {label:"Streak",val:`${data.streak.count}d`,c:P.teal,bg:P.tealL},
-          ].map(s=>(
-            <div key={s.label} style={{background:s.bg,borderRadius:10,padding:"12px 14px"}}>
-              <div style={{fontSize:11,color:s.c,opacity:.7,marginBottom:4,fontWeight:500}}>{s.label}</div>
-              <div style={{fontSize:22,fontWeight:500,color:s.c}}>{s.val}</div>
-            </div>
-          ))}
-        </div>
-
-        <div style={{...s.card,marginBottom:"1.25rem"}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-            <span style={{fontSize:13,fontWeight:500,color:"var(--text2)"}}>Follower growth</span>
-            <span style={{fontSize:11,color:"var(--text2)"}}>last 14 days</span>
-          </div>
-          {data.entries.length<2
-            ?<div style={{height:160,display:"flex",alignItems:"center",justifyContent:"center",color:"var(--text2)",fontSize:13}}>Log at least 2 days to see your chart</div>
-            :<canvas ref={canvasRef} style={{width:"100%",display:"block"}}/>
-          }
-        </div>
-
-        <div style={s.card}>
-          <div style={{fontSize:13,fontWeight:500,color:"var(--text2)",marginBottom:10}}>Log today's followers</div>
-          <div style={{display:"flex",gap:8}}>
-            <input type="number" placeholder="e.g. 42" value={newF} onChange={e=>setNewF(e.target.value)}
-              onKeyDown={e=>e.key==="Enter"&&logFollowers()}
-              style={{...s.inp,flex:1}}/>
-            <button onClick={logFollowers} style={s.btn(P.purple,"#fff")}>Save</button>
-          </div>
-        </div>
-      </>}
-
-      {/* PLANNER */}
-      {tab==="planner"&&<>
-        <div style={{...s.card,marginBottom:"1rem"}}>
-          <div style={{fontSize:13,fontWeight:500,color:"var(--text2)",marginBottom:12}}>Add content idea</div>
-          <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-            <input placeholder="Title or idea..." value={newPost.title} onChange={e=>setNewPost(p=>({...p,title:e.target.value}))}
-              style={{...s.inp,flex:"2 1 160px",width:"auto"}}/>
-            <select value={newPost.type} onChange={e=>setNewPost(p=>({...p,type:e.target.value}))}
-              style={{...s.inp,flex:"0 1 100px",width:"auto"}}>
-              {postTypes.map(t=><option key={t}>{t}</option>)}
-            </select>
-            <input type="date" value={newPost.deadline} onChange={e=>setNewPost(p=>({...p,deadline:e.target.value}))}
-              style={{...s.inp,flex:"1 1 130px",width:"auto"}}/>
-            <button onClick={addPost} style={s.btn(P.purple,"#fff")}>Add</button>
-          </div>
-        </div>
-
-        {data.posts.length===0
-          ?<div style={{textAlign:"center",color:"var(--text2)",fontSize:14,padding:"2rem 0"}}>No content planned yet. Add your first idea above!</div>
-          :data.posts.map(p=>{
-            const overdue=p.deadline&&!p.done&&p.deadline<today;
-            const[tc,tb]=typeColors[p.type]||[P.gray,P.grayL];
-            return(
-              <div key={p.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",borderRadius:10,border:"0.5px solid var(--border)",marginBottom:6,background:p.done?"var(--bg3)":"var(--bg)",opacity:p.done?.6:1}}>
-                <input type="checkbox" checked={p.done} onChange={()=>upd({posts:data.posts.map(x=>x.id===p.id?{...x,done:!x.done}:x)})} style={{width:16,height:16,cursor:"pointer"}}/>
-                <span style={{flex:1,fontSize:14,textDecoration:p.done?"line-through":"none",color:"var(--text)"}}>{p.title}</span>
-                <span style={{fontSize:11,fontWeight:500,padding:"2px 8px",borderRadius:10,background:tb,color:tc}}>{p.type}</span>
-                {p.deadline&&<span style={{fontSize:11,color:overdue?P.coral:"var(--text2)"}}>{overdue?"overdue · ":""}{p.deadline}</span>}
-                <button onClick={()=>upd({posts:data.posts.filter(x=>x.id!==p.id)})} style={{background:"none",border:"none",cursor:"pointer",color:"var(--text2)",fontSize:18,lineHeight:1,padding:"0 2px"}}>×</button>
-              </div>
-            );
-          })
-        }
-        <div style={{marginTop:"1.25rem",display:"flex",gap:8,flexWrap:"wrap"}}>
-          {[
-            {label:"Total",val:data.posts.length,bg:P.purpleL,c:P.purpleD},
-            {label:"Done",val:data.posts.filter(p=>p.done).length,bg:P.tealL,c:P.tealD},
-            {label:"Pending",val:data.posts.filter(p=>!p.done).length,bg:P.amberL,c:P.amber},
-          ].map(s=>(
-            <div key={s.label} style={{background:s.bg,borderRadius:8,padding:"8px 14px",display:"flex",alignItems:"center",gap:8}}>
-              <span style={{fontSize:18,fontWeight:500,color:s.c}}>{s.val}</span>
-              <span style={{fontSize:12,color:s.c,opacity:.75}}>{s.label}</span>
-            </div>
-          ))}
-        </div>
-      </>}
-
-      {/* GOALS */}
-      {tab==="goals"&&<>
-        <div style={{...s.card,marginBottom:"1.25rem"}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-            <span style={{fontSize:13,fontWeight:500,color:"var(--text2)"}}>Main follower goal</span>
-            <div style={{display:"flex",gap:8,alignItems:"center"}}>
-              <input type="number" value={goalInput} onChange={e=>setGoalInput(parseInt(e.target.value)||1000)}
-                style={{...s.inp,width:80,textAlign:"right"}}/>
-              <button onClick={()=>upd({goal:goalInput})} style={{...s.btn(P.purple,"#fff"),padding:"5px 12px",fontSize:13}}>Set</button>
-            </div>
-          </div>
-          <div style={{display:"flex",justifyContent:"space-between",fontSize:12,color:"var(--text2)",marginBottom:6}}>
-            <span>{latest.toLocaleString()} followers</span><span>{data.goal.toLocaleString()} goal</span>
-          </div>
-          <div style={{height:14,background:P.purpleL,borderRadius:8,overflow:"hidden"}}>
-            <div style={{height:"100%",width:`${progress}%`,background:`linear-gradient(90deg,${P.purple},${P.teal})`,borderRadius:8,transition:"width .6s ease"}}/>
-          </div>
-          <div style={{textAlign:"right",fontSize:12,color:P.purple,marginTop:4,fontWeight:500}}>{progress}%</div>
-        </div>
-
-        <div style={{fontSize:13,fontWeight:500,color:"var(--text2)",marginBottom:10}}>Milestones</div>
-        {milestones.map(m=>{
-          const done=latest>=m;
-          const pct=Math.min(100,Math.round((latest/m)*100));
-          return(
-            <div key={m} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 14px",borderRadius:10,border:"0.5px solid var(--border)",marginBottom:8,background:done?P.tealL:"var(--bg)"}}>
-              <div style={{width:28,height:28,borderRadius:"50%",background:done?P.teal:P.purpleL,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                {done?<span style={{color:"#fff",fontWeight:700,fontSize:14}}>✓</span>:<span style={{color:P.purple,fontSize:11,fontWeight:600}}>{pct}%</span>}
-              </div>
-              <div style={{flex:1}}>
-                <div style={{fontSize:14,fontWeight:500,color:done?P.tealD:"var(--text)"}}>{m.toLocaleString()} followers</div>
-                {!done&&<div style={{height:5,background:P.purpleL,borderRadius:4,marginTop:5,overflow:"hidden"}}>
-                  <div style={{height:"100%",width:`${pct}%`,background:P.purple,borderRadius:4}}/>
-                </div>}
-              </div>
-              {done&&<span style={{fontSize:11,fontWeight:500,color:P.tealD,background:"rgba(29,158,117,0.15)",padding:"2px 10px",borderRadius:10}}>Reached!</span>}
-            </div>
-          );
-        })}
-      </>}
-    </div>
-  );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+function saveReels(reels) { DB.set('reels', reels); }
+function saveFollowerLog(log) { DB.set('followerLog', log); }
+
+// ─── CHART INSTANCES ─────────────────────────────────────────────────────────
+
+let viewsChartInst = null;
+let followerChartInst = null;
+
+Chart.defaults.color = '#6b6b80';
+Chart.defaults.borderColor = '#2a2a38';
+Chart.defaults.font.family = "'DM Mono', monospace";
+
+// ─── UTILS ───────────────────────────────────────────────────────────────────
+
+function fmt(n) {
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return (n/1000).toFixed(1) + 'K';
+  return n.toString();
+}
+
+function fmtFull(n) {
+  return n.toLocaleString();
+}
+
+function today() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+const CATEGORY_COLORS = {
+  Educational: { bg: 'rgba(124,156,245,0.15)', color: '#7c9cf5' },
+  Tutorial: { bg: 'rgba(200,245,124,0.15)', color: '#c8f57c' },
+  Trend: { bg: 'rgba(245,124,156,0.15)', color: '#f57c9c' },
+  Motivational: { bg: 'rgba(245,197,124,0.15)', color: '#f5c57c' },
+  BTS: { bg: 'rgba(124,245,219,0.15)', color: '#7cf5db' },
+  Personal: { bg: 'rgba(197,124,245,0.15)', color: '#c57cf5' },
+  Product: { bg: 'rgba(245,178,124,0.15)', color: '#f5b27c' },
+  Other: { bg: 'rgba(107,107,128,0.2)', color: '#9090a8' }
+};
+
+// ─── CHARTS ──────────────────────────────────────────────────────────────────
+
+function renderCharts() {
+  const { reels, followerLog } = getData();
+
+  // VIEWS CHART
+  const sorted = [...reels].sort((a,b) => a.date.localeCompare(b.date));
+  const labels = sorted.map(r => r.date.slice(5)); // MM-DD
+  const values = sorted.map(r => r.views);
+
+  if (viewsChartInst) viewsChartInst.destroy();
+  const vc = document.getElementById('viewsChart').getContext('2d');
+  const grad1 = vc.createLinearGradient(0, 0, 0, 200);
+  grad1.addColorStop(0, 'rgba(124, 156, 245, 0.3)');
+  grad1.addColorStop(1, 'rgba(124, 156, 245, 0)');
+
+  viewsChartInst = new Chart(vc, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Views',
+        data: values,
+        backgroundColor: grad1,
+        borderColor: '#7c9cf5',
+        borderWidth: 2,
+        borderRadius: 6,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1a24',
+          borderColor: '#2a2a38',
+          borderWidth: 1,
+          callbacks: {
+            title: (items) => sorted[items[0].dataIndex]?.topic || '',
+            label: (item) => ' ' + fmt(item.raw) + ' views'
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+        y: { grid: { color: '#1a1a24' }, ticks: { callback: v => fmt(v), font: { size: 10 } } }
+      }
+    }
+  });
+
+  // FOLLOWER CHART
+  const flSorted = [...followerLog].sort((a,b) => a.date.localeCompare(b.date)).slice(-30);
+  const flLabels = flSorted.map(f => f.date.slice(5));
+  const flValues = flSorted.map(f => f.count);
+
+  if (followerChartInst) followerChartInst.destroy();
+  const fc = document.getElementById('followerChart').getContext('2d');
+  const grad2 = fc.createLinearGradient(0, 0, 0, 200);
+  grad2.addColorStop(0, 'rgba(200, 245, 124, 0.2)');
+  grad2.addColorStop(1, 'rgba(200, 245, 124, 0)');
+
+  followerChartInst = new Chart(fc, {
+    type: 'line',
+    data: {
+      labels: flLabels,
+      datasets: [{
+        label: 'Followers',
+        data: flValues,
+        borderColor: '#c8f57c',
+        backgroundColor: grad2,
+        fill: true,
+        tension: 0.4,
+        pointRadius: 3,
+        pointBackgroundColor: '#c8f57c',
+        pointBorderColor: '#0a0a0f',
+        pointBorderWidth: 2,
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1a24',
+          borderColor: '#2a2a38',
+          borderWidth: 1,
+          callbacks: { label: (item) => ' ' + fmtFull(item.raw) + ' followers' }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+        y: { grid: { color: '#1a1a24' }, ticks: { callback: v => fmt(v), font: { size: 10 } } }
+      }
+    }
+  });
+}
+
+// ─── STATS ───────────────────────────────────────────────────────────────────
+
+function renderStats() {
+  const { reels, followerLog, goal, currentFollowers } = getData();
+
+  const totalViews = reels.reduce((s, r) => s + r.views, 0);
+  const avgViews = reels.length ? Math.round(totalViews / reels.length) : 0;
+
+  document.getElementById('stat-reels').textContent = reels.length;
+  document.getElementById('stat-views').textContent = fmt(totalViews);
+  document.getElementById('stat-avg-views').textContent = 'avg ' + fmt(avgViews) + ' / reel';
+
+  // Follower delta
+  const flSorted = [...followerLog].sort((a,b) => a.date.localeCompare(b.date));
+  const latest = flSorted[flSorted.length - 1]?.count ?? currentFollowers;
+  const prev   = flSorted[flSorted.length - 2]?.count ?? null;
+  const delta  = prev !== null ? latest - prev : null;
+
+  document.getElementById('stat-followers').textContent = fmt(latest);
+  document.getElementById('hdr-followers').textContent = fmt(latest);
+
+  const deltaEl = document.getElementById('stat-follower-delta');
+  if (delta === null) {
+    deltaEl.className = 'stat-delta neutral'; deltaEl.textContent = '— log more days';
+  } else if (delta > 0) {
+    deltaEl.className = 'stat-delta up'; deltaEl.textContent = '+' + delta + ' yesterday';
+  } else if (delta < 0) {
+    deltaEl.className = 'stat-delta down'; deltaEl.textContent = delta + ' yesterday';
+  } else {
+    deltaEl.className = 'stat-delta neutral'; deltaEl.textContent = '0 change yesterday';
+  }
+
+  // Consistency (posts in last 7 days)
+  const sevenDaysAgo = new Date(); sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+  const recentPosts = reels.filter(r => new Date(r.date) >= sevenDaysAgo).length;
+  const consistency = Math.round((recentPosts / 7) * 100);
+  document.getElementById('stat-streak').textContent = consistency + '%';
+  document.getElementById('stat-streak-sub').textContent = recentPosts + ' posts last 7 days';
+
+  // Goal ring
+  const goalPct = Math.min(100, Math.round((latest / goal) * 100));
+  const circumference = 251.2;
+  const offset = circumference - (circumference * goalPct / 100);
+  document.getElementById('goal-ring-circle').style.strokeDashoffset = offset;
+  document.getElementById('goal-pct').textContent = goalPct + '%';
+  document.getElementById('goal-target-label').textContent = fmtFull(goal);
+  const remaining = Math.max(0, goal - latest);
+  document.getElementById('goal-remaining-label').textContent =
+    remaining > 0 ? fmtFull(remaining) + ' to go' : '🎉 Goal reached!';
+  document.getElementById('hdr-goal-fill').style.width = goalPct + '%';
+  document.getElementById('hdr-goal-label').textContent =
+    goal >= 1000000 ? (goal/1000000).toFixed(1)+'M' : goal >= 1000 ? (goal/1000).toFixed(0)+'K' : goal;
+
+  // Streak dots (last 14 days)
+  const dotsEl = document.getElementById('streak-dots');
+  dotsEl.innerHTML = '';
+  const todayStr = today();
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const ds = d.toISOString().slice(0, 10);
+    const posted = reels.some(r => r.date === ds);
+    const div = document.createElement('div');
+    div.className = 'streak-dot' + (posted ? ' posted' : '') + (ds === todayStr ? ' today' : '');
+    div.title = ds;
+    dotsEl.appendChild(div);
+  }
+}
+
+// ─── TABLE ───────────────────────────────────────────────────────────────────
+
+function renderTable() {
+  const { reels } = getData();
+  const query = document.getElementById('table-search').value.toLowerCase();
+  const tbody = document.getElementById('reels-tbody');
+  const empty = document.getElementById('empty-state');
+
+  const filtered = reels
+    .filter(r => r.topic.toLowerCase().includes(query) || r.category.toLowerCase().includes(query))
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = '';
+    return;
+  }
+  empty.style.display = 'none';
+
+  const maxViews = Math.max(...reels.map(r => r.views), 1);
+
+  tbody.innerHTML = filtered.map((r, idx) => {
+    const cat = CATEGORY_COLORS[r.category] || CATEGORY_COLORS.Other;
+    const pct = Math.round((r.views / maxViews) * 100);
+    return `
+      <tr>
+        <td style="color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;">${filtered.length - idx}</td>
+        <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">${r.date}</td>
+        <td style="font-weight:500;max-width:200px;">${r.topic}</td>
+        <td><span class="topic-pill" style="background:${cat.bg};color:${cat.color}">${r.category}</span></td>
+        <td>
+          <div class="view-bar-wrap">
+            <div class="view-bar"><div class="view-bar-fill" style="width:${pct}%"></div></div>
+            <span class="view-count">${fmt(r.views)}</span>
+          </div>
+        </td>
+        <td style="display:flex;gap:6px;">
+          <button class="action-btn" onclick="openUpdateViews('${r.id}')">Update</button>
+          <button class="action-btn del" onclick="deleteReel('${r.id}')">Delete</button>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+// ─── ACTIONS ─────────────────────────────────────────────────────────────────
+
+function addReel() {
+  const date = document.getElementById('inp-date').value;
+  const topic = document.getElementById('inp-topic').value.trim();
+  const category = document.getElementById('inp-category').value;
+  const views = parseInt(document.getElementById('inp-views').value) || 0;
+
+  if (!date) { showToast('⚠ Please select a date'); return; }
+  if (!topic) { showToast('⚠ Please enter a topic'); return; }
+
+  const { reels } = getData();
+  reels.push({ id: Date.now().toString(36), date, topic, category, views });
+  saveReels(reels);
+
+  document.getElementById('inp-topic').value = '';
+  document.getElementById('inp-views').value = '';
+  showToast('✓ Reel logged!');
+  refresh();
+}
+
+function deleteReel(id) {
+  if (!confirm('Delete this reel entry?')) return;
+  const { reels } = getData();
+  saveReels(reels.filter(r => r.id !== id));
+  showToast('Deleted.');
+  refresh();
+}
+
+function openUpdateViews(id) {
+  const { reels } = getData();
+  const r = reels.find(r => r.id === id);
+  if (!r) return;
+  document.getElementById('uv-id').value = id;
+  document.getElementById('uv-topic').textContent = r.topic;
+  document.getElementById('uv-views').value = r.views;
+  openModal('views-modal');
+}
+
+function updateViews() {
+  const id = document.getElementById('uv-id').value;
+  const views = parseInt(document.getElementById('uv-views').value) || 0;
+  const { reels } = getData();
+  const idx = reels.findIndex(r => r.id === id);
+  if (idx === -1) return;
+  reels[idx].views = views;
+  saveReels(reels);
+  closeModal('views-modal');
+  showToast('✓ Views updated!');
+  refresh();
+}
+
+function openFollowerModal() {
+  document.getElementById('fl-date').value = today();
+  renderFollowerLog();
+  openModal('follower-modal');
+}
+
+function renderFollowerLog() {
+  const { followerLog } = getData();
+  const sorted = [...followerLog].sort((a,b) => b.date.localeCompare(a.date)).slice(0, 5);
+  const el = document.getElementById('follower-log-list');
+  if (sorted.length === 0) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px 0;">No entries yet.</div>';
+    return;
+  }
+  el.innerHTML = sorted.map((f, i) => {
+    const prev = sorted[i+1];
+    const delta = prev ? f.count - prev.count : null;
+    let deltaHtml = '';
+    if (delta !== null) {
+      const cls = delta > 0 ? 'pos' : delta < 0 ? 'neg' : 'neu';
+      deltaHtml = `<span class="follower-delta ${cls}">${delta >= 0 ? '+' : ''}${delta}</span>`;
+    }
+    return `<div class="follower-log-item">
+      <span class="follower-log-date">${f.date}</span>
+      <span class="follower-log-count">${fmtFull(f.count)}</span>
+      ${deltaHtml}
+    </div>`;
+  }).join('');
+}
+
+function logFollowers() {
+  const date = document.getElementById('fl-date').value;
+  const count = parseInt(document.getElementById('fl-count').value);
+  if (!date || isNaN(count)) { showToast('⚠ Enter a valid count'); return; }
+
+  const { followerLog } = getData();
+  const existing = followerLog.findIndex(f => f.date === date);
+  if (existing >= 0) followerLog[existing].count = count;
+  else followerLog.push({ date, count });
+  saveFollowerLog(followerLog);
+  DB.set('currentFollowers', count);
+
+  document.getElementById('fl-count').value = '';
+  showToast('✓ Followers logged!');
+  renderFollowerLog();
+  refresh();
+}
+
+function openGoalModal() {
+  const { goal, currentFollowers, followerLog } = getData();
+  const flSorted = [...followerLog].sort((a,b) => a.date.localeCompare(b.date));
+  const latest = flSorted[flSorted.length - 1]?.count ?? currentFollowers;
+  document.getElementById('inp-goal').value = goal;
+  document.getElementById('inp-current-followers').value = latest;
+  openModal('goal-modal');
+}
+
+function saveSettings() {
+  const goal = parseInt(document.getElementById('inp-goal').value);
+  const cf   = parseInt(document.getElementById('inp-current-followers').value);
+  if (!isNaN(goal) && goal > 0) DB.set('goal', goal);
+  if (!isNaN(cf) && cf >= 0) {
+    DB.set('currentFollowers', cf);
+    // Also log it with today's date
+    const { followerLog } = getData();
+    const existing = followerLog.findIndex(f => f.date === today());
+    if (existing >= 0) followerLog[existing].count = cf;
+    else followerLog.push({ date: today(), count: cf });
+    saveFollowerLog(followerLog);
+  }
+  closeModal('goal-modal');
+  showToast('✓ Settings saved!');
+  refresh();
+}
+
+// ─── MODALS ──────────────────────────────────────────────────────────────────
+
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('active'); });
+});
+
+// ─── REFRESH ─────────────────────────────────────────────────────────────────
+
+function refresh() {
+  renderStats();
+  renderCharts();
+  renderTable();
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+
+document.getElementById('inp-date').value = today();
+
+refresh();
 </script>
 </body>
 </html>
