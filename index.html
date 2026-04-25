@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive 3D Globe</title>
+    <title>Interactive 3D Globe - Earth Edition</title>
     <style>
         /* Reset and layout */
         body { margin: 0; padding: 0; background-color: #000; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: white; }
@@ -16,11 +16,11 @@
             top: 30px;
             left: 30px;
             z-index: 10;
-            background: rgba(10, 10, 15, 0.85);
+            background: rgba(10, 15, 10, 0.85);
             padding: 20px;
             border-radius: 12px;
-            border: 1px solid #00aaff;
-            box-shadow: 0 8px 32px rgba(0, 170, 255, 0.15);
+            border: 1px solid #33ffaa;
+            box-shadow: 0 8px 32px rgba(51, 255, 170, 0.15);
             backdrop-filter: blur(10px);
         }
         input {
@@ -34,20 +34,20 @@
             outline: none;
             transition: all 0.3s ease;
         }
-        input:focus { border-color: #00aaff; box-shadow: 0 0 10px rgba(0, 170, 255, 0.3); }
+        input:focus { border-color: #33ffaa; box-shadow: 0 0 10px rgba(51, 255, 170, 0.3); }
         
         /* Tooltip UI */
         .tooltip {
-            background: rgba(10, 10, 15, 0.95);
+            background: rgba(10, 15, 10, 0.95);
             padding: 15px;
             border-radius: 8px;
-            border-left: 4px solid #00aaff;
+            border-left: 4px solid #33ffaa;
             pointer-events: none;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             font-size: 14px;
             line-height: 1.5;
         }
-        .tooltip-title { font-size: 20px; color: #00aaff; font-weight: bold; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .tooltip-title { font-size: 20px; color: #33ffaa; font-weight: bold; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
         .highlight { color: #fff; font-weight: 600; }
     </style>
     
@@ -72,18 +72,28 @@
             { name: 'Southern Ocean', lat: -60, lng: 0 }
         ];
 
-        // 2. Initialize the High-Fidelity Globe
+        // 2. Configure the Three.js Material for the Water
+        // We use MeshPhongMaterial to give the ocean a glossy, reflective shine
+        const waterMaterial = new THREE.MeshPhongMaterial({ 
+            color: '#02386e', // Deep oceanic blue
+            transparent: true,
+            opacity: 0.9,
+            shininess: 40
+        });
+
+        // 3. Initialize the High-Fidelity Globe
         const world = Globe()
             (document.getElementById('globeViz'))
             .backgroundColor('#000000') // Pitch black space
             .showAtmosphere(true)
-            .atmosphereColor('#00aaff') // Electric blue glow
-            .atmosphereAltitude(0.2)
-            .polygonAltitude(0.01)
-            // Color grading: Dark blue continents with bright blue outlines
-            .polygonCapColor(() => 'rgba(0, 40, 100, 0.8)') 
-            .polygonSideColor(() => 'rgba(0, 100, 255, 0.1)')
-            .polygonStrokeColor(() => '#00aaff') 
+            .atmosphereColor('#33aaff') // Soft blue atmospheric glow
+            .atmosphereAltitude(0.15)
+            .globeMaterial(waterMaterial) // Inject the water texture
+            .polygonAltitude(0.015)
+            // Color grading: Land is Green, borders are bright
+            .polygonCapColor(() => '#1b5e20') // Deep forest green for landmasses
+            .polygonSideColor(() => '#0a2e0e') // Darker green for the extruded sides
+            .polygonStrokeColor(() => '#81c784') // Vibrant green outlines for continents
             // Build the data-driven tooltip
             .polygonLabel(({ properties: d, restData: r }) => `
                 <div class="tooltip">
@@ -92,10 +102,10 @@
                     <div><span class="highlight">Area:</span> ${r?.area ? r.area.toLocaleString() + ' km²' : 'Data Unavailable'}</div>
                 </div>
             `)
-            // Interactive hover effect (pops the country out)
+            // Interactive hover effect (pops the country out and turns it bright neon green)
             .onPolygonHover(hoverD => world
-                .polygonAltitude(d => d === hoverD ? 0.06 : 0.01)
-                .polygonCapColor(d => d === hoverD ? 'rgba(0, 170, 255, 0.9)' : 'rgba(0, 40, 100, 0.8)')
+                .polygonAltitude(d => d === hoverD ? 0.08 : 0.015)
+                .polygonCapColor(d => d === hoverD ? '#4caf50' : '#1b5e20')
             )
             // Map the oceans as 3D text labels floating above the water
             .labelsData(oceans)
@@ -104,7 +114,7 @@
             .labelText(d => d.name)
             .labelSize(3.5)
             .labelDotRadius(0.5)
-            .labelColor(() => 'rgba(255, 255, 255, 0.6)')
+            .labelColor(() => 'rgba(255, 255, 255, 0.8)')
             .labelResolution(2);
 
         // Add a subtle auto-rotation to make it feel alive
@@ -118,7 +128,7 @@
 
         let geoJsonData = [];
 
-        // 3. The Data Engine: Fetch shapefiles and demographic data simultaneously
+        // 4. The Data Engine: Fetch shapefiles and demographic data simultaneously
         Promise.all([
             fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson').then(res => res.json()),
             fetch('https://restcountries.com/v3.1/all').then(res => res.json())
@@ -147,7 +157,7 @@
             world.polygonsData(geoJsonData);
         });
 
-        // 4. Build the Search Logic
+        // 5. Build the Search Logic
         const searchInput = document.getElementById('countrySearch');
         const resultDiv = document.getElementById('searchResult');
 
@@ -172,7 +182,7 @@
             }
         });
 
-        // 5. Keep it responsive
+        // 6. Keep it responsive
         window.addEventListener('resize', () => {
             world.width(window.innerWidth);
             world.height(window.innerHeight);
