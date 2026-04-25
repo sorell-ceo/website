@@ -1,182 +1,589 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive 3D Globe</title>
-    <style>
-        /* Reset and layout */
-        body { margin: 0; padding: 0; background-color: #000; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: white; }
-        #globeViz { width: 100vw; height: 100vh; cursor: grab; }
-        #globeViz:active { cursor: grabbing; }
-
-        /* Search Bar UI */
-        .search-container {
-            position: absolute;
-            top: 30px;
-            left: 30px;
-            z-index: 10;
-            background: rgba(10, 10, 15, 0.85);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #00aaff;
-            box-shadow: 0 8px 32px rgba(0, 170, 255, 0.15);
-            backdrop-filter: blur(10px);
-        }
-        input {
-            padding: 12px 15px;
-            width: 280px;
-            border-radius: 6px;
-            border: 1px solid #333;
-            background: #111;
-            color: #fff;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-        input:focus { border-color: #00aaff; box-shadow: 0 0 10px rgba(0, 170, 255, 0.3); }
-        
-        /* Tooltip UI */
-        .tooltip {
-            background: rgba(10, 10, 15, 0.95);
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #00aaff;
-            pointer-events: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        .tooltip-title { font-size: 20px; color: #00aaff; font-weight: bold; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-        .highlight { color: #fff; font-weight: 600; }
-    </style>
-    
-    <script src="https://unpkg.com/three"></script>
-    <script src="https://unpkg.com/globe.gl"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Globe</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000008;overflow:hidden;width:100vw;height:100vh;font-family:'Segoe UI',system-ui,sans-serif}
+canvas{display:block}
+#label-layer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:5}
+.clbl{
+  position:absolute;
+  color:rgba(160,210,255,0.9);
+  font-size:10px;font-weight:600;
+  letter-spacing:0.06em;text-transform:uppercase;
+  text-shadow:0 0 5px #000,0 0 10px #000820;
+  white-space:nowrap;pointer-events:auto;cursor:pointer;
+  transform:translate(-50%,-50%);
+  transition:color 0.2s,text-shadow 0.2s;
+  user-select:none;
+}
+.clbl:hover{color:#fff;text-shadow:0 0 6px #4af,0 0 14px #08f}
+.clbl.hi{color:#fff;font-size:12px;text-shadow:0 0 8px #4af,0 0 16px #08f}
+.olbl{
+  position:absolute;
+  color:rgba(30,110,220,0.5);
+  font-size:13px;font-weight:700;
+  letter-spacing:0.2em;text-transform:uppercase;
+  font-style:italic;
+  text-shadow:0 0 8px #000820;
+  white-space:nowrap;pointer-events:none;
+  transform:translate(-50%,-50%);
+  user-select:none;
+}
+#sw{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:50;width:300px}
+#si{
+  width:100%;padding:10px 16px;
+  background:rgba(4,12,35,0.88);
+  border:1px solid rgba(60,140,255,0.35);
+  border-radius:24px;color:#c8e0ff;font-size:14px;
+  outline:none;backdrop-filter:blur(8px);
+  transition:border-color .2s,box-shadow .2s;
+}
+#si::placeholder{color:rgba(100,160,255,0.4)}
+#si:focus{border-color:rgba(80,180,255,0.65);box-shadow:0 0 0 3px rgba(60,140,255,0.13)}
+#sr{
+  margin-top:6px;background:rgba(3,10,30,0.96);
+  border:1px solid rgba(60,140,255,0.22);border-radius:12px;
+  display:none;overflow-y:auto;max-height:260px;backdrop-filter:blur(10px);
+}
+#sr::-webkit-scrollbar{width:4px}
+#sr::-webkit-scrollbar-thumb{background:rgba(60,140,255,0.3);border-radius:4px}
+.ri{
+  padding:9px 16px;cursor:pointer;color:#9dc8ef;font-size:13px;
+  border-bottom:1px solid rgba(60,140,255,0.08);
+  display:flex;justify-content:space-between;align-items:center;
+  transition:background .15s;
+}
+.ri:last-child{border-bottom:none}
+.ri:hover{background:rgba(60,140,255,0.15);color:#fff}
+.ri .cap{color:rgba(100,160,255,0.5);font-size:11px}
+#panel{
+  position:fixed;bottom:28px;left:28px;width:230px;
+  background:rgba(3,10,30,0.92);
+  border:1px solid rgba(60,140,255,0.28);border-radius:14px;
+  padding:16px 18px;backdrop-filter:blur(12px);
+  transform:translateY(16px);opacity:0;
+  transition:opacity .3s,transform .3s;pointer-events:none;z-index:50;
+}
+#panel.on{opacity:1;transform:translateY(0);pointer-events:auto}
+#panel h2{color:#e8f4ff;font-size:15px;font-weight:600;margin-bottom:12px;line-height:1.3}
+.pr{display:flex;justify-content:space-between;margin-bottom:7px;gap:8px}
+.pr .lb{color:rgba(100,160,255,0.55);font-size:11px;text-transform:uppercase;letter-spacing:.07em;padding-top:1px;flex-shrink:0}
+.pr .vl{color:#b8d8f8;font-size:12px;font-weight:500;text-align:right}
+#pc{position:absolute;top:10px;right:12px;background:none;border:none;color:rgba(100,160,255,0.5);cursor:pointer;font-size:18px;line-height:1;padding:2px}
+#pc:hover{color:#fff}
+#loading{
+  position:fixed;inset:0;display:flex;flex-direction:column;gap:14px;
+  align-items:center;justify-content:center;
+  color:rgba(80,140,255,0.8);font-size:13px;letter-spacing:.1em;
+  background:#000008;z-index:300;transition:opacity .6s;
+}
+#lb{width:200px;height:2px;background:rgba(60,140,255,0.15);border-radius:2px;overflow:hidden}
+#lf{height:100%;width:0%;background:#3a8fff;border-radius:2px;transition:width .3s}
+#hint{
+  position:fixed;bottom:24px;right:24px;
+  color:rgba(50,110,190,0.4);font-size:12px;letter-spacing:.03em;
+  pointer-events:none;transition:opacity 1s;z-index:10;
+}
+</style>
 </head>
 <body>
-    <div class="search-container">
-        <input type="text" id="countrySearch" placeholder="Search for a country..." autocomplete="off">
-        <div id="searchResult" style="margin-top: 10px; font-size: 13px; color: #ff4444;"></div>
-    </div>
+<div id="loading"><div>LOADING GLOBE</div><div id="lb"><div id="lf"></div></div></div>
+<div id="label-layer"></div>
 
-    <div id="globeViz"></div>
+<div id="sw">
+  <input id="si" type="text" placeholder="Search country or capital..." autocomplete="off" spellcheck="false">
+  <div id="sr"></div>
+</div>
 
-    <script>
-        // 1. Define the Oceans for our labeling system
-        const oceans = [
-            { name: 'Pacific Ocean', lat: 0, lng: -160 },
-            { name: 'Atlantic Ocean', lat: 0, lng: -30 },
-            { name: 'Indian Ocean', lat: -20, lng: 80 },
-            { name: 'Arctic Ocean', lat: 80, lng: 0 },
-            { name: 'Southern Ocean', lat: -60, lng: 0 }
-        ];
+<div id="panel">
+  <button id="pc">×</button>
+  <h2 id="pn"></h2>
+  <div class="pr"><span class="lb">Capital</span><span class="vl" id="pcap"></span></div>
+  <div class="pr"><span class="lb">Area</span><span class="vl" id="parea"></span></div>
+  <div class="pr"><span class="lb">Region</span><span class="vl" id="preg"></span></div>
+</div>
 
-        // 2. Initialize the High-Fidelity Globe
-        const world = Globe()
-            (document.getElementById('globeViz'))
-            .backgroundColor('#000000') // Pitch black space
-            .showAtmosphere(true)
-            .atmosphereColor('#00aaff') // Electric blue glow
-            .atmosphereAltitude(0.2)
-            .polygonAltitude(0.01)
-            // Color grading: Dark blue continents with bright blue outlines
-            .polygonCapColor(() => 'rgba(0, 40, 100, 0.8)') 
-            .polygonSideColor(() => 'rgba(0, 100, 255, 0.1)')
-            .polygonStrokeColor(() => '#00aaff') 
-            // Build the data-driven tooltip
-            .polygonLabel(({ properties: d, restData: r }) => `
-                <div class="tooltip">
-                    <div class="tooltip-title">${d.ADMIN}</div>
-                    <div><span class="highlight">Capital:</span> ${r?.capital ? r.capital[0] : 'Data Unavailable'}</div>
-                    <div><span class="highlight">Area:</span> ${r?.area ? r.area.toLocaleString() + ' km²' : 'Data Unavailable'}</div>
-                </div>
-            `)
-            // Interactive hover effect (pops the country out)
-            .onPolygonHover(hoverD => world
-                .polygonAltitude(d => d === hoverD ? 0.06 : 0.01)
-                .polygonCapColor(d => d === hoverD ? 'rgba(0, 170, 255, 0.9)' : 'rgba(0, 40, 100, 0.8)')
-            )
-            // Map the oceans as 3D text labels floating above the water
-            .labelsData(oceans)
-            .labelLat(d => d.lat)
-            .labelLng(d => d.lng)
-            .labelText(d => d.name)
-            .labelSize(3.5)
-            .labelDotRadius(0.5)
-            .labelColor(() => 'rgba(255, 255, 255, 0.6)')
-            .labelResolution(2);
+<div id="hint">drag · scroll to zoom · click a country</div>
 
-        // Add a subtle auto-rotation to make it feel alive
-        world.controls().autoRotate = true;
-        world.controls().autoRotateSpeed = 0.5;
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ══════════════════════════════════════════
+   DATA
+══════════════════════════════════════════ */
+const CD=[
+  {n:"Afghanistan",cap:"Kabul",area:652230,lat:33.93,lon:67.71,reg:"Asia"},
+  {n:"Albania",cap:"Tirana",area:28748,lat:41.15,lon:20.17,reg:"Europe"},
+  {n:"Algeria",cap:"Algiers",area:2381741,lat:28.03,lon:1.66,reg:"Africa"},
+  {n:"Angola",cap:"Luanda",area:1246700,lat:-11.2,lon:17.87,reg:"Africa"},
+  {n:"Argentina",cap:"Buenos Aires",area:2780400,lat:-38.42,lon:-63.62,reg:"S. America"},
+  {n:"Armenia",cap:"Yerevan",area:29743,lat:40.07,lon:45.04,reg:"Asia"},
+  {n:"Australia",cap:"Canberra",area:7692024,lat:-25.27,lon:133.78,reg:"Oceania"},
+  {n:"Austria",cap:"Vienna",area:83871,lat:47.52,lon:14.55,reg:"Europe"},
+  {n:"Azerbaijan",cap:"Baku",area:86600,lat:40.14,lon:47.58,reg:"Asia"},
+  {n:"Bangladesh",cap:"Dhaka",area:147570,lat:23.68,lon:90.36,reg:"Asia"},
+  {n:"Belarus",cap:"Minsk",area:207600,lat:53.71,lon:28.04,reg:"Europe"},
+  {n:"Belgium",cap:"Brussels",area:30528,lat:50.5,lon:4.47,reg:"Europe"},
+  {n:"Bolivia",cap:"Sucre",area:1098581,lat:-16.29,lon:-63.59,reg:"S. America"},
+  {n:"Botswana",cap:"Gaborone",area:581730,lat:-22.33,lon:24.68,reg:"Africa"},
+  {n:"Brazil",cap:"Brasília",area:8515767,lat:-14.24,lon:-51.93,reg:"S. America"},
+  {n:"Bulgaria",cap:"Sofia",area:110879,lat:42.73,lon:25.49,reg:"Europe"},
+  {n:"Cambodia",cap:"Phnom Penh",area:181035,lat:12.57,lon:104.99,reg:"Asia"},
+  {n:"Cameroon",cap:"Yaoundé",area:475442,lat:7.37,lon:12.35,reg:"Africa"},
+  {n:"Canada",cap:"Ottawa",area:9984670,lat:56.13,lon:-106.35,reg:"N. America"},
+  {n:"Cent. African Rep.",cap:"Bangui",area:622984,lat:6.61,lon:20.94,reg:"Africa"},
+  {n:"Chad",cap:"N'Djamena",area:1284000,lat:15.45,lon:18.73,reg:"Africa"},
+  {n:"Chile",cap:"Santiago",area:756102,lat:-35.68,lon:-71.54,reg:"S. America"},
+  {n:"China",cap:"Beijing",area:9596960,lat:35.86,lon:104.2,reg:"Asia"},
+  {n:"Colombia",cap:"Bogotá",area:1141748,lat:4.57,lon:-74.3,reg:"S. America"},
+  {n:"DR Congo",cap:"Kinshasa",area:2344858,lat:-4.04,lon:21.76,reg:"Africa"},
+  {n:"Congo",cap:"Brazzaville",area:342000,lat:-0.23,lon:15.83,reg:"Africa"},
+  {n:"Costa Rica",cap:"San José",area:51100,lat:9.75,lon:-83.75,reg:"N. America"},
+  {n:"Croatia",cap:"Zagreb",area:56594,lat:45.1,lon:15.2,reg:"Europe"},
+  {n:"Cuba",cap:"Havana",area:109884,lat:21.52,lon:-77.78,reg:"N. America"},
+  {n:"Czech Republic",cap:"Prague",area:78866,lat:49.82,lon:15.47,reg:"Europe"},
+  {n:"Denmark",cap:"Copenhagen",area:43094,lat:56.26,lon:9.5,reg:"Europe"},
+  {n:"Djibouti",cap:"Djibouti City",area:23200,lat:11.83,lon:42.59,reg:"Africa"},
+  {n:"Dom. Republic",cap:"Santo Domingo",area:48671,lat:18.74,lon:-70.16,reg:"N. America"},
+  {n:"Ecuador",cap:"Quito",area:283561,lat:-1.83,lon:-78.18,reg:"S. America"},
+  {n:"Egypt",cap:"Cairo",area:1002450,lat:26.82,lon:30.8,reg:"Africa"},
+  {n:"Eritrea",cap:"Asmara",area:117600,lat:15.18,lon:39.78,reg:"Africa"},
+  {n:"Estonia",cap:"Tallinn",area:45228,lat:58.6,lon:25.01,reg:"Europe"},
+  {n:"Ethiopia",cap:"Addis Ababa",area:1104300,lat:9.15,lon:40.49,reg:"Africa"},
+  {n:"Fiji",cap:"Suva",area:18274,lat:-17.71,lon:178.06,reg:"Oceania"},
+  {n:"Finland",cap:"Helsinki",area:338424,lat:61.92,lon:25.75,reg:"Europe"},
+  {n:"France",cap:"Paris",area:551695,lat:46.23,lon:2.21,reg:"Europe"},
+  {n:"Gabon",cap:"Libreville",area:267668,lat:-0.8,lon:11.61,reg:"Africa"},
+  {n:"Germany",cap:"Berlin",area:357114,lat:51.17,lon:10.45,reg:"Europe"},
+  {n:"Ghana",cap:"Accra",area:238533,lat:7.95,lon:-1.02,reg:"Africa"},
+  {n:"Greece",cap:"Athens",area:131957,lat:39.07,lon:21.82,reg:"Europe"},
+  {n:"Guatemala",cap:"Guatemala City",area:108889,lat:15.78,lon:-90.23,reg:"N. America"},
+  {n:"Guinea",cap:"Conakry",area:245857,lat:9.95,lon:-11.44,reg:"Africa"},
+  {n:"Guyana",cap:"Georgetown",area:214969,lat:4.86,lon:-58.93,reg:"S. America"},
+  {n:"Haiti",cap:"Port-au-Prince",area:27750,lat:18.97,lon:-72.29,reg:"N. America"},
+  {n:"Honduras",cap:"Tegucigalpa",area:112492,lat:15.2,lon:-86.24,reg:"N. America"},
+  {n:"Hungary",cap:"Budapest",area:93028,lat:47.16,lon:19.5,reg:"Europe"},
+  {n:"Iceland",cap:"Reykjavík",area:103000,lat:64.96,lon:-19.02,reg:"Europe"},
+  {n:"India",cap:"New Delhi",area:3287263,lat:20.59,lon:78.96,reg:"Asia"},
+  {n:"Indonesia",cap:"Jakarta",area:1904569,lat:-0.79,lon:113.92,reg:"Asia"},
+  {n:"Iran",cap:"Tehran",area:1648195,lat:32.43,lon:53.69,reg:"Asia"},
+  {n:"Iraq",cap:"Baghdad",area:438317,lat:33.22,lon:43.68,reg:"Asia"},
+  {n:"Ireland",cap:"Dublin",area:70273,lat:53.41,lon:-8.24,reg:"Europe"},
+  {n:"Israel",cap:"Jerusalem",area:20770,lat:31.05,lon:34.85,reg:"Asia"},
+  {n:"Italy",cap:"Rome",area:301340,lat:41.87,lon:12.57,reg:"Europe"},
+  {n:"Japan",cap:"Tokyo",area:377930,lat:36.2,lon:138.25,reg:"Asia"},
+  {n:"Jordan",cap:"Amman",area:89342,lat:30.59,lon:36.24,reg:"Asia"},
+  {n:"Kazakhstan",cap:"Astana",area:2724900,lat:48.02,lon:66.92,reg:"Asia"},
+  {n:"Kenya",cap:"Nairobi",area:580367,lat:0.02,lon:37.91,reg:"Africa"},
+  {n:"North Korea",cap:"Pyongyang",area:120538,lat:40.34,lon:127.51,reg:"Asia"},
+  {n:"South Korea",cap:"Seoul",area:100210,lat:35.91,lon:127.77,reg:"Asia"},
+  {n:"Kuwait",cap:"Kuwait City",area:17818,lat:29.31,lon:47.48,reg:"Asia"},
+  {n:"Laos",cap:"Vientiane",area:236800,lat:19.86,lon:102.49,reg:"Asia"},
+  {n:"Latvia",cap:"Riga",area:64589,lat:56.88,lon:24.6,reg:"Europe"},
+  {n:"Lebanon",cap:"Beirut",area:10400,lat:33.85,lon:35.86,reg:"Asia"},
+  {n:"Lesotho",cap:"Maseru",area:30355,lat:-29.61,lon:28.23,reg:"Africa"},
+  {n:"Liberia",cap:"Monrovia",area:111369,lat:6.43,lon:-9.43,reg:"Africa"},
+  {n:"Libya",cap:"Tripoli",area:1759540,lat:26.34,lon:17.23,reg:"Africa"},
+  {n:"Lithuania",cap:"Vilnius",area:65300,lat:55.17,lon:23.88,reg:"Europe"},
+  {n:"Madagascar",cap:"Antananarivo",area:587041,lat:-18.77,lon:46.87,reg:"Africa"},
+  {n:"Malawi",cap:"Lilongwe",area:118484,lat:-13.25,lon:34.3,reg:"Africa"},
+  {n:"Malaysia",cap:"Kuala Lumpur",area:329847,lat:4.21,lon:108.96,reg:"Asia"},
+  {n:"Mali",cap:"Bamako",area:1240192,lat:17.57,lon:-3.99,reg:"Africa"},
+  {n:"Mauritania",cap:"Nouakchott",area:1030700,lat:21.01,lon:-10.94,reg:"Africa"},
+  {n:"Mexico",cap:"Mexico City",area:1964375,lat:23.63,lon:-102.55,reg:"N. America"},
+  {n:"Moldova",cap:"Chișinău",area:33846,lat:47.41,lon:28.37,reg:"Europe"},
+  {n:"Mongolia",cap:"Ulaanbaatar",area:1564116,lat:46.86,lon:103.85,reg:"Asia"},
+  {n:"Morocco",cap:"Rabat",area:446550,lat:31.79,lon:-7.09,reg:"Africa"},
+  {n:"Mozambique",cap:"Maputo",area:801590,lat:-18.67,lon:35.53,reg:"Africa"},
+  {n:"Myanmar",cap:"Naypyidaw",area:676578,lat:16.87,lon:96.19,reg:"Asia"},
+  {n:"Namibia",cap:"Windhoek",area:824292,lat:-22.96,lon:18.49,reg:"Africa"},
+  {n:"Nepal",cap:"Kathmandu",area:147181,lat:28.39,lon:84.12,reg:"Asia"},
+  {n:"Netherlands",cap:"Amsterdam",area:41543,lat:52.13,lon:5.29,reg:"Europe"},
+  {n:"New Zealand",cap:"Wellington",area:268838,lat:-40.9,lon:174.89,reg:"Oceania"},
+  {n:"Nicaragua",cap:"Managua",area:130370,lat:12.87,lon:-85.21,reg:"N. America"},
+  {n:"Niger",cap:"Niamey",area:1267000,lat:17.61,lon:8.08,reg:"Africa"},
+  {n:"Nigeria",cap:"Abuja",area:923768,lat:9.08,lon:8.68,reg:"Africa"},
+  {n:"Norway",cap:"Oslo",area:323802,lat:60.47,lon:8.47,reg:"Europe"},
+  {n:"Oman",cap:"Muscat",area:309500,lat:21.51,lon:57.49,reg:"Asia"},
+  {n:"Pakistan",cap:"Islamabad",area:881913,lat:30.38,lon:69.35,reg:"Asia"},
+  {n:"Panama",cap:"Panama City",area:75417,lat:8.54,lon:-80.78,reg:"N. America"},
+  {n:"Papua New Guinea",cap:"Port Moresby",area:462840,lat:-6.31,lon:143.96,reg:"Oceania"},
+  {n:"Paraguay",cap:"Asunción",area:406752,lat:-23.44,lon:-58.44,reg:"S. America"},
+  {n:"Peru",cap:"Lima",area:1285216,lat:-9.19,lon:-75.02,reg:"S. America"},
+  {n:"Philippines",cap:"Manila",area:300000,lat:12.88,lon:121.77,reg:"Asia"},
+  {n:"Poland",cap:"Warsaw",area:312679,lat:51.92,lon:19.15,reg:"Europe"},
+  {n:"Portugal",cap:"Lisbon",area:92212,lat:39.4,lon:-8.22,reg:"Europe"},
+  {n:"Qatar",cap:"Doha",area:11586,lat:25.35,lon:51.18,reg:"Asia"},
+  {n:"Romania",cap:"Bucharest",area:238397,lat:45.94,lon:24.97,reg:"Europe"},
+  {n:"Russia",cap:"Moscow",area:17098242,lat:61.52,lon:105.32,reg:"Europe/Asia"},
+  {n:"Rwanda",cap:"Kigali",area:26338,lat:-1.94,lon:29.87,reg:"Africa"},
+  {n:"Saudi Arabia",cap:"Riyadh",area:2149690,lat:23.89,lon:45.08,reg:"Asia"},
+  {n:"Senegal",cap:"Dakar",area:196722,lat:14.5,lon:-14.45,reg:"Africa"},
+  {n:"Sierra Leone",cap:"Freetown",area:71740,lat:8.46,lon:-11.78,reg:"Africa"},
+  {n:"Slovakia",cap:"Bratislava",area:49035,lat:48.67,lon:19.7,reg:"Europe"},
+  {n:"Slovenia",cap:"Ljubljana",area:20273,lat:46.15,lon:14.99,reg:"Europe"},
+  {n:"Somalia",cap:"Mogadishu",area:637657,lat:5.15,lon:46.2,reg:"Africa"},
+  {n:"South Africa",cap:"Pretoria",area:1219090,lat:-30.56,lon:22.94,reg:"Africa"},
+  {n:"South Sudan",cap:"Juba",area:619745,lat:7.86,lon:29.7,reg:"Africa"},
+  {n:"Spain",cap:"Madrid",area:505990,lat:40.46,lon:-3.75,reg:"Europe"},
+  {n:"Sri Lanka",cap:"Colombo",area:65610,lat:7.87,lon:80.77,reg:"Asia"},
+  {n:"Sudan",cap:"Khartoum",area:1861484,lat:12.86,lon:30.22,reg:"Africa"},
+  {n:"Suriname",cap:"Paramaribo",area:163820,lat:3.92,lon:-56.03,reg:"S. America"},
+  {n:"Sweden",cap:"Stockholm",area:450295,lat:60.13,lon:18.64,reg:"Europe"},
+  {n:"Switzerland",cap:"Bern",area:41285,lat:46.82,lon:8.23,reg:"Europe"},
+  {n:"Syria",cap:"Damascus",area:185180,lat:34.8,lon:38.99,reg:"Asia"},
+  {n:"Tajikistan",cap:"Dushanbe",area:143100,lat:38.86,lon:71.28,reg:"Asia"},
+  {n:"Tanzania",cap:"Dodoma",area:945087,lat:-6.37,lon:34.89,reg:"Africa"},
+  {n:"Thailand",cap:"Bangkok",area:513120,lat:15.87,lon:100.99,reg:"Asia"},
+  {n:"Togo",cap:"Lomé",area:56785,lat:8.62,lon:0.82,reg:"Africa"},
+  {n:"Tunisia",cap:"Tunis",area:163610,lat:33.89,lon:9.54,reg:"Africa"},
+  {n:"Turkey",cap:"Ankara",area:783562,lat:38.96,lon:35.24,reg:"Asia/Europe"},
+  {n:"Turkmenistan",cap:"Ashgabat",area:488100,lat:38.97,lon:59.56,reg:"Asia"},
+  {n:"Uganda",cap:"Kampala",area:241038,lat:1.37,lon:32.29,reg:"Africa"},
+  {n:"Ukraine",cap:"Kyiv",area:603550,lat:48.38,lon:31.17,reg:"Europe"},
+  {n:"UAE",cap:"Abu Dhabi",area:83600,lat:23.42,lon:53.85,reg:"Asia"},
+  {n:"United Kingdom",cap:"London",area:242495,lat:55.38,lon:-3.44,reg:"Europe"},
+  {n:"United States",cap:"Washington D.C.",area:9833517,lat:37.09,lon:-95.71,reg:"N. America"},
+  {n:"Uruguay",cap:"Montevideo",area:176215,lat:-32.52,lon:-55.77,reg:"S. America"},
+  {n:"Uzbekistan",cap:"Tashkent",area:447400,lat:41.38,lon:64.59,reg:"Asia"},
+  {n:"Venezuela",cap:"Caracas",area:912050,lat:6.42,lon:-66.59,reg:"S. America"},
+  {n:"Vietnam",cap:"Hanoi",area:331212,lat:14.06,lon:108.28,reg:"Asia"},
+  {n:"Yemen",cap:"Sana'a",area:527968,lat:15.55,lon:48.52,reg:"Asia"},
+  {n:"Zambia",cap:"Lusaka",area:752618,lat:-13.13,lon:27.85,reg:"Africa"},
+  {n:"Zimbabwe",cap:"Harare",area:390757,lat:-19.02,lon:29.15,reg:"Africa"},
+];
 
-        // Pause rotation when the user interacts
-        document.getElementById('globeViz').addEventListener('mousedown', () => {
-            world.controls().autoRotate = false;
-        });
+const OD=[
+  {n:"Pacific Ocean",lat:5,lon:-160},
+  {n:"Atlantic Ocean",lat:10,lon:-30},
+  {n:"Indian Ocean",lat:-20,lon:75},
+  {n:"Arctic Ocean",lat:85,lon:0},
+  {n:"Southern Ocean",lat:-65,lon:0},
+  {n:"Mediterranean Sea",lat:36,lon:14},
+  {n:"Caribbean Sea",lat:15,lon:-74},
+  {n:"Gulf of Mexico",lat:25,lon:-90},
+  {n:"South China Sea",lat:13,lon:115},
+  {n:"Arabian Sea",lat:17,lon:63},
+  {n:"Bay of Bengal",lat:15,lon:88},
+  {n:"Red Sea",lat:20,lon:37},
+  {n:"Black Sea",lat:43,lon:34},
+  {n:"North Sea",lat:56,lon:3},
+  {n:"Bering Sea",lat:58,lon:-175},
+];
 
-        let geoJsonData = [];
+/* ══════════════════════════════════════════
+   THREE.JS
+══════════════════════════════════════════ */
+const W=window.innerWidth, H=window.innerHeight;
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(W,H);
+renderer.setClearColor(0x000008);
+document.body.appendChild(renderer.domElement);
 
-        // 3. The Data Engine: Fetch shapefiles and demographic data simultaneously
-        Promise.all([
-            fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson').then(res => res.json()),
-            fetch('https://restcountries.com/v3.1/all').then(res => res.json())
-        ]).then(([countries, restData]) => {
-            
-            // Index the REST data by ISO code for O(1) lookup speeds
-            const restMap = {};
-            restData.forEach(c => { restMap[c.cca3] = c; });
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(45,W/H,0.1,100);
+camera.position.z=2.6;
 
-            // Merge the data sets and calculate rough centroids for the camera to target
-            countries.features.forEach(feat => {
-                feat.restData = restMap[feat.properties.ISO_A3] || restMap[feat.properties.ADM0_A3] || {};
-                
-                if(feat.geometry) {
-                    let lats = [], lngs = [];
-                    const coords = feat.geometry.type === 'Polygon' ? [feat.geometry.coordinates] : feat.geometry.coordinates;
-                    coords.forEach(poly => poly[0].forEach(coord => {
-                        lngs.push(coord[0]); lats.push(coord[1]);
-                    }));
-                    feat.centerLat = (Math.min(...lats) + Math.max(...lats)) / 2;
-                    feat.centerLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
-                }
-            });
+/* Stars */
+const sv=[];
+for(let i=0;i<8000;i++){
+  const t=2*Math.PI*Math.random(),p=Math.acos(2*Math.random()-1),r=40+Math.random()*20;
+  sv.push(r*Math.sin(p)*Math.cos(t),r*Math.cos(p),r*Math.sin(p)*Math.sin(t));
+}
+const sg=new THREE.BufferGeometry();
+sg.setAttribute('position',new THREE.Float32BufferAttribute(sv,3));
+scene.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xaaccff,size:0.06,sizeAttenuation:true})));
 
-            geoJsonData = countries.features;
-            world.polygonsData(geoJsonData);
-        });
+/* Globe */
+const RADIUS=1;
+const globe=new THREE.Mesh(
+  new THREE.SphereGeometry(RADIUS,64,64),
+  new THREE.MeshPhongMaterial({color:0x020c1f,emissive:0x050d25,shininess:18})
+);
 
-        // 4. Build the Search Logic
-        const searchInput = document.getElementById('countrySearch');
-        const resultDiv = document.getElementById('searchResult');
+/* Atmosphere */
+scene.add(new THREE.Mesh(
+  new THREE.SphereGeometry(RADIUS*1.025,64,64),
+  new THREE.MeshPhongMaterial({color:0x1155cc,emissive:0x0833aa,side:THREE.FrontSide,transparent:true,opacity:0.08,depthWrite:false})
+));
 
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            resultDiv.innerText = '';
-            
-            if (!query) return;
+/* Lights */
+scene.add(new THREE.AmbientLight(0x112244,1.2));
+const sun=new THREE.DirectionalLight(0x99bbff,1.8); sun.position.set(4,3,5); scene.add(sun);
+scene.add(Object.assign(new THREE.DirectionalLight(0x112266,0.4),{position:new THREE.Vector3(-3,-1,-2)}));
 
-            // Find the closest matching country
-            const match = geoJsonData.find(d => 
-                d.properties.ADMIN.toLowerCase().startsWith(query) || 
-                d.properties.ADMIN.toLowerCase() === query
-            );
-            
-            if (match && match.centerLat !== undefined) {
-                // Fly the camera directly to the target
-                world.pointOfView({ lat: match.centerLat, lng: match.centerLng, altitude: 1.5 }, 1200);
-                world.controls().autoRotate = false; // Stop rotation so user can view it
-            } else if (query.length > 2) {
-                resultDiv.innerText = 'Country not found.';
-            }
-        });
+/* Pivot */
+const pivot=new THREE.Group();
+scene.add(pivot);
+pivot.add(globe);
 
-        // 5. Keep it responsive
-        window.addEventListener('resize', () => {
-            world.width(window.innerWidth);
-            world.height(window.innerHeight);
-        });
-    </script>
+/* ── Helpers ── */
+function ll2v(lat,lon,r){
+  const phi=(90-lat)*(Math.PI/180), theta=(lon+180)*(Math.PI/180);
+  return new THREE.Vector3(
+    -r*Math.sin(phi)*Math.cos(theta),
+     r*Math.cos(phi),
+     r*Math.sin(phi)*Math.sin(theta)
+  );
+}
+
+function projectScreen(wp){
+  const v=wp.clone().project(camera);
+  return{
+    x:(v.x*.5+.5)*window.innerWidth,
+    y:(-(v.y*.5)+.5)*window.innerHeight,
+    behind:v.z>1
+  };
+}
+
+/* ── Labels DOM ── */
+const layer=document.getElementById('label-layer');
+const camDir=new THREE.Vector3();
+
+const cLabels=CD.map(c=>{
+  const el=document.createElement('div');
+  el.className='clbl';
+  el.textContent=c.n;
+  layer.appendChild(el);
+  el.addEventListener('click',()=>showPanel(c));
+  return{el,wp:ll2v(c.lat,c.lon,RADIUS*1.005),c};
+});
+
+const oLabels=OD.map(o=>{
+  const el=document.createElement('div');
+  el.className='olbl';
+  el.textContent=o.n;
+  layer.appendChild(el);
+  return{el,wp:ll2v(o.lat,o.lon,RADIUS*1.005)};
+});
+
+function updateLabels(){
+  camera.getWorldDirection(camDir);
+  const zoom=camera.position.z;
+  const showC=zoom<4.0;
+
+  cLabels.forEach(({el,wp,c})=>{
+    const rot=wp.clone().applyEuler(pivot.rotation);
+    const dot=rot.dot(camDir);
+    if(dot>-0.1||!showC){el.style.display='none';return;}
+    const s=projectScreen(rot);
+    if(s.behind){el.style.display='none';return;}
+    el.style.display='block';
+    el.style.left=s.x+'px';
+    el.style.top=s.y+'px';
+    const fade=Math.min(1,(4.0-zoom)/1.5);
+    el.style.opacity=String(fade);
+    const sc=Math.max(0.75,Math.min(1.3,2.6/zoom));
+    el.style.fontSize=(10*sc).toFixed(1)+'px';
+  });
+
+  oLabels.forEach(({el,wp})=>{
+    const rot=wp.clone().applyEuler(pivot.rotation);
+    const dot=rot.dot(camDir);
+    if(dot>-0.06){el.style.display='none';return;}
+    const s=projectScreen(rot);
+    if(s.behind){el.style.display='none';return;}
+    el.style.display='block';
+    el.style.left=s.x+'px';
+    el.style.top=s.y+'px';
+    el.style.opacity=String(Math.min(1,(-dot-.06)*4));
+  });
+}
+
+/* ── Panel ── */
+function showPanel(c){
+  document.getElementById('pn').textContent=c.n;
+  document.getElementById('pcap').textContent=c.cap;
+  document.getElementById('parea').textContent=c.area.toLocaleString()+' km²';
+  document.getElementById('preg').textContent=c.reg;
+  document.getElementById('panel').classList.add('on');
+}
+document.getElementById('pc').addEventListener('click',()=>document.getElementById('panel').classList.remove('on'));
+
+/* ── Fly-to ── */
+let flyTarget=null;
+function flyTo(c){
+  flyTarget={
+    rotX:-(c.lat*Math.PI/180),
+    rotY:-(c.lon*Math.PI/180)-Math.PI
+  };
+  targetCamZ=2.0;
+  showPanel(c);
+  cLabels.forEach(l=>l.el.classList.remove('hi'));
+  const found=cLabels.find(l=>l.c===c);
+  if(found) found.el.classList.add('hi');
+}
+
+/* ── Search ── */
+const si=document.getElementById('si');
+const sr=document.getElementById('sr');
+
+si.addEventListener('input',()=>{
+  const q=si.value.trim().toLowerCase();
+  sr.style.display='none'; sr.innerHTML='';
+  if(!q) return;
+  const matches=CD.filter(c=>c.n.toLowerCase().includes(q)||c.cap.toLowerCase().includes(q)).slice(0,8);
+  if(!matches.length) return;
+  matches.forEach(c=>{
+    const d=document.createElement('div');
+    d.className='ri';
+    d.innerHTML=`<span>${c.n}</span><span class="cap">${c.cap}</span>`;
+    d.addEventListener('click',()=>{
+      flyTo(c); si.value=c.n; sr.style.display='none'; lastInteract=Date.now();
+    });
+    sr.appendChild(d);
+  });
+  sr.style.display='block';
+});
+
+document.addEventListener('click',e=>{
+  if(!document.getElementById('sw').contains(e.target)) sr.style.display='none';
+});
+si.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){sr.style.display='none';si.blur();}
+  if(e.key==='Enter'){
+    const q=si.value.trim().toLowerCase();
+    const m=CD.find(c=>c.n.toLowerCase().startsWith(q)||c.cap.toLowerCase().startsWith(q));
+    if(m){flyTo(m);si.value=m.n;sr.style.display='none';lastInteract=Date.now();}
+  }
+});
+
+/* ── Outlines ── */
+const R_LINE=RADIUS*1.002;
+const oMat=new THREE.LineBasicMaterial({color:0x3a8fff,transparent:true,opacity:0.75});
+
+function ringLine(coords,r){
+  return new THREE.Line(
+    new THREE.BufferGeometry().setFromPoints(coords.map(([lo,la])=>ll2v(la,lo,r))),
+    oMat
+  );
+}
+function addPoly(rings,r){for(const ring of rings) if(ring.length>1) pivot.add(ringLine(ring,r));}
+
+function toGeoJson(topo){
+  const sc=topo.transform.scale, tr=topo.transform.translate;
+  const arcs=topo.arcs.map(a=>{
+    let x=0,y=0;
+    return a.map(([dx,dy])=>{x+=dx;y+=dy;return[x*sc[0]+tr[0],y*sc[1]+tr[1]];});
+  });
+  const sArc=i=>i<0?arcs[~i].slice().reverse():arcs[i].slice();
+  const sRing=ids=>{
+    const pts=[];
+    for(const i of ids){const s=sArc(i);pts.push(...(pts.length?s.slice(1):s));}
+    if(pts.length) pts.push(pts[0]); return pts;
+  };
+  return topo.objects.countries.geometries.map(g=>{
+    if(g.type==='Polygon') return{type:'Feature',geometry:{type:'Polygon',coordinates:g.arcs.map(sRing)}};
+    if(g.type==='MultiPolygon') return{type:'Feature',geometry:{type:'MultiPolygon',coordinates:g.arcs.map(p=>p.map(sRing))}};
+    return null;
+  }).filter(Boolean);
+}
+
+setProgress(20);
+fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+  .then(r=>r.json())
+  .then(topo=>{setProgress(60);return toGeoJson(topo);})
+  .then(features=>{
+    features.forEach(f=>{
+      const g=f.geometry; if(!g) return;
+      if(g.type==='Polygon') addPoly(g.coordinates,R_LINE);
+      else if(g.type==='MultiPolygon') g.coordinates.forEach(p=>addPoly(p,R_LINE));
+    });
+    setProgress(100);
+    setTimeout(()=>{
+      const ld=document.getElementById('loading');
+      ld.style.opacity='0';
+      setTimeout(()=>ld.remove(),600);
+    },300);
+  })
+  .catch(()=>{document.getElementById('loading').textContent='Failed to load country data';});
+
+function setProgress(p){document.getElementById('lf').style.width=p+'%';}
+
+/* ── Controls ── */
+let isDrag=false,lx=0,ly=0;
+let rotX=0.3,rotY=0,tRotX=0.3,tRotY=0;
+let camZ=2.6,targetCamZ=2.6;
+let lastInteract=Date.now();
+const IDLE=3000;
+
+const cvs=renderer.domElement;
+cvs.addEventListener('mousedown',e=>{isDrag=true;lx=e.clientX;ly=e.clientY;flyTarget=null;lastInteract=Date.now();});
+window.addEventListener('mousemove',e=>{
+  if(!isDrag) return;
+  tRotY+=(e.clientX-lx)*0.005; tRotX+=(e.clientY-ly)*0.005;
+  tRotX=Math.max(-Math.PI/2,Math.min(Math.PI/2,tRotX));
+  lx=e.clientX;ly=e.clientY;
+});
+window.addEventListener('mouseup',()=>isDrag=false);
+
+cvs.addEventListener('wheel',e=>{
+  e.preventDefault();
+  targetCamZ=Math.max(1.3,Math.min(5,targetCamZ+e.deltaY*0.003));
+  lastInteract=Date.now();flyTarget=null;
+},{passive:false});
+
+let t0=null,td0=null;
+cvs.addEventListener('touchstart',e=>{
+  flyTarget=null;lastInteract=Date.now();
+  if(e.touches.length===1){isDrag=true;lx=e.touches[0].clientX;ly=e.touches[0].clientY;}
+  else if(e.touches.length===2){
+    isDrag=false;
+    td0=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+    t0=targetCamZ;
+  }
+},{passive:true});
+cvs.addEventListener('touchmove',e=>{
+  e.preventDefault();
+  if(e.touches.length===1&&isDrag){
+    tRotY+=(e.touches[0].clientX-lx)*0.006; tRotX+=(e.touches[0].clientY-ly)*0.006;
+    tRotX=Math.max(-Math.PI/2,Math.min(Math.PI/2,tRotX));
+    lx=e.touches[0].clientX;ly=e.touches[0].clientY;
+  } else if(e.touches.length===2&&td0!==null){
+    const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+    targetCamZ=Math.max(1.3,Math.min(5,t0*(td0/d)));
+  }
+},{passive:false});
+cvs.addEventListener('touchend',()=>{isDrag=false;td0=null;});
+
+window.addEventListener('resize',()=>{
+  const w=window.innerWidth,h=window.innerHeight;
+  camera.aspect=w/h; camera.updateProjectionMatrix();
+  renderer.setSize(w,h);
+});
+
+setTimeout(()=>document.getElementById('hint').style.opacity='0',5000);
+
+/* ── Render loop ── */
+const clock=new THREE.Clock();
+function animate(){
+  requestAnimationFrame(animate);
+  const dt=clock.getDelta();
+
+  if(flyTarget){
+    tRotX+=(flyTarget.rotX-tRotX)*0.1;
+    tRotY+=(flyTarget.rotY-tRotY)*0.1;
+    if(Math.abs(flyTarget.rotX-tRotX)<0.001&&Math.abs(flyTarget.rotY-tRotY)<0.001) flyTarget=null;
+  } else if(Date.now()-lastInteract>IDLE){
+    tRotY+=0.1*dt;
+  }
+
+  rotX+=(tRotX-rotX)*0.08;
+  rotY+=(tRotY-rotY)*0.08;
+  camZ+=(targetCamZ-camZ)*0.08;
+
+  pivot.rotation.x=rotX;
+  pivot.rotation.y=rotY;
+  camera.position.z=camZ;
+
+  renderer.render(scene,camera);
+  updateLabels();
+}
+animate();
+</script>
 </body>
 </html>
