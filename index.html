@@ -1,97 +1,861 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive 3D Globe</title>
-    <style>
-        body { margin: 0; background-color: #000; overflow: hidden; font-family: sans-serif; }
-        #ui-container {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        input {
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            width: 250px;
-            outline: none;
-        }
-        #info-panel {
-            color: white;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #444;
-            display: none;
-            max-width: 250px;
-        }
-        .label { color: #888; font-size: 0.8em; margin-bottom: 2px; }
-        .value { color: #fff; font-weight: bold; margin-bottom: 8px; }
-        canvas { display: block; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anurag — Ships AI Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Display:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #FF4D00;
+    --red: #FF1A1A;
+    --black: #0A0A0A;
+    --black-2: #111111;
+    --black-3: #1A1A1A;
+    --white: #F8F6F3;
+    --white-2: #EFEFED;
+    --muted: #888880;
+    --border: rgba(255,255,255,0.07);
+    --font-head: 'Google Sans Display', 'Google Sans', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 5vw;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(10,10,10,0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    will-change: transform;
+  }
+
+  .nav-logo {
+    font-family: var(--font-head);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: -0.3px;
+  }
+
+  .nav-logo span { color: var(--orange); }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.2px;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white) !important;
+    background: var(--orange);
+    padding: 8px 20px;
+    border-radius: 6px;
+    transition: opacity 0.2s !important;
+  }
+
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 5vw 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -100px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255,77,0,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: -50px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(255,26,26,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--orange);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s var(--ease) 0.1s forwards;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--orange);
+    border-radius: 50%;
+  }
+
+  .hero-h1 {
+    font-family: var(--font-head);
+    font-size: clamp(42px, 6vw, 80px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    color: var(--white);
+    max-width: 800px;
+    opacity: 0;
+    animation: fadeUp 0.9s var(--ease) 0.2s forwards;
+  }
+
+  .hero-h1 .accent { color: var(--orange); }
+
+  .hero-sub {
+    font-size: clamp(16px, 1.8vw, 19px);
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 480px;
+    margin-top: 24px;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.9s var(--ease) 0.35s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    margin-top: 44px;
+    opacity: 0;
+    animation: fadeUp 0.9s var(--ease) 0.5s forwards;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--orange);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 13px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s var(--ease);
+  }
+
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 400;
+    padding: 13px 28px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s, transform 0.2s var(--ease);
+  }
+
+  .btn-ghost:hover { color: var(--white); border-color: rgba(255,255,255,0.2); transform: translateY(-1px); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px; left: 5vw;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    opacity: 0;
+    animation: fadeUp 1s var(--ease) 0.9s forwards;
+  }
+
+  .scroll-line {
+    width: 40px;
+    height: 1px;
+    background: var(--muted);
+    opacity: 0.4;
+  }
+
+  /* STATS STRIP */
+  .stats {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 5vw;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+
+  .stat-item {
+    padding: 0 32px;
+    border-right: 1px solid var(--border);
+  }
+
+  .stat-item:first-child { padding-left: 0; }
+  .stat-item:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: var(--font-head);
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  .stat-num span { color: var(--orange); }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+    font-weight: 300;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 100px 5vw;
+  }
+
+  .section-tag {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--orange);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .section-h2 {
+    font-family: var(--font-head);
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    color: var(--white);
+    max-width: 560px;
+  }
+
+  .section-h2 .accent { color: var(--orange); }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 64px;
+  }
+
+  .about-text p {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+
+  .about-text p strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  .about-card {
+    background: var(--black-2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--orange), var(--red));
+  }
+
+  .about-card-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .skill-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .skill-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--white);
+    font-weight: 400;
+  }
+
+  .skill-dot {
+    width: 6px; height: 6px;
+    background: var(--orange);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* PROJECTS */
+  .projects { background: var(--black-2); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 64px;
+  }
+
+  .project-card {
+    background: var(--black-3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s var(--ease);
+    text-decoration: none;
+    display: block;
+  }
+
+  .project-card:hover {
+    border-color: rgba(255,77,0,0.3);
+    transform: translateY(-4px);
+  }
+
+  .project-card.featured {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .project-number {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .project-title {
+    font-family: var(--font-head);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .project-desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+    border-radius: 100px;
+    letter-spacing: 0.3px;
+  }
+
+  .tag.active {
+    color: var(--orange);
+    background: rgba(255,77,0,0.08);
+    border-color: rgba(255,77,0,0.2);
+  }
+
+  .project-visual {
+    background: var(--black);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-visual-inner {
+    font-family: var(--font-head);
+    font-size: 48px;
+    font-weight: 700;
+    color: rgba(255,77,0,0.15);
+    letter-spacing: -2px;
+    user-select: none;
+  }
+
+  .project-arrow {
+    position: absolute;
+    top: 32px; right: 32px;
+    width: 32px; height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 16px;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .project-card:hover .project-arrow {
+    background: var(--orange);
+    color: var(--white);
+    border-color: var(--orange);
+  }
+
+  /* CONTENT */
+  .content-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 64px;
+  }
+
+  .content-card {
+    background: var(--black-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    transition: border-color 0.3s, transform 0.3s var(--ease);
+  }
+
+  .content-card:hover {
+    border-color: rgba(255,255,255,0.12);
+    transform: translateY(-2px);
+  }
+
+  .content-icon {
+    width: 40px; height: 40px;
+    background: rgba(255,77,0,0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+
+  .content-title {
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+
+  .content-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* CONTACT */
+  .contact { background: var(--black-2); }
+
+  .contact-inner {
+    max-width: 640px;
+  }
+
+  .contact-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-head);
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-weight: 700;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: -0.5px;
+    margin-top: 32px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .contact-email:hover {
+    color: var(--orange);
+    border-color: var(--orange);
+  }
+
+  .contact-note {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 16px;
+    font-weight: 300;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 14px;
+    margin-top: 40px;
+  }
+
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 10px 18px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: color 0.2s, border-color 0.2s, transform 0.2s var(--ease);
+  }
+
+  .social-link:hover {
+    color: var(--white);
+    border-color: rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 32px 5vw;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: var(--font-head);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .footer-logo span { color: var(--orange); }
+
+  .footer-copy {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0 5vw;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card.featured { grid-column: span 1; grid-template-columns: 1fr; gap: 24px; }
+    .content-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: 1fr; gap: 24px; }
+    .stat-item { border-right: none; border-bottom: 1px solid var(--border); padding: 0 0 24px; }
+    .stat-item:last-child { border-bottom: none; padding-bottom: 0; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+    .hero-actions { flex-direction: column; }
+  }
+</style>
 </head>
 <body>
 
-    <div id="ui-container">
-        <input type="text" id="search" placeholder="Search for a country...">
-        <div id="info-panel">
-            <div class="label">Country</div>
-            <div id="country-name" class="value">-</div>
-            <div class="label">Capital</div>
-            <div id="country-capital" class="value">-</div>
-            <div class="label">Area</div>
-            <div id="country-area" class="value">-</div>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Anurag<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#content">Content</a></li>
+    <li><a href="#contact" class="nav-cta">Get in touch</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-tag">Available for brand collaborations</div>
+  <h1 class="hero-h1">I build AI tools.<br>In <span class="accent">public.</span></h1>
+  <p class="hero-sub">Vibe coder from Shimla. I find problems that annoy people and ship AI fixes — documenting every step from idea to launch.</p>
+  <div class="hero-actions">
+    <a href="https://instagram.com/ai.w.anurag" target="_blank" class="btn-primary">
+      Follow the builds
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="#projects" class="btn-ghost">See what I've shipped</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll to explore
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- STATS -->
+<div class="stats reveal">
+  <div class="stat-item">
+    <div class="stat-num">1<span>+</span></div>
+    <div class="stat-label">AI tools shipped from scratch</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">72<span>hrs</span></div>
+    <div class="stat-label">To build a working AI chatbot</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">0<span> CS degree</span></div>
+    <div class="stat-label">Just prompts and curiosity</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-tag">Who I am</div>
+  <h2 class="section-h2">Not a developer.<br>A <span class="accent">builder.</span></h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm <strong>Anurag</strong> — a vibe coder based in <strong>Shimla, Himachal Pradesh.</strong> I got tired of watching AI stay complicated and inaccessible, so I started building things that actually solve real problems.</p>
+      <p>No CS degree. No traditional coding background. Just an obsession with <strong>figuring things out</strong> and shipping them in public — so anyone can follow along and do the same.</p>
+      <p>Every project I build is documented start to finish. The wins, the roadblocks, the tools, the process. <strong>All of it, publicly.</strong></p>
+    </div>
+    <div class="about-card reveal">
+      <div class="about-card-label">What I work with</div>
+      <ul class="skill-list">
+        <li><span class="skill-dot"></span> Claude, ChatGPT, Gemini — daily</li>
+        <li><span class="skill-dot"></span> Vibe coding — Cursor, Claude Code</li>
+        <li><span class="skill-dot"></span> APIs, Webhooks, Databases</li>
+        <li><span class="skill-dot"></span> Manus AI, Perplexity, Google AI Studio</li>
+        <li><span class="skill-dot"></span> AI Avatars, Audio, Image generation</li>
+        <li><span class="skill-dot"></span> Building in public on Instagram</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="projects">
+  <div class="section-tag">What I've shipped</div>
+  <h2 class="section-h2">Real projects.<br><span class="accent">Real problems.</span></h2>
+  <div class="projects-grid">
+
+    <div class="project-card featured reveal">
+      <div>
+        <div class="project-number">Project 01 — Shipped</div>
+        <div class="project-title">AI Support Chatbot</div>
+        <p class="project-desc">Built a fully working AI chatbot from scratch in 72 hours using the Gemini API. Integrated PostgreSQL database, CSV-based query routing, and pre-defined responses to minimize token usage. The API only kicks in at the final step to humanize responses.</p>
+        <div class="project-tags">
+          <span class="tag active">Gemini API</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">CSV Routing</span>
+          <span class="tag">Vibe Coded</span>
+          <span class="tag">72hrs</span>
         </div>
+      </div>
+      <div class="project-visual">
+        <div class="project-visual-inner">01</div>
+      </div>
+      <div class="project-arrow">→</div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://unpkg.com/globe.gl"></script>
+    <div class="project-card reveal">
+      <div class="project-number">Project 02 — In progress</div>
+      <div class="project-title">Context Sync Extension</div>
+      <p class="project-desc">A browser extension that saves your AI conversation context to Google Drive — so you never have to re-explain your project across Claude, ChatGPT, and Gemini again.</p>
+      <div class="project-tags">
+        <span class="tag active">Building</span>
+        <span class="tag">Chrome Extension</span>
+        <span class="tag">GDrive API</span>
+        <span class="tag">Cross-platform</span>
+      </div>
+      <div class="project-arrow">→</div>
+    </div>
 
-    <script>
-        const infoPanel = document.getElementById('info-panel');
-        const nameEl = document.getElementById('country-name');
-        const capitalEl = document.getElementById('country-capital');
-        const areaEl = document.getElementById('country-area');
+    <div class="project-card reveal">
+      <div class="project-number">Project 03 — Coming soon</div>
+      <div class="project-title">More coming.</div>
+      <p class="project-desc">I pick one annoying problem, build a fix, and document everything. Follow along on Instagram to catch the next build in real time.</p>
+      <div class="project-tags">
+        <span class="tag">Follow for updates</span>
+      </div>
+      <div class="project-arrow">→</div>
+    </div>
 
-        // Initialize Globe
-        const world = Globe()
-            (document.body)
-            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-blue-marble.jpg') // Base water texture
-            .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
-            .backgroundColor('#000000')
-            .showAtmosphere(true)
-            .atmosphereColor('lightskyblue')
-            .atmosphereDaylightAlpha(0.1);
+  </div>
+</section>
 
-        // Load GeoJSON data for countries
-        fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
-            .then(res => res.json())
-            .then(countries => {
-                world.polygonsData(countries.features)
-                    .polygonCapColor(() => 'rgba(34, 139, 34, 0.7)') // Green land
-                    .polygonSideColor(() => 'rgba(0, 100, 0, 0.1)')
-                    .polygonStrokeColor(() => '#111')
-                    .polygonLabel(({ properties: d }) => `
-                        <b>${d.NAME} (${d.ABBREV})</b> <br />
-                        Capital: <i>${d.NAME_CIAWF || 'N/A'}</i>
-                    `)
-                    .onPolygonClick(d => {
-                        // Zoom to country
-                        world.pointOfView({ lat: d.properties.LABEL_Y, lng: d.properties.LABEL_X, altitude: 2 }, 1000);
-                        
-                        // Update UI
-                        infoPanel.style.display = 'block';
-                        nameEl.innerText = d.properties.NAME;
-                        capitalEl.innerText = d.properties.NAME_CIAWF || 'N/A';
-                        areaEl.innerText = d.properties.POP_EST.toLocaleString() + " (Pop. Est)"; // GeoJSON often lacks area, using population as proxy or label
-                    });
+<!-- CONTENT -->
+<section id="content">
+  <div class="section-tag">What I make</div>
+  <h2 class="section-h2">Content that<br><span class="accent">actually teaches.</span></h2>
+  <div class="content-grid">
+    <div class="content-card reveal">
+      <div class="content-icon">⚙️</div>
+      <div class="content-title">Build in public</div>
+      <p class="content-desc">Every project documented from day one. The idea, the build, the failures, the final product. No polished highlight reel — just the real process.</p>
+    </div>
+    <div class="content-card reveal">
+      <div class="content-icon">🛠️</div>
+      <div class="content-title">AI tool breakdowns</div>
+      <p class="content-desc">Practical walkthroughs of tools I actually use. Not reviews — real workflows, real outputs, real use cases you can copy immediately.</p>
+    </div>
+    <div class="content-card reveal">
+      <div class="content-icon">📍</div>
+      <div class="content-title">From Shimla, for everyone</div>
+      <p class="content-desc">Proving that where you're from doesn't limit what you can build. If I can ship AI tools from a hill station, you can do it from anywhere.</p>
+    </div>
+  </div>
+</section>
 
-                // Search Functionality
-                document.getElementById('search').addEventListener('input', (e) => {
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <div class="contact-inner">
+    <div class="section-tag">Work together</div>
+    <h2 class="section-h2">Let's build<br>something <span class="accent">real.</span></h2>
+    <p class="about-text" style="margin-top:20px;font-size:15px;font-weight:300;color:var(--muted);line-height:1.8">Open to brand collaborations, AI summit invitations, and product partnerships. If you're building something in the AI space and want someone who actually ships — let's talk.</p>
+    <a href="mailto:hello@sorell.in" class="contact-email">
+      hello@sorell.in
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <p class="contact-note">Usually respond within 24 hours.</p>
+    <div class="social-links">
+      <a href="https://instagram.com/ai.w.anurag" target="_blank" class="social-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        @ai.w.anurag
+      </a>
+      <a href="https://sorell.in" target="_blank" class="social-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
+        sorell.in
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">Anurag<span>.</span></a>
+  <p class="footer-copy">© 2026 · Built in public from Shimla 🏔️</p>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
