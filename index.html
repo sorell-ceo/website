@@ -1,1565 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRID — Instagram Growth Tracker</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --surface2: #1a1a24;
-    --border: #2a2a38;
-    --accent: #c8f57c;
-    --accent2: #7c9cf5;
-    --accent3: #f57c9c;
-    --text: #e8e8f0;
-    --muted: #6b6b80;
-    --danger: #f57c7c;
-    --gold: #f5c57c;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* NOISE OVERLAY */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 999;
-    opacity: 0.4;
-  }
-
-  /* HEADER */
-  .header {
-    padding: 24px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    background: rgba(10, 10, 15, 0.92);
-    backdrop-filter: blur(20px);
-    z-index: 100;
-  }
-
-  .logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    letter-spacing: 4px;
-    color: var(--accent);
-  }
-
-  .logo span {
-    color: var(--muted);
-    font-size: 12px;
-    font-family: 'DM Mono', monospace;
-    display: block;
-    letter-spacing: 3px;
-    margin-top: -4px;
-  }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .follower-badge {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 40px;
-    padding: 8px 20px;
-    font-size: 13px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .follower-badge .count {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .goal-progress {
-    width: 80px;
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-
-  .goal-progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent2), var(--accent));
-    border-radius: 2px;
-    transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  /* MAIN LAYOUT */
-  .main {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 32px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto auto auto;
-    gap: 20px;
-  }
-
-  /* STAT CARDS */
-  .stats-row {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.2s, transform 0.2s;
-  }
-
-  .stat-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-  }
-
-  .stat-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--card-accent, var(--accent));
-    border-radius: 16px 16px 0 0;
-  }
-
-  .stat-label {
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    margin-bottom: 12px;
-  }
-
-  .stat-value {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 48px;
-    line-height: 1;
-    color: var(--text);
-  }
-
-  .stat-sub {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 6px;
-    font-weight: 300;
-  }
-
-  .stat-delta {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    font-size: 12px;
-    font-weight: 500;
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-top: 8px;
-  }
-
-  .stat-delta.up { background: rgba(200, 245, 124, 0.12); color: var(--accent); }
-  .stat-delta.down { background: rgba(245, 124, 124, 0.12); color: var(--danger); }
-  .stat-delta.neutral { background: rgba(107, 107, 128, 0.15); color: var(--muted); }
-
-  /* GOAL CARD */
-  .goal-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px;
-  }
-
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    letter-spacing: 2px;
-    color: var(--muted);
-    margin-bottom: 20px;
-  }
-
-  .goal-ring-wrap {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }
-
-  .goal-ring {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    flex-shrink: 0;
-  }
-
-  .goal-ring svg {
-    transform: rotate(-90deg);
-  }
-
-  .goal-ring-center {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .goal-ring-pct {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .goal-ring-label {
-    font-size: 9px;
-    color: var(--muted);
-    letter-spacing: 1px;
-  }
-
-  .goal-details { flex: 1; }
-
-  .goal-milestone {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 6px;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .goal-target {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
-    color: var(--gold);
-    line-height: 1;
-  }
-
-  .goal-remaining {
-    font-size: 13px;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-
-  .goal-edit-btn {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    padding: 4px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: all 0.2s;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  .goal-edit-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* CHART AREAS */
-  .chart-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px;
-    grid-column: span 2;
-  }
-
-  .chart-card.full { grid-column: 1 / -1; }
-  .chart-card.single { grid-column: span 1; }
-
-  .chart-wrap {
-    position: relative;
-    height: 200px;
-    margin-top: 16px;
-  }
-
-  /* ADD REEL FORM */
-  .add-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px;
-    grid-column: span 1;
-  }
-
-  .form-group {
-    margin-bottom: 16px;
-  }
-
-  .form-label {
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    margin-bottom: 8px;
-    display: block;
-  }
-
-  .form-input {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 16px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .form-input:focus { border-color: var(--accent); }
-  .form-input::placeholder { color: var(--muted); }
-
-  select.form-input option {
-    background: var(--surface2);
-  }
-
-  .btn-primary {
-    width: 100%;
-    background: var(--accent);
-    color: #0a0a0f;
-    border: none;
-    border-radius: 10px;
-    padding: 14px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 18px;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-top: 4px;
-  }
-
-  .btn-primary:hover {
-    background: #d8ff8a;
-    transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(200, 245, 124, 0.2);
-  }
-
-  .btn-primary:active { transform: translateY(0); }
-
-  /* REELS TABLE */
-  .table-card {
-    grid-column: 1 / -1;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px;
-    overflow: hidden;
-  }
-
-  .table-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-
-  .table-search {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 14px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    outline: none;
-    width: 200px;
-    transition: border-color 0.2s;
-  }
-
-  .table-search:focus { border-color: var(--accent); }
-  .table-search::placeholder { color: var(--muted); }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  th {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-align: left;
-    padding: 8px 12px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  td {
-    padding: 14px 12px;
-    font-size: 13px;
-    border-bottom: 1px solid rgba(42, 42, 56, 0.5);
-    vertical-align: middle;
-  }
-
-  tr:last-child td { border-bottom: none; }
-
-  tr:hover td { background: rgba(255, 255, 255, 0.02); }
-
-  .topic-pill {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-  }
-
-  .view-bar-wrap {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .view-bar {
-    flex: 1;
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-    max-width: 80px;
-  }
-
-  .view-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent2), var(--accent));
-    border-radius: 2px;
-  }
-
-  .view-count {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--text);
-    white-space: nowrap;
-  }
-
-  .action-btn {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    border-radius: 6px;
-    padding: 4px 10px;
-    font-size: 11px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .action-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  .action-btn.del:hover { border-color: var(--danger); color: var(--danger); }
-
-  /* MODAL */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(8px);
-    z-index: 200;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s;
-  }
-
-  .modal-overlay.active {
-    opacity: 1;
-    pointer-events: all;
-  }
-
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 36px;
-    width: 400px;
-    max-width: 90vw;
-    transform: scale(0.95) translateY(10px);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .modal-overlay.active .modal {
-    transform: scale(1) translateY(0);
-  }
-
-  .modal-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 26px;
-    letter-spacing: 2px;
-    margin-bottom: 24px;
-  }
-
-  .modal-close {
-    float: right;
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-size: 20px;
-    cursor: pointer;
-    line-height: 1;
-    transition: color 0.2s;
-  }
-
-  .modal-close:hover { color: var(--text); }
-
-  /* STREAK */
-  .streak-dots {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-top: 12px;
-  }
-
-  .streak-dot {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    background: var(--border);
-    transition: background 0.3s;
-    position: relative;
-  }
-
-  .streak-dot.posted { background: var(--accent); }
-  .streak-dot.today { box-shadow: 0 0 0 2px var(--accent2); }
-
-  /* CONSISTENCY SCORE */
-  .consistency-bar {
-    height: 8px;
-    background: var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-top: 12px;
-  }
-
-  .consistency-fill {
-    height: 100%;
-    border-radius: 4px;
-    transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  /* RESPONSIVE */
-  @media (max-width: 900px) {
-    .main {
-      grid-template-columns: 1fr;
-      padding: 16px;
-      gap: 14px;
-    }
-    .stats-row { grid-template-columns: 1fr 1fr; }
-    .chart-card { grid-column: 1 / -1; }
-    .add-card { grid-column: 1 / -1; }
-    .table-card { grid-column: 1 / -1; overflow-x: auto; }
-    .header { padding: 16px; }
-    .logo { font-size: 22px; }
-    .follower-badge { display: none; }
-    .timeline-bar { grid-column: 1 / -1; }
-    .tl-custom-wrap { margin-left: 0; width: 100%; flex-wrap: wrap; }
-    .tl-date-input { width: 120px; }
-  }
-
-  @media (max-width: 600px) {
-    .stats-row { grid-template-columns: 1fr 1fr; }
-    .stat-value { font-size: 36px; }
-    table { min-width: 600px; }
-  }
-
-  /* TOAST */
-  .toast {
-    position: fixed;
-    bottom: 32px;
-    right: 32px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 12px;
-    padding: 14px 20px;
-    font-size: 13px;
-    z-index: 500;
-    transform: translateY(20px);
-    opacity: 0;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .toast.show { transform: translateY(0); opacity: 1; }
-
-  /* EMPTY STATE */
-  .empty-state {
-    text-align: center;
-    padding: 48px;
-    color: var(--muted);
-  }
-
-  .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
-  .empty-state p { font-size: 14px; line-height: 1.6; }
-
-  /* Follower log */
-  .follower-log-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-  }
-
-  .follower-log-item:last-child { border-bottom: none; }
-
-  .follower-log-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  .follower-log-count {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    color: var(--accent);
-  }
-
-  .follower-delta {
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-weight: 500;
-  }
-
-  .follower-delta.pos { background: rgba(200, 245, 124, 0.12); color: var(--accent); }
-  .follower-delta.neg { background: rgba(245, 124, 124, 0.12); color: var(--danger); }
-  .follower-delta.neu { background: rgba(107, 107, 128, 0.15); color: var(--muted); }
-
-  .tab-row {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 20px;
-  }
-
-  .tab-btn {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    border-radius: 8px;
-    padding: 6px 16px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .tab-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(200, 245, 124, 0.08); }
-  .tab-btn:hover:not(.active) { border-color: var(--muted); color: var(--text); }
-
-  /* TIMELINE BAR */
-  .timeline-bar {
-    grid-column: 1 / -1;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 12px 20px;
-    flex-wrap: wrap;
-  }
-
-  .timeline-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-right: 8px;
-    white-space: nowrap;
-  }
-
-  .tl-btn {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    border-radius: 8px;
-    padding: 5px 14px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.18s;
-    white-space: nowrap;
-  }
-
-  .tl-btn:hover:not(.active) { border-color: var(--muted); color: var(--text); }
-  .tl-btn.active {
-    border-color: var(--accent);
-    color: #0a0a0f;
-    background: var(--accent);
-    font-weight: 600;
-  }
-
-  .tl-divider {
-    width: 1px;
-    height: 18px;
-    background: var(--border);
-    margin: 0 4px;
-  }
-
-  .tl-custom-wrap {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-left: auto;
-  }
-
-  .tl-date-input {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    padding: 5px 10px;
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    outline: none;
-    transition: border-color 0.2s;
-    width: 130px;
-  }
-
-  .tl-date-input:focus { border-color: var(--accent2); }
-
-  .tl-apply-btn {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--accent2);
-    border-radius: 7px;
-    padding: 5px 12px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-
-  .tl-apply-btn:hover { border-color: var(--accent2); background: rgba(124,156,245,0.1); }
-
-  /* ANIMATE IN */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .stat-card, .chart-card, .add-card, .table-card, .goal-card {
-    animation: fadeUp 0.5s ease both;
-  }
-
-  .stat-card:nth-child(1) { animation-delay: 0.05s; }
-  .stat-card:nth-child(2) { animation-delay: 0.1s; }
-  .stat-card:nth-child(3) { animation-delay: 0.15s; }
-  .stat-card:nth-child(4) { animation-delay: 0.2s; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive 3D Globe</title>
+    <style>
+        /* Reset and layout */
+        body { margin: 0; padding: 0; background-color: #000; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: white; }
+        #globeViz { width: 100vw; height: 100vh; cursor: grab; }
+        #globeViz:active { cursor: grabbing; }
+
+        /* Search Bar UI */
+        .search-container {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            z-index: 10;
+            background: rgba(10, 10, 15, 0.85);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #00aaff;
+            box-shadow: 0 8px 32px rgba(0, 170, 255, 0.15);
+            backdrop-filter: blur(10px);
+        }
+        input {
+            padding: 12px 15px;
+            width: 280px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            background: #111;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        input:focus { border-color: #00aaff; box-shadow: 0 0 10px rgba(0, 170, 255, 0.3); }
+        
+        /* Tooltip UI */
+        .tooltip {
+            background: rgba(10, 10, 15, 0.95);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #00aaff;
+            pointer-events: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .tooltip-title { font-size: 20px; color: #00aaff; font-weight: bold; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .highlight { color: #fff; font-weight: 600; }
+    </style>
+    
+    <script src="https://unpkg.com/three"></script>
+    <script src="https://unpkg.com/globe.gl"></script>
 </head>
 <body>
-
-<!-- HEADER -->
-<header class="header">
-  <div class="logo">
-    GRID
-    <span>INSTAGRAM TRACKER</span>
-  </div>
-  <div class="header-right">
-    <div class="follower-badge">
-      <div>
-        <div style="font-size:10px;color:var(--muted);letter-spacing:1px;font-family:'DM Mono',monospace;">FOLLOWERS</div>
-        <div class="count" id="hdr-followers">0</div>
-      </div>
-      <div>
-        <div style="font-size:10px;color:var(--muted);letter-spacing:1px;font-family:'DM Mono',monospace;margin-bottom:4px;">GOAL <span id="hdr-goal-label">10K</span></div>
-        <div class="goal-progress">
-          <div class="goal-progress-fill" id="hdr-goal-fill" style="width:0%"></div>
-        </div>
-      </div>
+    <div class="search-container">
+        <input type="text" id="countrySearch" placeholder="Search for a country..." autocomplete="off">
+        <div id="searchResult" style="margin-top: 10px; font-size: 13px; color: #ff4444;"></div>
     </div>
-    <button class="goal-edit-btn" onclick="openGoalModal()">⚙ Settings</button>
-  </div>
-</header>
 
-<!-- MAIN -->
-<div class="main">
-
-  <!-- STATS ROW -->
-  <div class="stats-row">
-    <div class="stat-card" style="--card-accent: var(--accent)">
-      <div class="stat-label">Total Reels</div>
-      <div class="stat-value" id="stat-reels">0</div>
-      <div class="stat-sub">uploaded to date</div>
-    </div>
-    <div class="stat-card" style="--card-accent: var(--accent2)">
-      <div class="stat-label">Total Views</div>
-      <div class="stat-value" id="stat-views">0</div>
-      <div class="stat-sub" id="stat-avg-views">avg 0 / reel</div>
-    </div>
-    <div class="stat-card" style="--card-accent: var(--gold)">
-      <div class="stat-label">Followers</div>
-      <div class="stat-value" id="stat-followers">0</div>
-      <div id="stat-follower-delta" class="stat-delta neutral">— no change</div>
-    </div>
-    <div class="stat-card" style="--card-accent: var(--accent3)">
-      <div class="stat-label">Consistency</div>
-      <div class="stat-value" id="stat-streak">0%</div>
-      <div class="stat-sub" id="stat-streak-sub">posts last 7 days</div>
-    </div>
-  </div>
-
-  <!-- TIMELINE BAR -->
-  <div class="timeline-bar" id="timeline-bar">
-    <span class="timeline-label">Timeline</span>
-    <button class="tl-btn active" data-days="7" onclick="setTimeline(7, this)">7D</button>
-    <button class="tl-btn" data-days="14" onclick="setTimeline(14, this)">14D</button>
-    <button class="tl-btn" data-days="30" onclick="setTimeline(30, this)">1M</button>
-    <button class="tl-btn" data-days="60" onclick="setTimeline(60, this)">2M</button>
-    <button class="tl-btn" data-days="90" onclick="setTimeline(90, this)">3M</button>
-    <button class="tl-btn" data-days="180" onclick="setTimeline(180, this)">6M</button>
-    <button class="tl-btn" data-days="365" onclick="setTimeline(365, this)">1Y</button>
-    <div class="tl-divider"></div>
-    <button class="tl-btn" data-days="0" onclick="setTimeline(0, this)">All</button>
-    <div class="tl-custom-wrap">
-      <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;">CUSTOM</span>
-      <input type="date" class="tl-date-input" id="tl-from" placeholder="From">
-      <span style="color:var(--muted);font-size:12px;">→</span>
-      <input type="date" class="tl-date-input" id="tl-to" placeholder="To">
-      <button class="tl-apply-btn" onclick="applyCustomTimeline()">Apply</button>
-    </div>
-  </div>
-
-  <!-- VIEWS CHART -->
-  <div class="chart-card">
-    <div class="section-title" id="views-chart-title">Views Per Reel</div>
-    <div class="chart-wrap">
-      <canvas id="viewsChart"></canvas>
-    </div>
-  </div>
-
-  <!-- GOAL CARD -->
-  <div class="goal-card">
-    <div class="section-title">Goal Progress</div>
-    <div class="goal-ring-wrap">
-      <div class="goal-ring">
-        <svg width="100" height="100" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="40" fill="none" stroke="var(--border)" stroke-width="8"/>
-          <circle cx="50" cy="50" r="40" fill="none" stroke="var(--accent)" stroke-width="8"
-            stroke-dasharray="251.2" stroke-dashoffset="251.2"
-            stroke-linecap="round" id="goal-ring-circle" style="transition:stroke-dashoffset 1s cubic-bezier(0.34,1.56,0.64,1)"/>
-        </svg>
-        <div class="goal-ring-center">
-          <div class="goal-ring-pct" id="goal-pct">0%</div>
-          <div class="goal-ring-label">DONE</div>
-        </div>
-      </div>
-      <div class="goal-details">
-        <div class="goal-milestone">TARGET</div>
-        <div class="goal-target" id="goal-target-label">10,000</div>
-        <div class="goal-remaining" id="goal-remaining-label">— followers needed</div>
-        <button class="goal-edit-btn" onclick="openGoalModal()">Edit Goal</button>
-      </div>
-    </div>
-    <!-- Streak dots -->
-    <div style="margin-top:20px;">
-      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:8px;">Last 14 Days</div>
-      <div class="streak-dots" id="streak-dots"></div>
-    </div>
-  </div>
-
-  <!-- FOLLOWER CHART -->
-  <div class="chart-card">
-    <div style="display:flex;align-items:center;justify-content:space-between">
-      <div class="section-title" id="follower-chart-title">Follower Growth</div>
-      <button class="action-btn" onclick="openFollowerModal()">+ Log Today</button>
-    </div>
-    <div class="chart-wrap">
-      <canvas id="followerChart"></canvas>
-    </div>
-  </div>
-
-  <!-- ADD REEL -->
-  <div class="add-card">
-    <div class="section-title">Log Reel</div>
-    <div class="form-group">
-      <label class="form-label">Upload Date</label>
-      <input type="date" class="form-input" id="inp-date">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Topic / Title</label>
-      <input type="text" class="form-input" id="inp-topic" placeholder="e.g. AI Tools for Beginners">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Category</label>
-      <select class="form-input" id="inp-category">
-        <option value="Educational">Educational</option>
-        <option value="Tutorial">Tutorial</option>
-        <option value="Trend">Trend</option>
-        <option value="Motivational">Motivational</option>
-        <option value="BTS">Behind The Scenes</option>
-        <option value="Personal">Personal</option>
-        <option value="Product">Product</option>
-        <option value="Other">Other</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Initial Views</label>
-      <input type="number" class="form-input" id="inp-views" placeholder="0" min="0">
-    </div>
-    <button class="btn-primary" onclick="addReel()">LOG REEL</button>
-  </div>
-
-  <!-- REELS TABLE -->
-  <div class="table-card">
-    <div class="table-header">
-      <div class="section-title" style="margin:0">All Reels</div>
-      <input type="text" class="table-search" id="table-search" placeholder="Search reels..." oninput="renderTable()">
-    </div>
-    <div style="overflow-x:auto">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Date</th>
-            <th>Topic</th>
-            <th>Category</th>
-            <th>Views</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="reels-tbody">
-        </tbody>
-      </table>
-      <div id="empty-state" class="empty-state" style="display:none">
-        <div class="icon">🎬</div>
-        <p>No reels logged yet.<br>Add your first reel above to start tracking your growth.</p>
-      </div>
-    </div>
-  </div>
-
-</div><!-- /main -->
-
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
-<!-- GOAL MODAL -->
-<div class="modal-overlay" id="goal-modal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('goal-modal')">✕</button>
-    <div class="modal-title">Settings</div>
-    <div class="form-group">
-      <label class="form-label">Follower Goal</label>
-      <input type="number" class="form-input" id="inp-goal" placeholder="10000" min="1">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Current Followers (manual)</label>
-      <input type="number" class="form-input" id="inp-current-followers" placeholder="0" min="0">
-    </div>
-    <button class="btn-primary" onclick="saveSettings()">SAVE SETTINGS</button>
-  </div>
-</div>
-
-<!-- FOLLOWER LOG MODAL -->
-<div class="modal-overlay" id="follower-modal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('follower-modal')">✕</button>
-    <div class="modal-title">Log Followers</div>
-    <div class="form-group">
-      <label class="form-label">Date</label>
-      <input type="date" class="form-input" id="fl-date">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Total Followers (today's count)</label>
-      <input type="number" class="form-input" id="fl-count" placeholder="e.g. 1234" min="0">
-    </div>
-    <div style="margin-bottom:20px;">
-      <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Recent Log</div>
-      <div id="follower-log-list"></div>
-    </div>
-    <button class="btn-primary" onclick="logFollowers()">LOG FOLLOWERS</button>
-  </div>
-</div>
-
-<!-- UPDATE VIEWS MODAL -->
-<div class="modal-overlay" id="views-modal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('views-modal')">✕</button>
-    <div class="modal-title">Update Views</div>
-    <input type="hidden" id="uv-id">
-    <div class="form-group">
-      <label class="form-label">Topic</label>
-      <div id="uv-topic" style="color:var(--muted);font-size:13px;padding:8px 0;"></div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Current Views</label>
-      <input type="number" class="form-input" id="uv-views" placeholder="0" min="0">
-    </div>
-    <button class="btn-primary" onclick="updateViews()">UPDATE</button>
-  </div>
-</div>
-
-<script>
-// ─── DATA LAYER ──────────────────────────────────────────────────────────────
-
-const DB = {
-  get(key, fallback) {
-    try { const v = localStorage.getItem('grid_' + key); return v !== null ? JSON.parse(v) : fallback; }
-    catch { return fallback; }
-  },
-  set(key, val) {
-    try { localStorage.setItem('grid_' + key, JSON.stringify(val)); }
-    catch { console.warn('Storage full'); }
-  }
-};
-
-function getData() {
-  return {
-    reels: DB.get('reels', []),
-    followerLog: DB.get('followerLog', []),
-    goal: DB.get('goal', 10000),
-    currentFollowers: DB.get('currentFollowers', 0)
-  };
-}
-
-function saveReels(reels) { DB.set('reels', reels); }
-function saveFollowerLog(log) { DB.set('followerLog', log); }
-
-// ─── TIMELINE STATE ──────────────────────────────────────────────────────────
-// tlDays: number of days back (0 = all time), or null if custom range
-// tlFrom / tlTo: ISO date strings for custom range
-
-let tlDays = 7;
-let tlFrom = null;
-let tlTo   = null;
-
-function getTimelineRange() {
-  if (tlFrom && tlTo) return { from: tlFrom, to: tlTo };
-  if (tlDays === 0) return { from: '2000-01-01', to: '9999-12-31' };
-  const to = new Date();
-  const from = new Date();
-  from.setDate(from.getDate() - (tlDays - 1));
-  return {
-    from: from.toISOString().slice(0, 10),
-    to:   to.toISOString().slice(0, 10)
-  };
-}
-
-function getTimelineLabel() {
-  if (tlFrom && tlTo) return tlFrom + ' → ' + tlTo;
-  if (tlDays === 0) return 'All Time';
-  if (tlDays === 7) return 'Last 7 Days';
-  if (tlDays === 14) return 'Last 14 Days';
-  if (tlDays === 30) return 'Last Month';
-  if (tlDays === 60) return 'Last 2 Months';
-  if (tlDays === 90) return 'Last 3 Months';
-  if (tlDays === 180) return 'Last 6 Months';
-  if (tlDays === 365) return 'Last Year';
-  return 'Last ' + tlDays + ' Days';
-}
-
-function setTimeline(days, btn) {
-  tlDays = days;
-  tlFrom = null;
-  tlTo   = null;
-  // Clear custom inputs
-  document.getElementById('tl-from').value = '';
-  document.getElementById('tl-to').value = '';
-  // Update active button
-  document.querySelectorAll('.tl-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  refresh();
-}
-
-function applyCustomTimeline() {
-  const from = document.getElementById('tl-from').value;
-  const to   = document.getElementById('tl-to').value;
-  if (!from || !to) { showToast('⚠ Pick both From and To dates'); return; }
-  if (from > to) { showToast('⚠ From must be before To'); return; }
-  tlFrom = from;
-  tlTo   = to;
-  tlDays = null;
-  // Deactivate preset buttons
-  document.querySelectorAll('.tl-btn').forEach(b => b.classList.remove('active'));
-  refresh();
-}
-
-// Filter array of objects with a .date field by current timeline
-function filterByTimeline(arr) {
-  const { from, to } = getTimelineRange();
-  return arr.filter(item => item.date >= from && item.date <= to);
-}
-
-// ─── CHART INSTANCES ─────────────────────────────────────────────────────────
-
-let viewsChartInst = null;
-let followerChartInst = null;
-
-Chart.defaults.color = '#6b6b80';
-Chart.defaults.borderColor = '#2a2a38';
-Chart.defaults.font.family = "'DM Mono', monospace";
-
-// ─── UTILS ───────────────────────────────────────────────────────────────────
-
-function fmt(n) {
-  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
-  if (n >= 1000) return (n/1000).toFixed(1) + 'K';
-  return n.toString();
-}
-
-function fmtFull(n) {
-  return n.toLocaleString();
-}
-
-function today() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2800);
-}
-
-const CATEGORY_COLORS = {
-  Educational: { bg: 'rgba(124,156,245,0.15)', color: '#7c9cf5' },
-  Tutorial: { bg: 'rgba(200,245,124,0.15)', color: '#c8f57c' },
-  Trend: { bg: 'rgba(245,124,156,0.15)', color: '#f57c9c' },
-  Motivational: { bg: 'rgba(245,197,124,0.15)', color: '#f5c57c' },
-  BTS: { bg: 'rgba(124,245,219,0.15)', color: '#7cf5db' },
-  Personal: { bg: 'rgba(197,124,245,0.15)', color: '#c57cf5' },
-  Product: { bg: 'rgba(245,178,124,0.15)', color: '#f5b27c' },
-  Other: { bg: 'rgba(107,107,128,0.2)', color: '#9090a8' }
-};
-
-// ─── CHARTS ──────────────────────────────────────────────────────────────────
-
-function renderCharts() {
-  const { reels, followerLog } = getData();
-  const tlLabel = getTimelineLabel();
-
-  // ── VIEWS CHART (filtered by timeline) ──
-  const reelsSorted = [...reels].sort((a,b) => a.date.localeCompare(b.date));
-  const reelsFiltered = filterByTimeline(reelsSorted);
-  const vLabels = reelsFiltered.map(r => r.date.slice(5));
-  const vValues = reelsFiltered.map(r => r.views);
-
-  document.getElementById('views-chart-title').textContent = 'Views Per Reel — ' + tlLabel;
-
-  if (viewsChartInst) viewsChartInst.destroy();
-  const vc = document.getElementById('viewsChart').getContext('2d');
-  const grad1 = vc.createLinearGradient(0, 0, 0, 200);
-  grad1.addColorStop(0, 'rgba(124, 156, 245, 0.3)');
-  grad1.addColorStop(1, 'rgba(124, 156, 245, 0)');
-
-  viewsChartInst = new Chart(vc, {
-    type: 'bar',
-    data: {
-      labels: vLabels,
-      datasets: [{
-        label: 'Views',
-        data: vValues,
-        backgroundColor: grad1,
-        borderColor: '#7c9cf5',
-        borderWidth: 2,
-        borderRadius: 6,
-        borderSkipped: false
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#1a1a24',
-          borderColor: '#2a2a38',
-          borderWidth: 1,
-          callbacks: {
-            title: (items) => reelsFiltered[items[0].dataIndex]?.topic || '',
-            label: (item) => ' ' + fmt(item.raw) + ' views'
-          }
-        }
-      },
-      scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 10 }, maxTicksLimit: 12 } },
-        y: { grid: { color: '#1a1a24' }, ticks: { callback: v => fmt(v), font: { size: 10 } } }
-      }
-    }
-  });
-
-  // ── FOLLOWER CHART (filtered by timeline) ──
-  const flSorted = [...followerLog].sort((a,b) => a.date.localeCompare(b.date));
-  const flFiltered = filterByTimeline(flSorted);
-  const flLabels = flFiltered.map(f => f.date.slice(5));
-  const flValues = flFiltered.map(f => f.count);
-
-  document.getElementById('follower-chart-title').textContent = 'Follower Growth — ' + tlLabel;
-
-  if (followerChartInst) followerChartInst.destroy();
-  const fc = document.getElementById('followerChart').getContext('2d');
-  const grad2 = fc.createLinearGradient(0, 0, 0, 200);
-  grad2.addColorStop(0, 'rgba(200, 245, 124, 0.2)');
-  grad2.addColorStop(1, 'rgba(200, 245, 124, 0)');
-
-  followerChartInst = new Chart(fc, {
-    type: 'line',
-    data: {
-      labels: flLabels,
-      datasets: [{
-        label: 'Followers',
-        data: flValues,
-        borderColor: '#c8f57c',
-        backgroundColor: grad2,
-        fill: true,
-        tension: 0.4,
-        pointRadius: flFiltered.length > 60 ? 1 : 3,
-        pointBackgroundColor: '#c8f57c',
-        pointBorderColor: '#0a0a0f',
-        pointBorderWidth: 2,
-        borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#1a1a24',
-          borderColor: '#2a2a38',
-          borderWidth: 1,
-          callbacks: { label: (item) => ' ' + fmtFull(item.raw) + ' followers' }
-        }
-      },
-      scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 10 }, maxTicksLimit: 12 } },
-        y: { grid: { color: '#1a1a24' }, ticks: { callback: v => fmt(v), font: { size: 10 } } }
-      }
-    }
-  });
-}
-
-// ─── STATS ───────────────────────────────────────────────────────────────────
-
-function renderStats() {
-  const { reels, followerLog, goal, currentFollowers } = getData();
-
-  // Stats scoped to timeline
-  const reelsInWindow   = filterByTimeline(reels);
-  const totalViews = reelsInWindow.reduce((s, r) => s + r.views, 0);
-  const avgViews   = reelsInWindow.length ? Math.round(totalViews / reelsInWindow.length) : 0;
-
-  document.getElementById('stat-reels').textContent = reelsInWindow.length;
-  document.getElementById('stat-views').textContent = fmt(totalViews);
-  document.getElementById('stat-avg-views').textContent = 'avg ' + fmt(avgViews) + ' / reel';
-
-  // Follower data: always show latest total, delta from window start vs end
-  const flSorted   = [...followerLog].sort((a,b) => a.date.localeCompare(b.date));
-  const flFiltered = filterByTimeline(flSorted);
-  const latest     = flSorted[flSorted.length - 1]?.count ?? currentFollowers;
-  const windowFirst = flFiltered[0]?.count ?? null;
-  const windowLast  = flFiltered[flFiltered.length - 1]?.count ?? null;
-  const delta = (windowFirst !== null && windowLast !== null && flFiltered.length > 1)
-    ? windowLast - windowFirst : null;
-
-  document.getElementById('stat-followers').textContent = fmt(latest);
-  document.getElementById('hdr-followers').textContent = fmt(latest);
-
-  const deltaEl = document.getElementById('stat-follower-delta');
-  const tlLabel = getTimelineLabel();
-  if (delta === null) {
-    deltaEl.className = 'stat-delta neutral'; deltaEl.textContent = '— log more days';
-  } else if (delta > 0) {
-    deltaEl.className = 'stat-delta up'; deltaEl.textContent = '+' + delta.toLocaleString() + ' in window';
-  } else if (delta < 0) {
-    deltaEl.className = 'stat-delta down'; deltaEl.textContent = delta.toLocaleString() + ' in window';
-  } else {
-    deltaEl.className = 'stat-delta neutral'; deltaEl.textContent = '0 change in window';
-  }
-
-  // Consistency: posts in window vs days in window
-  const { from, to } = getTimelineRange();
-  const fromD = new Date(from), toD = new Date(to);
-  const daysInWindow = Math.max(1, Math.round((toD - fromD) / 86400000) + 1);
-  const cappedDays = Math.min(daysInWindow, 365); // cap for very long windows
-  const postsInWindow = reelsInWindow.length;
-  // target = 1 per 3 days for a reasonable baseline, or 1/day if <30 days
-  const targetPosts = daysInWindow <= 30 ? daysInWindow : Math.ceil(daysInWindow / 3);
-  const consistency = Math.min(100, Math.round((postsInWindow / targetPosts) * 100));
-  document.getElementById('stat-streak').textContent = consistency + '%';
-  document.getElementById('stat-streak-sub').textContent = postsInWindow + ' posts in ' + getTimelineLabel().toLowerCase();
-
-  // Goal ring — always all-time followers
-  const goalPct = Math.min(100, Math.round((latest / goal) * 100));
-  const circumference = 251.2;
-  const offset = circumference - (circumference * goalPct / 100);
-  document.getElementById('goal-ring-circle').style.strokeDashoffset = offset;
-  document.getElementById('goal-pct').textContent = goalPct + '%';
-  document.getElementById('goal-target-label').textContent = fmtFull(goal);
-  const remaining = Math.max(0, goal - latest);
-  document.getElementById('goal-remaining-label').textContent =
-    remaining > 0 ? fmtFull(remaining) + ' to go' : '🎉 Goal reached!';
-  document.getElementById('hdr-goal-fill').style.width = goalPct + '%';
-  document.getElementById('hdr-goal-label').textContent =
-    goal >= 1000000 ? (goal/1000000).toFixed(1)+'M' : goal >= 1000 ? (goal/1000).toFixed(0)+'K' : goal;
-
-  // Streak dots — scaled to timeline
-  const dotsEl = document.getElementById('streak-dots');
-  dotsEl.innerHTML = '';
-  const dotDays = Math.min(daysInWindow, 60); // show max 60 dots
-  const todayStr = today();
-
-  // Recalculate from end of window
-  const endDate = new Date(to);
-  for (let i = dotDays - 1; i >= 0; i--) {
-    const d = new Date(endDate); d.setDate(d.getDate() - i);
-    const ds = d.toISOString().slice(0, 10);
-    const posted = reels.some(r => r.date === ds);
-    const div = document.createElement('div');
-    const size = dotDays > 30 ? '12px' : '20px';
-    div.style.cssText = `width:${size};height:${size};border-radius:3px;background:${posted ? 'var(--accent)' : 'var(--border)'};transition:background 0.3s;flex-shrink:0;${ds === todayStr ? 'box-shadow:0 0 0 2px var(--accent2)' : ''}`;
-    div.title = ds;
-    dotsEl.appendChild(div);
-  }
-  // Update label
-  const streakLabel = dotsEl.previousElementSibling;
-  if (streakLabel) streakLabel.textContent = getTimelineLabel() + (dotDays < daysInWindow ? ' (last ' + dotDays + ' shown)' : '');
-}
-
-// ─── TABLE ───────────────────────────────────────────────────────────────────
-
-function renderTable() {
-  const { reels } = getData();
-  const query = document.getElementById('table-search').value.toLowerCase();
-  const tbody = document.getElementById('reels-tbody');
-  const empty = document.getElementById('empty-state');
-
-  // Apply timeline filter AND search query
-  const timelineReels = filterByTimeline(reels);
-  const filtered = timelineReels
-    .filter(r => r.topic.toLowerCase().includes(query) || r.category.toLowerCase().includes(query))
-    .sort((a, b) => b.date.localeCompare(a.date));
-
-  if (filtered.length === 0) {
-    tbody.innerHTML = '';
-    empty.style.display = '';
-    return;
-  }
-  empty.style.display = 'none';
-
-  const maxViews = Math.max(...filtered.map(r => r.views), 1);
-
-  tbody.innerHTML = filtered.map((r, idx) => {
-    const cat = CATEGORY_COLORS[r.category] || CATEGORY_COLORS.Other;
-    const pct = Math.round((r.views / maxViews) * 100);
-    return `
-      <tr>
-        <td style="color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;">${filtered.length - idx}</td>
-        <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">${r.date}</td>
-        <td style="font-weight:500;max-width:200px;">${r.topic}</td>
-        <td><span class="topic-pill" style="background:${cat.bg};color:${cat.color}">${r.category}</span></td>
-        <td>
-          <div class="view-bar-wrap">
-            <div class="view-bar"><div class="view-bar-fill" style="width:${pct}%"></div></div>
-            <span class="view-count">${fmt(r.views)}</span>
-          </div>
-        </td>
-        <td style="display:flex;gap:6px;">
-          <button class="action-btn" onclick="openUpdateViews('${r.id}')">Update</button>
-          <button class="action-btn del" onclick="deleteReel('${r.id}')">Delete</button>
-        </td>
-      </tr>`;
-  }).join('');
-}
-
-// ─── ACTIONS ─────────────────────────────────────────────────────────────────
-
-function addReel() {
-  const date = document.getElementById('inp-date').value;
-  const topic = document.getElementById('inp-topic').value.trim();
-  const category = document.getElementById('inp-category').value;
-  const views = parseInt(document.getElementById('inp-views').value) || 0;
-
-  if (!date) { showToast('⚠ Please select a date'); return; }
-  if (!topic) { showToast('⚠ Please enter a topic'); return; }
-
-  const { reels } = getData();
-  reels.push({ id: Date.now().toString(36), date, topic, category, views });
-  saveReels(reels);
-
-  document.getElementById('inp-topic').value = '';
-  document.getElementById('inp-views').value = '';
-  showToast('✓ Reel logged!');
-  refresh();
-}
-
-function deleteReel(id) {
-  if (!confirm('Delete this reel entry?')) return;
-  const { reels } = getData();
-  saveReels(reels.filter(r => r.id !== id));
-  showToast('Deleted.');
-  refresh();
-}
-
-function openUpdateViews(id) {
-  const { reels } = getData();
-  const r = reels.find(r => r.id === id);
-  if (!r) return;
-  document.getElementById('uv-id').value = id;
-  document.getElementById('uv-topic').textContent = r.topic;
-  document.getElementById('uv-views').value = r.views;
-  openModal('views-modal');
-}
-
-function updateViews() {
-  const id = document.getElementById('uv-id').value;
-  const views = parseInt(document.getElementById('uv-views').value) || 0;
-  const { reels } = getData();
-  const idx = reels.findIndex(r => r.id === id);
-  if (idx === -1) return;
-  reels[idx].views = views;
-  saveReels(reels);
-  closeModal('views-modal');
-  showToast('✓ Views updated!');
-  refresh();
-}
-
-function openFollowerModal() {
-  document.getElementById('fl-date').value = today();
-  renderFollowerLog();
-  openModal('follower-modal');
-}
-
-function renderFollowerLog() {
-  const { followerLog } = getData();
-  const sorted = [...followerLog].sort((a,b) => b.date.localeCompare(a.date)).slice(0, 5);
-  const el = document.getElementById('follower-log-list');
-  if (sorted.length === 0) {
-    el.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px 0;">No entries yet.</div>';
-    return;
-  }
-  el.innerHTML = sorted.map((f, i) => {
-    const prev = sorted[i+1];
-    const delta = prev ? f.count - prev.count : null;
-    let deltaHtml = '';
-    if (delta !== null) {
-      const cls = delta > 0 ? 'pos' : delta < 0 ? 'neg' : 'neu';
-      deltaHtml = `<span class="follower-delta ${cls}">${delta >= 0 ? '+' : ''}${delta}</span>`;
-    }
-    return `<div class="follower-log-item">
-      <span class="follower-log-date">${f.date}</span>
-      <span class="follower-log-count">${fmtFull(f.count)}</span>
-      ${deltaHtml}
-    </div>`;
-  }).join('');
-}
-
-function logFollowers() {
-  const date = document.getElementById('fl-date').value;
-  const count = parseInt(document.getElementById('fl-count').value);
-  if (!date || isNaN(count)) { showToast('⚠ Enter a valid count'); return; }
-
-  const { followerLog } = getData();
-  const existing = followerLog.findIndex(f => f.date === date);
-  if (existing >= 0) followerLog[existing].count = count;
-  else followerLog.push({ date, count });
-  saveFollowerLog(followerLog);
-  DB.set('currentFollowers', count);
-
-  document.getElementById('fl-count').value = '';
-  showToast('✓ Followers logged!');
-  renderFollowerLog();
-  refresh();
-}
-
-function openGoalModal() {
-  const { goal, currentFollowers, followerLog } = getData();
-  const flSorted = [...followerLog].sort((a,b) => a.date.localeCompare(b.date));
-  const latest = flSorted[flSorted.length - 1]?.count ?? currentFollowers;
-  document.getElementById('inp-goal').value = goal;
-  document.getElementById('inp-current-followers').value = latest;
-  openModal('goal-modal');
-}
-
-function saveSettings() {
-  const goal = parseInt(document.getElementById('inp-goal').value);
-  const cf   = parseInt(document.getElementById('inp-current-followers').value);
-  if (!isNaN(goal) && goal > 0) DB.set('goal', goal);
-  if (!isNaN(cf) && cf >= 0) {
-    DB.set('currentFollowers', cf);
-    const { followerLog } = getData();
-    const existing = followerLog.findIndex(f => f.date === today());
-    if (existing >= 0) followerLog[existing].count = cf;
-    else followerLog.push({ date: today(), count: cf });
-    saveFollowerLog(followerLog);
-  }
-  closeModal('goal-modal');
-  showToast('✓ Settings saved!');
-  refresh();
-}
-
-// ─── MODALS ──────────────────────────────────────────────────────────────────
-
-function openModal(id) { document.getElementById(id).classList.add('active'); }
-function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-document.querySelectorAll('.modal-overlay').forEach(el => {
-  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('active'); });
-});
-
-// ─── REFRESH ─────────────────────────────────────────────────────────────────
-
-function refresh() {
-  renderStats();
-  renderCharts();
-  renderTable();
-}
-
-// ─── INIT ────────────────────────────────────────────────────────────────────
-
-document.getElementById('inp-date').value = today();
-document.getElementById('tl-to').value = today();
-
-refresh();
-</script>
+    <div id="globeViz"></div>
+
+    <script>
+        // 1. Define the Oceans for our labeling system
+        const oceans = [
+            { name: 'Pacific Ocean', lat: 0, lng: -160 },
+            { name: 'Atlantic Ocean', lat: 0, lng: -30 },
+            { name: 'Indian Ocean', lat: -20, lng: 80 },
+            { name: 'Arctic Ocean', lat: 80, lng: 0 },
+            { name: 'Southern Ocean', lat: -60, lng: 0 }
+        ];
+
+        // 2. Initialize the High-Fidelity Globe
+        const world = Globe()
+            (document.getElementById('globeViz'))
+            .backgroundColor('#000000') // Pitch black space
+            .showAtmosphere(true)
+            .atmosphereColor('#00aaff') // Electric blue glow
+            .atmosphereAltitude(0.2)
+            .polygonAltitude(0.01)
+            // Color grading: Dark blue continents with bright blue outlines
+            .polygonCapColor(() => 'rgba(0, 40, 100, 0.8)') 
+            .polygonSideColor(() => 'rgba(0, 100, 255, 0.1)')
+            .polygonStrokeColor(() => '#00aaff') 
+            // Build the data-driven tooltip
+            .polygonLabel(({ properties: d, restData: r }) => `
+                <div class="tooltip">
+                    <div class="tooltip-title">${d.ADMIN}</div>
+                    <div><span class="highlight">Capital:</span> ${r?.capital ? r.capital[0] : 'Data Unavailable'}</div>
+                    <div><span class="highlight">Area:</span> ${r?.area ? r.area.toLocaleString() + ' km²' : 'Data Unavailable'}</div>
+                </div>
+            `)
+            // Interactive hover effect (pops the country out)
+            .onPolygonHover(hoverD => world
+                .polygonAltitude(d => d === hoverD ? 0.06 : 0.01)
+                .polygonCapColor(d => d === hoverD ? 'rgba(0, 170, 255, 0.9)' : 'rgba(0, 40, 100, 0.8)')
+            )
+            // Map the oceans as 3D text labels floating above the water
+            .labelsData(oceans)
+            .labelLat(d => d.lat)
+            .labelLng(d => d.lng)
+            .labelText(d => d.name)
+            .labelSize(3.5)
+            .labelDotRadius(0.5)
+            .labelColor(() => 'rgba(255, 255, 255, 0.6)')
+            .labelResolution(2);
+
+        // Add a subtle auto-rotation to make it feel alive
+        world.controls().autoRotate = true;
+        world.controls().autoRotateSpeed = 0.5;
+
+        // Pause rotation when the user interacts
+        document.getElementById('globeViz').addEventListener('mousedown', () => {
+            world.controls().autoRotate = false;
+        });
+
+        let geoJsonData = [];
+
+        // 3. The Data Engine: Fetch shapefiles and demographic data simultaneously
+        Promise.all([
+            fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson').then(res => res.json()),
+            fetch('https://restcountries.com/v3.1/all').then(res => res.json())
+        ]).then(([countries, restData]) => {
+            
+            // Index the REST data by ISO code for O(1) lookup speeds
+            const restMap = {};
+            restData.forEach(c => { restMap[c.cca3] = c; });
+
+            // Merge the data sets and calculate rough centroids for the camera to target
+            countries.features.forEach(feat => {
+                feat.restData = restMap[feat.properties.ISO_A3] || restMap[feat.properties.ADM0_A3] || {};
+                
+                if(feat.geometry) {
+                    let lats = [], lngs = [];
+                    const coords = feat.geometry.type === 'Polygon' ? [feat.geometry.coordinates] : feat.geometry.coordinates;
+                    coords.forEach(poly => poly[0].forEach(coord => {
+                        lngs.push(coord[0]); lats.push(coord[1]);
+                    }));
+                    feat.centerLat = (Math.min(...lats) + Math.max(...lats)) / 2;
+                    feat.centerLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
+                }
+            });
+
+            geoJsonData = countries.features;
+            world.polygonsData(geoJsonData);
+        });
+
+        // 4. Build the Search Logic
+        const searchInput = document.getElementById('countrySearch');
+        const resultDiv = document.getElementById('searchResult');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            resultDiv.innerText = '';
+            
+            if (!query) return;
+
+            // Find the closest matching country
+            const match = geoJsonData.find(d => 
+                d.properties.ADMIN.toLowerCase().startsWith(query) || 
+                d.properties.ADMIN.toLowerCase() === query
+            );
+            
+            if (match && match.centerLat !== undefined) {
+                // Fly the camera directly to the target
+                world.pointOfView({ lat: match.centerLat, lng: match.centerLng, altitude: 1.5 }, 1200);
+                world.controls().autoRotate = false; // Stop rotation so user can view it
+            } else if (query.length > 2) {
+                resultDiv.innerText = 'Country not found.';
+            }
+        });
+
+        // 5. Keep it responsive
+        window.addEventListener('resize', () => {
+            world.width(window.innerWidth);
+            world.height(window.innerHeight);
+        });
+    </script>
 </body>
 </html>
