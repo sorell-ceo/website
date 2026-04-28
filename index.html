@@ -48,69 +48,41 @@
     background-attachment: fixed;
   }
 
-  /* ─── CURSOR TRAIL ─── */
-  .cursor-dot {
-    position: fixed;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    animation: dot-fade 0.65s ease forwards;
-    will-change: opacity, transform;
-  }
-
-  @keyframes dot-fade {
-    0%   { opacity: 0.85; transform: translate(-50%, -50%) scale(1); }
-    100% { opacity: 0;    transform: translate(-50%, -110%) scale(0.15); }
-  }
-
   /* ─── FLOATING GRADIENT ORBS ─── */
   .bg-orb {
     position: fixed;
     border-radius: 50%;
     pointer-events: none;
     z-index: 0;
-    will-change: transform;
+    /* GPU layer — transform-only animations are cheap */
+    transform: translateZ(0);
   }
 
   .bg-orb-1 {
-    width: 720px; height: 720px;
-    background: radial-gradient(circle, rgba(255,77,0,0.09) 0%, transparent 68%);
-    filter: blur(90px);
-    top: -280px; left: -160px;
-    animation: orb1 24s ease-in-out infinite;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255,77,0,0.08) 0%, transparent 68%);
+    filter: blur(80px);
+    top: -220px; left: -120px;
+    animation: orb1 26s ease-in-out infinite;
   }
 
   .bg-orb-2 {
-    width: 560px; height: 560px;
-    background: radial-gradient(circle, rgba(255,26,26,0.06) 0%, transparent 68%);
-    filter: blur(100px);
-    bottom: -80px; right: -140px;
-    animation: orb2 30s ease-in-out infinite;
+    width: 480px; height: 480px;
+    background: radial-gradient(circle, rgba(255,40,0,0.05) 0%, transparent 68%);
+    filter: blur(90px);
+    bottom: -60px; right: -100px;
+    animation: orb2 32s ease-in-out infinite;
   }
 
-  .bg-orb-3 {
-    width: 420px; height: 420px;
-    background: radial-gradient(circle, rgba(255,77,0,0.05) 0%, transparent 70%);
-    filter: blur(80px);
-    top: 55%; left: 50%;
-    transform: translate(-50%, -50%);
-    animation: orb3 20s ease-in-out infinite;
-  }
+  /* Only 2 orbs — third was redundant and costly */
 
   @keyframes orb1 {
-    0%,100% { transform: translate(0,0) scale(1); }
-    33%      { transform: translate(90px, 70px) scale(1.06); }
-    66%      { transform: translate(30px, 130px) scale(0.94); }
+    0%,100% { transform: translateZ(0) translate(0,0); }
+    50%      { transform: translateZ(0) translate(70px, 90px); }
   }
   @keyframes orb2 {
-    0%,100% { transform: translate(0,0) scale(1); }
-    33%      { transform: translate(-90px,-60px) scale(1.08); }
-    66%      { transform: translate(-140px, 50px) scale(0.96); }
-  }
-  @keyframes orb3 {
-    0%,100% { transform: translate(-50%,-50%) scale(1); }
-    50%      { transform: translate(-62%,-40%) scale(1.12); }
+    0%,100% { transform: translateZ(0) translate(0,0); }
+    50%      { transform: translateZ(0) translate(-80px,-55px); }
   }
 
   /* ─── NAV ─── */
@@ -472,17 +444,13 @@
   .about-text p strong { color: var(--white); font-weight: 500; }
 
   .about-card {
-    background: rgba(255,255,255,0.025);
+    background: #0f0f0f;
     border: 1px solid var(--border);
     border-radius: 20px;
     padding: 40px;
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
     transition: border-color 0.35s, box-shadow 0.35s;
-    transform-style: preserve-3d;
-    will-change: transform;
   }
 
   .about-card:hover {
@@ -542,7 +510,7 @@
   }
 
   .project-card {
-    background: rgba(255,255,255,0.022);
+    background: #0f0f0f;
     border: 1px solid var(--border);
     border-radius: 20px;
     padding: 40px;
@@ -551,8 +519,6 @@
     transition: border-color 0.35s, box-shadow 0.35s;
     text-decoration: none;
     display: block;
-    transform-style: preserve-3d;
-    will-change: transform;
   }
 
   /* top-left corner glow on hover */
@@ -665,22 +631,16 @@
     overflow: hidden;
   }
 
-  /* Moving orange grid inside visual */
+  /* Static orange grid inside visual — no animation cost */
   .project-visual::before {
     content: '';
     position: absolute;
-    inset: -30px;
+    inset: 0;
     background-image:
-      linear-gradient(rgba(255,77,0,0.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,77,0,0.07) 1px, transparent 1px);
+      linear-gradient(rgba(255,77,0,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,77,0,0.06) 1px, transparent 1px);
     background-size: 32px 32px;
-    animation: grid-drift 7s linear infinite;
     pointer-events: none;
-  }
-
-  @keyframes grid-drift {
-    from { transform: translate(0,0); }
-    to   { transform: translate(32px,32px); }
   }
 
   .project-visual-inner {
@@ -729,15 +689,13 @@
   }
 
   .content-card {
-    background: rgba(255,255,255,0.022);
+    background: #111111;
     border: 1px solid var(--border);
     border-radius: 18px;
     padding: 34px;
-    transition: border-color 0.35s, box-shadow 0.35s;
+    transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s var(--ease);
     position: relative;
     overflow: hidden;
-    transform-style: preserve-3d;
-    will-change: transform;
   }
 
   .content-card:hover {
@@ -910,6 +868,13 @@
     .hero-actions { flex-direction: column; align-items: center; }
     .bg-orb { display: none; }
   }
+
+  /* Respect system reduced-motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .bg-orb, .hero-tag, .tag-pulse, .hero-h1, .hero-sub, .hero-actions, .hero-scroll,
+    .hero-h1 .accent { animation: none !important; }
+    .reveal { transition: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -917,7 +882,6 @@
 <!-- Background orbs -->
 <div class="bg-orb bg-orb-1"></div>
 <div class="bg-orb bg-orb-2"></div>
-<div class="bg-orb bg-orb-3"></div>
 
 <!-- NAV -->
 <nav>
@@ -1174,60 +1138,40 @@
   }, { threshold: 0.5 });
   if (statsEl) statsObs.observe(statsEl);
 
-  /* ── CURSOR TRAIL ── */
-  let lastT = 0;
-  const COLORS = ['#FF4D00','#FF6020','#FF3300'];
-  document.addEventListener('mousemove', (e) => {
-    const now = Date.now();
-    if (now - lastT < 22) return;
-    lastT = now;
-
-    const dot = document.createElement('div');
-    dot.className = 'cursor-dot';
-    const size = 2.5 + Math.random() * 3.5;
-    dot.style.cssText = `
-      left:${e.clientX + (Math.random()-0.5)*5}px;
-      top:${e.clientY + (Math.random()-0.5)*5}px;
-      width:${size}px;
-      height:${size}px;
-      background:${COLORS[Math.floor(Math.random()*COLORS.length)]};
-      opacity:${0.55 + Math.random()*0.35};
-    `;
-    document.body.appendChild(dot);
-    setTimeout(() => dot.remove(), 680);
-  });
-
-  /* ── 3D TILT ON CARDS ── */
+  /* ── 3D TILT ON CARDS — light-to-medium intensity ── */
   const tiltCards = document.querySelectorAll('.project-card, .content-card, .about-card');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  tiltCards.forEach(card => {
-    let raf;
+  if (!reducedMotion) {
+    tiltCards.forEach(card => {
+      let raf;
 
-    card.addEventListener('mousemove', (e) => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const r  = card.getBoundingClientRect();
-        const x  = e.clientX - r.left;
-        const y  = e.clientY - r.top;
-        const cx = r.width  / 2;
-        const cy = r.height / 2;
-        const rotX = ((y - cy) / cy) * -5;
-        const rotY = ((x - cx) / cx) *  5;
-        card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      card.addEventListener('mousemove', (e) => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          const r  = card.getBoundingClientRect();
+          const x  = e.clientX - r.left;
+          const y  = e.clientY - r.top;
+          const cx = r.width  / 2;
+          const cy = r.height / 2;
+          const rotX = ((y - cy) / cy) * -2.5;
+          const rotY = ((x - cx) / cx) *  2.5;
+          card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        });
+      });
+
+      card.addEventListener('mouseleave', () => {
+        cancelAnimationFrame(raf);
+        card.style.transition = 'transform 0.55s cubic-bezier(0.16,1,0.3,1), border-color 0.35s, box-shadow 0.35s';
+        card.style.transform = '';
+        setTimeout(() => card.style.transition = '', 560);
+      });
+
+      card.addEventListener('mouseenter', () => {
+        card.style.transition = 'transform 0.1s ease, border-color 0.35s, box-shadow 0.35s';
       });
     });
-
-    card.addEventListener('mouseleave', () => {
-      cancelAnimationFrame(raf);
-      card.style.transition = 'transform 0.55s cubic-bezier(0.16,1,0.3,1), border-color 0.35s, box-shadow 0.35s';
-      card.style.transform = '';
-      setTimeout(() => card.style.transition = '', 560);
-    });
-
-    card.addEventListener('mouseenter', () => {
-      card.style.transition = 'transform 0.08s ease, border-color 0.35s, box-shadow 0.35s';
-    });
-  });
+  }
 </script>
 
 </body>
