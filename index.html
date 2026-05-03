@@ -98,22 +98,28 @@
 
         /* ─── HEADER ────────────────────── */
         .header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(6,11,20,0.76);
-            backdrop-filter: blur(22px);
-            -webkit-backdrop-filter: blur(22px);
-            border-bottom: 1px solid rgba(255,255,255,0.048);
-            transition: box-shadow 0.3s var(--ease), border-color 0.3s;
-        }
-        .header-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 0;
-        }
-
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 14px clamp(18px, 4vw, 34px);
+    pointer-events: none; /* lets clicks pass through the gap around the pill */
+}
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 22px;
+    max-width: 860px;
+    margin: 0 auto;
+    background: rgba(6,11,20,0.78);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 50px;
+    box-shadow: 0 4px 28px rgba(0,0,0,0.35);
+    transition: box-shadow 0.3s var(--ease), border-color 0.3s;
+    pointer-events: auto; /* re-enable clicks on the pill itself */
+}
         /* Logo — text only, no icon */
         .logo {
             font-family: 'Google Sans', sans-serif;
