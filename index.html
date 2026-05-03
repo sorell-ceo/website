@@ -1,630 +1,1107 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sorell — AI Automation for Real Estate Agencies</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { 'google': ['"Google Sans"', 'sans-serif'] }
-                }
+    <!-- Google Sans Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep: #060b14;
+            --bg-surface: #0d1525;
+            --bg-card: #111b2e;
+            --bg-card-hover: #152036;
+            --text-primary: #f0f4fc;
+            --text-secondary: #b0c0da;
+            --text-muted: #6b7d9a;
+            --accent-1: #3b82f6;
+            --accent-2: #60a5fa;
+            --accent-3: #93c5fd;
+            --accent-glow: #4da8ff;
+            --gradient-primary: linear-gradient(135deg, #1d4ed8, #3b82f6, #60a5fa, #93c5fd);
+            --gradient-card-border: conic-gradient(from 0deg at 50% 50%, transparent 60%, #4da8ff 70%, #93c5fd 78%, #4da8ff 86%, transparent 94%);
+            --gradient-hero: radial-gradient(ellipse 80% 60% at 50% 20%, rgba(59, 130, 246, 0.18) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 80% 60%, rgba(96, 165, 250, 0.10) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 35% at 20% 70%, rgba(29, 78, 216, 0.12) 0%, transparent 70%);
+            --radius-sm: 10px;
+            --radius: 16px;
+            --radius-lg: 22px;
+            --radius-xl: 28px;
+            --shadow-glow: 0 0 30px rgba(59, 130, 246, 0.25), 0 0 60px rgba(59, 130, 246, 0.08);
+            --shadow-glow-strong: 0 0 40px rgba(77, 168, 255, 0.40), 0 0 80px rgba(59, 130, 246, 0.15);
+            --transition-smooth: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Google Sans', 'Google Sans Text', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.06) 0%, transparent 55%),
+                radial-gradient(circle at 85% 30%, rgba(96, 165, 250, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 15% 70%, rgba(29, 78, 216, 0.05) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* ─── FLOATING ORBS ─────────────────────── */
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.35;
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 16s ease-in-out infinite;
+        }
+        .bg-orb--1 {
+            width: 420px;
+            height: 420px;
+            background: rgba(59, 130, 246, 0.16);
+            top: -120px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+        .bg-orb--2 {
+            width: 340px;
+            height: 340px;
+            background: rgba(96, 165, 250, 0.12);
+            bottom: -100px;
+            left: -80px;
+            animation-delay: -8s;
+            animation-duration: 19s;
+        }
+        .bg-orb--3 {
+            width: 280px;
+            height: 280px;
+            background: rgba(29, 78, 216, 0.14);
+            top: 50%;
+            left: 45%;
+            animation-delay: -4s;
+            animation-duration: 21s;
+        }
+
+        @keyframes orbFloat {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(40px, -50px) scale(1.08);
+            }
+            50% {
+                transform: translate(-30px, 30px) scale(0.94);
+            }
+            75% {
+                transform: translate(-50px, -25px) scale(1.05);
             }
         }
-    </script>
-    <style>
-        *, *::before, *::after { font-family: 'Google Sans', sans-serif; }
-        body { background: #030712; color: #fff; overflow-x: hidden; }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #030712; }
-        ::-webkit-scrollbar-thumb { background: #1e3a6e; border-radius: 10px; }
 
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-
-        /* Gradient texts */
-        .grad-text { background: linear-gradient(135deg, #60a5fa, #38bdf8, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .grad-text-light { background: linear-gradient(135deg, #fff 20%, #93c5fd 60%, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-
-        /* Nav */
-        .nav-blur { background: rgba(3,7,18,0.75); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(56,189,248,0.06); }
-
-        /* Hero glow */
-        .hero-glow { background: radial-gradient(ellipse 70% 55% at 50% 35%, rgba(30,64,175,0.14) 0%, rgba(14,165,233,0.06) 35%, transparent 70%); }
-
-        /* Grid bg */
-        .grid-bg { background-image: linear-gradient(rgba(59,130,246,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.025) 1px, transparent 1px); background-size: 56px 56px; }
-
-        /* GLOW CARD — the star of the show */
-        .glow-card {
+        /* ─── CONTAINER ────────────────────────── */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 clamp(16px, 4vw, 32px);
             position: relative;
-            border-radius: 1.25rem;
-            background: linear-gradient(160deg, #0b1a30 0%, #0d1f3c 100%);
             z-index: 1;
-            transition: transform 0.45s cubic-bezier(.4,0,.2,1), box-shadow 0.45s ease;
         }
-        .glow-card::before, .glow-card::after {
+
+        /* ─── HEADER / NAV ─────────────────────── */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(6, 11, 20, 0.78);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition-smooth);
+        }
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-weight: 700;
+            font-size: 1.45rem;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .logo-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #fff;
+            font-weight: 800;
+            flex-shrink: 0;
+            box-shadow: 0 0 18px rgba(59, 130, 246, 0.45);
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: clamp(16px, 3vw, 32px);
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.25s;
+            white-space: nowrap;
+        }
+        .nav-links a:hover {
+            color: var(--accent-3);
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 11px 22px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all var(--transition-smooth);
+            font-family: inherit;
+            letter-spacing: 0.01em;
+        }
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: #fff;
+            box-shadow: 0 4px 18px rgba(59, 130, 246, 0.35);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::after {
             content: '';
             position: absolute;
-            border-radius: 1.25rem;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, transparent 50%);
+            pointer-events: none;
+            border-radius: inherit;
+        }
+        .btn-primary:hover {
+            box-shadow: var(--shadow-glow-strong);
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid rgba(148, 163, 184, 0.4);
+            color: var(--text-primary);
+        }
+        .btn-outline:hover {
+            border-color: var(--accent-2);
+            color: var(--accent-3);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+        }
+        .btn-lg {
+            padding: 14px 30px;
+            font-size: 1rem;
+            border-radius: 56px;
+        }
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 6px;
+        }
+        .mobile-menu-btn .material-icons {
+            font-size: 30px;
+        }
+
+        /* ─── MOBILE NAV OVERLAY ──────────────── */
+        .mobile-nav-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(6, 11, 20, 0.94);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+        .mobile-nav-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .mobile-nav-overlay a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            transition: color 0.25s;
+        }
+        .mobile-nav-overlay a:hover {
+            color: var(--accent-3);
+        }
+        .mobile-nav-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+        }
+        .mobile-nav-close .material-icons {
+            font-size: 34px;
+        }
+
+        /* ─── SECTIONS ────────────────────────── */
+        .section {
+            padding: clamp(50px, 8vw, 90px) 0;
+            position: relative;
+            z-index: 1;
+        }
+        .section-label {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent-2);
+            margin-bottom: 12px;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 5px 14px;
+            border-radius: 50px;
+        }
+        .section-title {
+            font-size: clamp(1.7rem, 4.5vw, 2.6rem);
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        .section-subtitle {
+            font-size: clamp(0.95rem, 2vw, 1.1rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.55;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ─── HERO ────────────────────────────── */
+        .hero {
+            padding-top: clamp(30px, 6vw, 60px);
+            padding-bottom: clamp(40px, 7vw, 80px);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            background: var(--gradient-hero);
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 50px;
+            padding: 7px 18px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--accent-3);
+            margin-bottom: 22px;
+            letter-spacing: 0.03em;
+        }
+        .hero-badge .material-icons {
+            font-size: 16px;
+            color: #60a5fa;
+        }
+        .hero-title {
+            font-size: clamp(2rem, 6vw, 3.6rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 18px;
+            background: linear-gradient(180deg, #ffffff 0%, #c8d6e5 60%, #93b8e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-desc {
+            font-size: clamp(1rem, 2.2vw, 1.2rem);
+            color: var(--text-secondary);
+            max-width: 620px;
+            margin: 0 auto 32px;
+            line-height: 1.6;
+        }
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+        }
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: clamp(20px, 4vw, 50px);
+            justify-content: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .hero-stat {
+            text-align: center;
+        }
+        .hero-stat-value {
+            font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--accent-3);
+        }
+        .hero-stat-label {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* ─── ANIMATED CARD WRAPPER ──────────── */
+        .card-glow-wrapper {
+            position: relative;
+            border-radius: var(--radius);
+            padding: 2px;
+            background: transparent;
+            overflow: hidden;
+            isolation: isolate;
+            transition: all var(--transition-smooth);
+        }
+        .card-glow-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -40px;
+            z-index: -2;
+            border-radius: inherit;
+            background: var(--gradient-card-border);
+            animation: borderGlowSpin 5s linear infinite;
+            opacity: 0.9;
+            transition: opacity 0.4s;
+        }
+        .card-glow-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: calc(var(--radius) - 2px);
+            background: var(--bg-card);
+            z-index: -1;
+            transition: background var(--transition-smooth);
+        }
+        .card-glow-wrapper:hover::before {
+            opacity: 1;
+            animation-duration: 2.8s;
+        }
+        .card-glow-wrapper:hover::after {
+            background: var(--bg-card-hover);
+        }
+        .card-glow-wrapper:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-glow-strong);
+        }
+
+        @keyframes borderGlowSpin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .card-inner {
+            position: relative;
+            z-index: 2;
+            padding: clamp(22px, 4vw, 32px);
+            border-radius: calc(var(--radius) - 2px);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            min-height: 100%;
+        }
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(59, 130, 246, 0.14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .card-icon .material-icons {
+            font-size: 26px;
+            color: var(--accent-2);
+        }
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        .card-tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-2);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        /* ─── SERVICES GRID ──────────────────── */
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: clamp(18px, 3vw, 28px);
+        }
+        @media (min-width: 600px) {
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 960px) {
+            .services-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* ─── HOW IT WORKS ──────────────────── */
+        .steps-list {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(18px, 3vw, 28px);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .step-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            background: var(--bg-surface);
+            border-radius: var(--radius);
+            padding: clamp(16px, 3vw, 24px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all var(--transition-smooth);
+        }
+        .step-item:hover {
+            border-color: rgba(96, 165, 250, 0.3);
+            box-shadow: 0 0 22px rgba(59, 130, 246, 0.1);
+        }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 0 16px rgba(59, 130, 246, 0.4);
+        }
+        .step-content h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 4px;
+        }
+        .step-content p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ─── TESTIMONIALS ──────────────────── */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: clamp(16px, 3vw, 24px);
+        }
+        @media (min-width: 700px) {
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 1000px) {
+            .testimonials-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        .testimonial-card {
+            background: var(--bg-surface);
+            border-radius: var(--radius);
+            padding: clamp(18px, 3vw, 26px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all var(--transition-smooth);
+            position: relative;
+        }
+        .testimonial-card:hover {
+            border-color: rgba(96, 165, 250, 0.25);
+            box-shadow: 0 0 24px rgba(59, 130, 246, 0.12);
+        }
+        .testimonial-quote {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            line-height: 1.55;
+            margin-bottom: 14px;
+        }
+        .testimonial-author {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+        .testimonial-role {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        .testimonial-stars {
+            color: #fbbf24;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        /* ─── CTA SECTION ────────────────────── */
+        .cta-section {
+            text-align: center;
+            background: var(--bg-surface);
+            border-radius: var(--radius-xl);
+            padding: clamp(36px, 6vw, 60px) clamp(20px, 4vw, 40px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(ellipse at 50% 30%, rgba(59, 130, 246, 0.13) 0%, transparent 65%);
             pointer-events: none;
         }
-        .glow-card::before {
-            inset: -1.5px;
-            background: conic-gradient(
-                from var(--border-angle, 0deg),
-                transparent 0%, transparent 32%,
-                rgba(56,189,248,0.75) 44%,
-                rgba(59,130,246,0.9) 50%,
-                rgba(56,189,248,0.75) 56%,
-                transparent 68%, transparent 100%
-            );
-            z-index: -2;
-            opacity: 0.45;
-            transition: opacity 0.4s ease;
+        .cta-title {
+            font-size: clamp(1.5rem, 3.8vw, 2.2rem);
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            margin-bottom: 12px;
         }
-        .glow-card::after {
-            inset: 0;
-            background: linear-gradient(160deg, #0b1a30 0%, #0d1f3c 100%);
-            z-index: -1;
-        }
-        .glow-card:hover {
-            transform: translateY(-8px) scale(1.01);
-            box-shadow: 0 0 60px rgba(14,165,233,0.1), 0 4px 40px rgba(30,64,175,0.15);
-        }
-        .glow-card:hover::before { opacity: 1; }
-
-        /* Buttons */
-        .btn-primary {
-            background: linear-gradient(135deg, #1e40af, #2563eb 40%, #0ea5e9);
-            position: relative; overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .btn-primary::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(135deg, #2563eb, #3b82f6 40%, #38bdf8);
-            opacity: 0; transition: opacity 0.3s ease;
-        }
-        .btn-primary:hover::before { opacity: 1; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(37,99,235,0.45); }
-        .btn-primary span { position: relative; z-index: 1; }
-
-        .btn-secondary {
-            border: 1px solid rgba(96,165,250,0.25);
-            background: rgba(96,165,250,0.04);
-            transition: all 0.3s ease;
-        }
-        .btn-secondary:hover { border-color: rgba(96,165,250,0.5); background: rgba(96,165,250,0.1); transform: translateY(-2px); }
-
-        /* Icon container */
-        .icon-wrap {
-            background: linear-gradient(135deg, rgba(30,64,175,0.2), rgba(14,165,233,0.12));
-            border: 1px solid rgba(56,189,248,0.12);
+        .cta-desc {
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            font-size: 0.95rem;
         }
 
-        /* Testimonial card */
-        .testi-card {
-            background: linear-gradient(160deg, rgba(11,26,48,0.85), rgba(13,31,60,0.85));
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(56,189,248,0.07);
-            border-radius: 1.25rem;
-            transition: all 0.4s ease;
+        /* ─── FOOTER ─────────────────────────── */
+        .footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 36px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.82rem;
         }
-        .testi-card:hover { border-color: rgba(56,189,248,0.18); transform: translateY(-4px); }
-
-        /* Step number */
-        .step-num { background: linear-gradient(135deg, #1e40af, #0ea5e9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-
-        /* Stat card */
-        .stat-card { border: 1px solid rgba(56,189,248,0.07); border-radius: 1rem; background: rgba(11,26,48,0.5); }
-
-        /* Animations */
-        .fade-up { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.4,0,.2,1); }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
-        .float { animation: float 7s ease-in-out infinite; }
-
-        @keyframes pulse-soft { 0%,100%{opacity:0.5} 50%{opacity:1} }
-
-        /* Mobile menu */
-        .mob-menu { transform: translateX(100%); transition: transform 0.35s cubic-bezier(.4,0,.2,1); }
-        .mob-menu.open { transform: translateX(0); }
-
-        /* Noise overlay */
-        body::after {
-            content:''; position:fixed; inset:0; opacity:0.012; pointer-events:none; z-index:9999;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        .footer-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.25s;
+        }
+        .footer-links a:hover {
+            color: var(--accent-3);
         }
 
-        /* Divider */
-        .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(56,189,248,0.1), transparent); }
+        /* ─── REVEAL ANIMATION ──────────────── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 {
+            transition-delay: 0.08s;
+        }
+        .reveal-delay-2 {
+            transition-delay: 0.16s;
+        }
+        .reveal-delay-3 {
+            transition-delay: 0.24s;
+        }
+        .reveal-delay-4 {
+            transition-delay: 0.32s;
+        }
+        .reveal-delay-5 {
+            transition-delay: 0.40s;
+        }
+        .reveal-delay-6 {
+            transition-delay: 0.48s;
+        }
+
+        /* ─── RESPONSIVE NAV ────────────────── */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .header-inner .btn {
+                display: none;
+            }
+            .header-inner {
+                padding: 10px 0;
+            }
+        }
+        @media (min-width: 769px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+            .mobile-nav-overlay {
+                display: none;
+            }
+        }
+
+        /* ─── UTILITY ────────────────────────── */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+        .highlight {
+            color: var(--accent-2);
+            font-weight: inherit;
+        }
     </style>
 </head>
-<body class="grid-bg">
+<body>
 
-    <!-- ========== NAVBAR ========== -->
-    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 nav-blur">
-        <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-2">
-                <span class="material-symbols-outlined text-sky-400" style="font-size:26px">hub</span>
-                <span class="text-xl font-bold grad-text">Sorell</span>
+    <!-- ─── BACKGROUND ORBS ────────────────────── -->
+    <div class="bg-orb bg-orb--1" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb--2" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb--3" aria-hidden="true"></div>
+
+    <!-- ─── HEADER ─────────────────────────────── -->
+    <header class="header" id="header">
+        <div class="container header-inner">
+            <a href="#" class="logo" aria-label="Sorell Home">
+                <span class="logo-dot">S</span> Sorell
             </a>
-            <div class="hidden md:flex items-center gap-8">
-                <a href="#services" class="text-sm text-slate-400 hover:text-white transition-colors">Services</a>
-                <a href="#process" class="text-sm text-slate-400 hover:text-white transition-colors">Process</a>
-                <a href="#results" class="text-sm text-slate-400 hover:text-white transition-colors">Results</a>
-                <a href="#testimonials" class="text-sm text-slate-400 hover:text-white transition-colors">Testimonials</a>
-            </div>
-            <div class="hidden md:block">
-                <a href="#cta" class="btn-primary text-sm font-medium text-white px-5 py-2.5 rounded-full inline-flex items-center gap-2">
-                    <span class="flex items-center gap-2">Book a Call <span class="material-symbols-outlined" style="font-size:16px">arrow_outward</span></span>
-                </a>
-            </div>
-            <button id="menuBtn" class="md:hidden text-white p-1" aria-label="Menu">
-                <span class="material-symbols-outlined" style="font-size:28px">menu</span>
+            <nav aria-label="Main navigation">
+                <ul class="nav-links">
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#testimonials">Results</a></li>
+                    <li><a href="#cta">Contact</a></li>
+                </ul>
+            </nav>
+            <a href="#cta" class="btn btn-primary">Book a Call</a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false">
+                <span class="material-icons">menu</span>
             </button>
         </div>
-    </nav>
+    </header>
 
-    <!-- Mobile Menu -->
-    <div id="mobileMenu" class="mob-menu fixed inset-0 z-[60] bg-[#030712]/95 backdrop-blur-xl flex flex-col">
-        <div class="flex items-center justify-between px-5 h-16">
-            <a href="#" class="flex items-center gap-2">
-                <span class="material-symbols-outlined text-sky-400" style="font-size:26px">hub</span>
-                <span class="text-xl font-bold grad-text">Sorell</span>
-            </a>
-            <button id="closeMenu" class="text-white p-1" aria-label="Close">
-                <span class="material-symbols-outlined" style="font-size:28px">close</span>
-            </button>
-        </div>
-        <div class="flex-1 flex flex-col items-center justify-center gap-8">
-            <a href="#services" class="mob-link text-2xl font-medium text-slate-300 hover:text-white transition-colors">Services</a>
-            <a href="#process" class="mob-link text-2xl font-medium text-slate-300 hover:text-white transition-colors">Process</a>
-            <a href="#results" class="mob-link text-2xl font-medium text-slate-300 hover:text-white transition-colors">Results</a>
-            <a href="#testimonials" class="mob-link text-2xl font-medium text-slate-300 hover:text-white transition-colors">Testimonials</a>
-            <a href="#cta" class="mob-link btn-primary text-lg font-medium text-white px-8 py-3.5 rounded-full mt-4">
-                <span>Book a Call</span>
-            </a>
-        </div>
+    <!-- ─── MOBILE NAV OVERLAY ─────────────────── -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay" aria-hidden="true">
+        <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
+            <span class="material-icons">close</span>
+        </button>
+        <a href="#services" class="mobile-nav-link">Services</a>
+        <a href="#how-it-works" class="mobile-nav-link">How It Works</a>
+        <a href="#testimonials" class="mobile-nav-link">Results</a>
+        <a href="#cta" class="mobile-nav-link">Contact</a>
+        <a href="#cta" class="btn btn-primary btn-lg" style="margin-top:8px;">Book a Call</a>
     </div>
 
-    <!-- ========== HERO ========== -->
-    <section class="relative hero-glow pt-28 pb-20 md:pt-36 md:pb-28 px-5">
-        <!-- Floating orb decoration -->
-        <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-blue-600/10 to-sky-400/5 blur-3xl pointer-events-none float"></div>
-
-        <div class="relative max-w-2xl mx-auto text-center flex flex-col items-center">
-            <!-- Badge -->
-            <div class="fade-up inline-flex items-center gap-2 px-4 py-2 rounded-full border border-sky-500/15 bg-sky-500/5 mb-8">
-                <span class="material-symbols-outlined text-sky-400" style="font-size:16px">auto_awesome</span>
-                <span class="text-xs font-medium text-sky-300 tracking-wide uppercase">AI-Powered Real Estate Automation</span>
-            </div>
-
-            <!-- H1 -->
-            <h1 class="fade-up text-4xl sm:text-5xl md:text-[3.5rem] font-bold leading-[1.12] tracking-tight mb-6">
-                Scale Your Real Estate Agency With
-                <span class="grad-text"> AI Automation</span>
-            </h1>
-
-            <!-- Sub -->
-            <p class="fade-up text-base sm:text-lg text-slate-400 leading-relaxed max-w-lg mb-10">
-                We build custom AI systems that capture, qualify, and nurture your leads 24/7 — so your agents close more deals without working more hours.
-            </p>
-
-            <!-- Buttons -->
-            <div class="fade-up flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-                <a href="#cta" class="btn-primary text-white font-medium px-8 py-3.5 rounded-full w-full sm:w-auto text-center">
-                    <span class="flex items-center justify-center gap-2">Get Started <span class="material-symbols-outlined" style="font-size:18px">arrow_outward</span></span>
-                </a>
-                <a href="#process" class="btn-secondary text-white font-medium px-8 py-3.5 rounded-full w-full sm:w-auto text-center">
-                    See How It Works
-                </a>
-            </div>
-
-            <!-- Trust micro-stats -->
-            <div class="fade-up flex flex-wrap items-center justify-center gap-6 sm:gap-10 mt-14 text-center">
-                <div>
-                    <div class="text-xl sm:text-2xl font-bold text-white" data-count="50">0+</div>
-                    <div class="text-xs text-slate-500 mt-0.5">Agencies Served</div>
+    <main>
+        <!-- ─── HERO ─────────────────────────────── -->
+        <section class="hero section" id="hero">
+            <div class="container">
+                <div class="hero-badge reveal">
+                    <span class="material-icons">bolt</span> AI Automation for Real Estate
                 </div>
-                <div class="w-px h-8 bg-slate-800 hidden sm:block"></div>
-                <div>
-                    <div class="text-xl sm:text-2xl font-bold text-white" data-count="10000">0+</div>
-                    <div class="text-xs text-slate-500 mt-0.5">Leads Automated/Mo</div>
-                </div>
-                <div class="w-px h-8 bg-slate-800 hidden sm:block"></div>
-                <div>
-                    <div class="text-xl sm:text-2xl font-bold text-white" data-count="3">0x</div>
-                    <div class="text-xs text-slate-500 mt-0.5">Avg. ROI Increase</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="divider max-w-4xl mx-auto"></div>
-
-    <!-- ========== SERVICES ========== -->
-    <section id="services" class="py-20 md:py-28 px-5">
-        <div class="max-w-5xl mx-auto text-center">
-            <div class="fade-up inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-sky-500/10 bg-sky-500/5 mb-5">
-                <span class="material-symbols-outlined text-sky-400" style="font-size:14px">widgets</span>
-                <span class="text-[11px] font-medium text-sky-300 tracking-widest uppercase">What We Build</span>
-            </div>
-            <h2 class="fade-up text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-                AI Systems Built for <span class="grad-text">Real Estate</span>
-            </h2>
-            <p class="fade-up text-slate-400 text-base max-w-md mx-auto mb-14">
-                Every automation is custom-built for your agency's workflows, CRM, and goals.
-            </p>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
-                <!-- Card 1 -->
-                <div class="glow-card p-6 sm:p-7 text-center" data-angle="0">
-                    <div class="icon-wrap w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5">
-                        <span class="material-symbols-outlined text-sky-400" style="font-size:28px">person_search</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2.5">AI Lead Qualification</h3>
-                    <p class="text-sm text-slate-400 leading-relaxed">
-                        Instantly score every lead by intent, budget, and timeline. Your agents only talk to buyers ready to act.
-                    </p>
-                </div>
-                <!-- Card 2 -->
-                <div class="glow-card p-6 sm:p-7 text-center" data-angle="90">
-                    <div class="icon-wrap w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5">
-                        <span class="material-symbols-outlined text-sky-400" style="font-size:28px">auto_awesome</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2.5">Smart Follow-Up Engine</h3>
-                    <p class="text-sm text-slate-400 leading-relaxed">
-                        AI-powered SMS, email, and voice sequences that nurture leads across 30, 60, or 90-day journeys automatically.
-                    </p>
-                </div>
-                <!-- Card 3 -->
-                <div class="glow-card p-6 sm:p-7 text-center" data-angle="180">
-                    <div class="icon-wrap w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5">
-                        <span class="material-symbols-outlined text-sky-400" style="font-size:28px">home_work</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2.5">Property Intelligence</h3>
-                    <p class="text-sm text-slate-400 leading-relaxed">
-                        Match buyers to properties instantly using AI that understands preferences, commute needs, and lifestyle goals.
-                    </p>
-                </div>
-                <!-- Card 4 -->
-                <div class="glow-card p-6 sm:p-7 text-center" data-angle="270">
-                    <div class="icon-wrap w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5">
-                        <span class="material-symbols-outlined text-sky-400" style="font-size:28px">monitoring</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2.5">Market Analytics AI</h3>
-                    <p class="text-sm text-slate-400 leading-relaxed">
-                        Predictive pricing, neighborhood trends, and investment insights — delivered as daily briefings to your team.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="divider max-w-4xl mx-auto"></div>
-
-    <!-- ========== HOW IT WORKS ========== -->
-    <section id="process" class="py-20 md:py-28 px-5">
-        <div class="max-w-3xl mx-auto text-center">
-            <div class="fade-up inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-sky-500/10 bg-sky-500/5 mb-5">
-                <span class="material-symbols-outlined text-sky-400" style="font-size:14px">route</span>
-                <span class="text-[11px] font-medium text-sky-300 tracking-widest uppercase">The Process</span>
-            </div>
-            <h2 class="fade-up text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-                Live in <span class="grad-text">21 Days</span> or Less
-            </h2>
-            <p class="fade-up text-slate-400 text-base max-w-md mx-auto mb-16">
-                A proven framework refined across 50+ real estate agencies.
-            </p>
-
-            <div class="flex flex-col gap-10">
-                <!-- Step 1 -->
-                <div class="fade-up flex flex-col items-center text-center">
-                    <div class="w-16 h-16 rounded-full border border-sky-500/20 bg-sky-500/5 flex items-center justify-center mb-5 relative">
-                        <span class="step-num text-2xl font-bold">01</span>
-                        <!-- Connector line -->
-                        <div class="absolute top-full left-1/2 -translate-x-1/2 w-px h-10 bg-gradient-to-b from-sky-500/30 to-transparent"></div>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2">Discovery & Audit</h3>
-                    <p class="text-sm text-slate-400 max-w-xs leading-relaxed">
-                        We map your entire lead funnel, CRM setup, and team workflows to find the highest-impact automation opportunities.
-                    </p>
-                </div>
-                <!-- Step 2 -->
-                <div class="fade-up flex flex-col items-center text-center">
-                    <div class="w-16 h-16 rounded-full border border-sky-500/20 bg-sky-500/5 flex items-center justify-center mb-5 relative">
-                        <span class="step-num text-2xl font-bold">02</span>
-                        <div class="absolute top-full left-1/2 -translate-x-1/2 w-px h-10 bg-gradient-to-b from-sky-500/30 to-transparent"></div>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2">Custom AI Build</h3>
-                    <p class="text-sm text-slate-400 max-w-xs leading-relaxed">
-                        Our engineers build and test your automation systems — integrated with your existing tech stack, not replacing it.
-                    </p>
-                </div>
-                <!-- Step 3 -->
-                <div class="fade-up flex flex-col items-center text-center">
-                    <div class="w-16 h-16 rounded-full border border-sky-500/20 bg-sky-500/5 flex items-center justify-center mb-5">
-                        <span class="step-num text-2xl font-bold">03</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2">Launch & Optimize</h3>
-                    <p class="text-sm text-slate-400 max-w-xs leading-relaxed">
-                        We deploy, monitor performance daily, and continuously optimize — so your systems keep getting smarter over time.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="divider max-w-4xl mx-auto"></div>
-
-    <!-- ========== RESULTS ========== -->
-    <section id="results" class="py-20 md:py-28 px-5">
-        <div class="max-w-4xl mx-auto text-center">
-            <div class="fade-up inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-sky-500/10 bg-sky-500/5 mb-5">
-                <span class="material-symbols-outlined text-sky-400" style="font-size:14px">trending_up</span>
-                <span class="text-[11px] font-medium text-sky-300 tracking-widest uppercase">Proven Results</span>
-            </div>
-            <h2 class="fade-up text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-                Numbers That <span class="grad-text">Speak</span>
-            </h2>
-            <p class="fade-up text-slate-400 text-base max-w-md mx-auto mb-14">
-                Average performance improvements across our client base.
-            </p>
-
-            <div class="grid grid-cols-2 gap-4 md:gap-5">
-                <div class="fade-up stat-card p-5 sm:p-7 text-center">
-                    <div class="text-3xl sm:text-4xl font-bold grad-text mb-2" data-count="312">0%</div>
-                    <div class="text-xs sm:text-sm text-slate-400">Increase in Lead Response Rate</div>
-                </div>
-                <div class="fade-up stat-card p-5 sm:p-7 text-center">
-                    <div class="text-3xl sm:text-4xl font-bold grad-text mb-2" data-count="47">0%</div>
-                    <div class="text-xs sm:text-sm text-slate-400">Reduction in Lead Response Time</div>
-                </div>
-                <div class="fade-up stat-card p-5 sm:p-7 text-center">
-                    <div class="text-3xl sm:text-4xl font-bold grad-text mb-2" data-count="2">0x</div>
-                    <div class="text-xs sm:text-sm text-slate-400">More Closed Deals Per Agent</div>
-                </div>
-                <div class="fade-up stat-card p-5 sm:p-7 text-center">
-                    <div class="text-3xl sm:text-4xl font-bold grad-text mb-2" data-count="180">0+</div>
-                    <div class="text-xs sm:text-sm text-slate-400">Hours Saved Per Month Per Agency</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="divider max-w-4xl mx-auto"></div>
-
-    <!-- ========== TESTIMONIALS ========== -->
-    <section id="testimonials" class="py-20 md:py-28 px-5">
-        <div class="max-w-4xl mx-auto text-center">
-            <div class="fade-up inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-sky-500/10 bg-sky-500/5 mb-5">
-                <span class="material-symbols-outlined text-sky-400" style="font-size:14px">format_quote</span>
-                <span class="text-[11px] font-medium text-sky-300 tracking-widest uppercase">Client Stories</span>
-            </div>
-            <h2 class="fade-up text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-                Trusted by <span class="grad-text">Agency Owners</span>
-            </h2>
-            <p class="fade-up text-slate-400 text-base max-w-md mx-auto mb-14">
-                Real results from real agencies.
-            </p>
-
-            <div class="flex flex-col gap-5">
-                <!-- Testimonial 1 -->
-                <div class="fade-up testi-card p-6 sm:p-8 text-center">
-                    <div class="flex items-center justify-center gap-1 mb-4">
-                        <span class="material-symbols-outlined text-amber-400" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-amber-400" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-amber-400" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-amber-400" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-amber-400" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
-                    </div>
-                    <p class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-lg mx-auto mb-6">
-                        "We went from losing 60% of our online leads to converting 28% of them. Sorell's AI follow-up system literally transformed our pipeline overnight. Best investment we've made in 10 years."
-                    </p>
-                    <div class="flex items-center justify-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-sky-400 flex items-center justify-center text-sm font-bold text-white">MR</div>
-                        <div class="text-left">
-                            <div class="text-sm font-medium">Marcus Reeves</div>
-                            <div class="text-xs text-slate-500">Principal Broker, Reeves & Partners</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Testimonial 2 -->
-                <div class="fade-up testi-card p-6 sm:p-8 text-center">
-                    <div class="flex items-center justify-center gap-1 mb-4">
-                        <span class="material-symbols-outlined text-amber-400" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-amber-400" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-amber-400" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-amber-400" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-amber-400" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
-                    </div>
-                    <p class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-lg mx-auto mb-6">
-                        "Our agents were spending 3 hours a day on lead follow-up. Now it's fully automated and our conversion rate has doubled. Sorell understood real estate from day one — no hand-holding needed."
-                    </p>
-                    <div class="flex items-center justify-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-sky-400 flex items-center justify-center text-sm font-bold text-white">SL</div>
-                        <div class="text-left">
-                            <div class="text-sm font-medium">Sarah Lin</div>
-                            <div class="text-xs text-slate-500">Director of Operations, Pinnacle Realty Group</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Testimonial 3 -->
-                <div class="fade-up testi-card p-6 sm:p-8 text-center">
-                    <div class="flex items-center justify-center gap-1 mb-4">
-                        <span class="material-symbols-outlined text-amber-400" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-amber-400" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-amber-400" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-amber-400" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-amber-400" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
-                    </div>
-                    <p class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-lg mx-auto mb-6">
-                        "The property matching AI alone has cut our average time-to-offer from 45 days to 18. Our clients think we have a team of 50 — it's really just Sorell running in the background."
-                    </p>
-                    <div class="flex items-center justify-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-sky-400 flex items-center justify-center text-sm font-bold text-white">JD</div>
-                        <div class="text-left">
-                            <div class="text-sm font-medium">James Delgado</div>
-                            <div class="text-xs text-slate-500">Founder, Delgado Luxury Homes</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="divider max-w-4xl mx-auto"></div>
-
-    <!-- ========== CTA ========== -->
-    <section id="cta" class="py-20 md:py-28 px-5 relative">
-        <div class="absolute inset-0 bg-gradient-to-t from-blue-950/20 via-transparent to-transparent pointer-events-none"></div>
-        <div class="relative max-w-xl mx-auto text-center">
-            <div class="fade-up glow-card p-8 sm:p-12" data-angle="45">
-                <span class="material-symbols-outlined text-sky-400 mb-5 block" style="font-size:40px">rocket_launch</span>
-                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-4">
-                    Ready to Automate Your Agency?
-                </h2>
-                <p class="text-sm sm:text-base text-slate-400 leading-relaxed mb-8 max-w-sm mx-auto">
-                    Book a free 30-minute strategy call. We'll audit your current funnel and show you exactly where AI can add revenue — no strings attached.
+                <h1 class="hero-title reveal reveal-delay-1">
+                    Scale Your Real Estate Agency<br>With <span class="highlight">Intelligent AI</span>
+                </h1>
+                <p class="hero-desc reveal reveal-delay-2">
+                    We build custom AI automation workflows that capture leads, nurture prospects,
+                    and close deals — so your agents can focus on what they do best.
                 </p>
-                <a href="mailto:hello@sorell.ai" class="btn-primary text-white font-medium px-8 py-3.5 rounded-full inline-flex items-center justify-center gap-2 w-full sm:w-auto">
-                    <span class="flex items-center gap-2">
-                        <span class="material-symbols-outlined" style="font-size:18px">calendar_month</span>
-                        Book Your Free Strategy Call
-                    </span>
-                </a>
-                <p class="text-xs text-slate-600 mt-5">No commitment required. Response within 24 hours.</p>
+                <div class="hero-buttons reveal reveal-delay-3">
+                    <a href="#cta" class="btn btn-primary btn-lg">Start Automating Today</a>
+                    <a href="#how-it-works" class="btn btn-outline btn-lg">
+                        <span class="material-icons" style="font-size:18px;">play_circle</span> See How It Works
+                    </a>
+                </div>
+                <div class="hero-stats reveal reveal-delay-4">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">340+</div>
+                        <div class="hero-stat-label">Agents Empowered</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">$12M+</div>
+                        <div class="hero-stat-label">Pipeline Value Generated</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">98%</div>
+                        <div class="hero-stat-label">Client Retention</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">4.9★</div>
+                        <div class="hero-stat-label">Average Rating</div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ========== FOOTER ========== -->
-    <footer class="border-t border-slate-800/50 py-12 px-5">
-        <div class="max-w-5xl mx-auto text-center">
-            <div class="flex items-center justify-center gap-2 mb-6">
-                <span class="material-symbols-outlined text-sky-400" style="font-size:22px">hub</span>
-                <span class="text-lg font-bold grad-text">Sorell</span>
+        <!-- ─── SERVICES ──────────────────────────── -->
+        <section class="section" id="services">
+            <div class="container">
+                <div class="text-center reveal">
+                    <span class="section-label">Our Services</span>
+                    <h2 class="section-title">AI Solutions Built for<br>Real Estate</h2>
+                    <p class="section-subtitle mx-auto">
+                        Every automation is custom-tailored to your agency's workflow.
+                        No cookie-cutter templates — just results.
+                    </p>
+                </div>
+                <div class="services-grid">
+                    <!-- Card 1 -->
+                    <div class="card-glow-wrapper reveal reveal-delay-1">
+                        <div class="card-inner">
+                            <div class="card-icon"><span class="material-icons">psychology</span></div>
+                            <h3 class="card-title">AI Lead Qualification</h3>
+                            <p class="card-desc">Automatically score and rank inbound leads based on intent signals, budget, and timeline — so agents only talk to ready buyers.</p>
+                            <span class="card-tag">Lead Gen</span>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="card-glow-wrapper reveal reveal-delay-2">
+                        <div class="card-inner">
+                            <div class="card-icon"><span class="material-icons">forum</span></div>
+                            <h3 class="card-title">Smart Follow-Up Engine</h3>
+                            <p class="card-desc">AI-powered email & SMS sequences that adapt based on prospect behavior. Never let a lead go cold again.</p>
+                            <span class="card-tag">Nurture</span>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="card-glow-wrapper reveal reveal-delay-3">
+                        <div class="card-inner">
+                            <div class="card-icon"><span class="material-icons">apartment</span></div>
+                            <h3 class="card-title">Automated Property Matching</h3>
+                            <p class="card-desc">Match listings to buyer preferences in real-time using AI. Deliver personalized property alerts instantly.</p>
+                            <span class="card-tag">Matching</span>
+                        </div>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="card-glow-wrapper reveal reveal-delay-4">
+                        <div class="card-inner">
+                            <div class="card-icon"><span class="material-icons">analytics</span></div>
+                            <h3 class="card-title">Market Intel & Insights</h3>
+                            <p class="card-desc">AI-driven market analysis reports delivered to your inbox. Know pricing trends before your competition does.</p>
+                            <span class="card-tag">Analytics</span>
+                        </div>
+                    </div>
+                    <!-- Card 5 -->
+                    <div class="card-glow-wrapper reveal reveal-delay-5">
+                        <div class="card-inner">
+                            <div class="card-icon"><span class="material-icons">description</span></div>
+                            <h3 class="card-title">Document Processing AI</h3>
+                            <p class="card-desc">Auto-extract data from contracts, disclosures, and agreements. Cut paperwork time by 70%.</p>
+                            <span class="card-tag">Efficiency</span>
+                        </div>
+                    </div>
+                    <!-- Card 6 -->
+                    <div class="card-glow-wrapper reveal reveal-delay-6">
+                        <div class="card-inner">
+                            <div class="card-icon"><span class="material-icons">support_agent</span></div>
+                            <h3 class="card-title">24/7 AI Concierge</h3>
+                            <p class="card-desc">A white-label AI chatbot that answers property questions, schedules tours, and qualifies visitors around the clock.</p>
+                            <span class="card-tag">Support</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="flex flex-wrap items-center justify-center gap-6 mb-8">
-                <a href="#services" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Services</a>
-                <a href="#process" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Process</a>
-                <a href="#results" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Results</a>
-                <a href="#testimonials" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Testimonials</a>
-                <a href="#cta" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Contact</a>
+        </section>
+
+        <!-- ─── HOW IT WORKS ──────────────────────── -->
+        <section class="section" id="how-it-works">
+            <div class="container">
+                <div class="text-center reveal">
+                    <span class="section-label">Process</span>
+                    <h2 class="section-title">How We Deploy Your AI</h2>
+                    <p class="section-subtitle mx-auto">
+                        From audit to launch in as little as 2 weeks. Zero disruption to your existing operations.
+                    </p>
+                </div>
+                <div class="steps-list">
+                    <div class="step-item reveal reveal-delay-1">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Discovery & Audit</h4>
+                            <p>We map your current workflow, identify bottlenecks, and pinpoint the highest-ROI automation opportunities.</p>
+                        </div>
+                    </div>
+                    <div class="step-item reveal reveal-delay-2">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Custom AI Blueprint</h4>
+                            <p>Our engineers design a tailored AI stack — integrating with your CRM, MLS, and communication tools.</p>
+                        </div>
+                    </div>
+                    <div class="step-item reveal reveal-delay-3">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Build & Test</h4>
+                            <p>We build, rigorously test, and refine the automation in a sandbox environment before going live.</p>
+                        </div>
+                    </div>
+                    <div class="step-item reveal reveal-delay-4">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Launch & Optimize</h4>
+                            <p>Go live with full support. We monitor performance and continuously optimize for maximum ROI.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="flex items-center justify-center gap-4 mb-8">
-                <a href="#" class="w-9 h-9 rounded-full border border-slate-800 flex items-center justify-center text-slate-500 hover:text-sky-400 hover:border-sky-500/30 transition-all" aria-label="LinkedIn">
-                    <span class="material-symbols-outlined" style="font-size:18px">group</span>
-                </a>
-                <a href="#" class="w-9 h-9 rounded-full border border-slate-800 flex items-center justify-center text-slate-500 hover:text-sky-400 hover:border-sky-500/30 transition-all" aria-label="Twitter">
-                    <span class="material-symbols-outlined" style="font-size:18px">close</span>
-                </a>
-                <a href="#" class="w-9 h-9 rounded-full border border-slate-800 flex items-center justify-center text-slate-500 hover:text-sky-400 hover:border-sky-500/30 transition-all" aria-label="Email">
-                    <span class="material-symbols-outlined" style="font-size:18px">mail</span>
-                </a>
+        </section>
+
+        <!-- ─── TESTIMONIALS ──────────────────────── -->
+        <section class="section" id="testimonials">
+            <div class="container">
+                <div class="text-center reveal">
+                    <span class="section-label">Testimonials</span>
+                    <h2 class="section-title">Trusted by Top Agencies</h2>
+                    <p class="section-subtitle mx-auto">
+                        Hear from real estate leaders who transformed their business with Sorell.
+                    </p>
+                </div>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card reveal reveal-delay-1">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-quote">"Sorell's AI lead qualification saved us 20+ hours per week. Our agents now only talk to pre-qualified buyers. Conversion rates are up 35%."</p>
+                        <p class="testimonial-author">Marcus Chen</p>
+                        <p class="testimonial-role">Broker-Owner, Skyline Realty Group</p>
+                    </div>
+                    <div class="testimonial-card reveal reveal-delay-2">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-quote">"The automated follow-up engine is a game-changer. We recovered $480K in pipeline that would've been lost to cold leads."</p>
+                        <p class="testimonial-author">Priya Kapoor</p>
+                        <p class="testimonial-role">Managing Partner, Elevate Estates</p>
+                    </div>
+                    <div class="testimonial-card reveal reveal-delay-3">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-quote">"Implementation was seamless. Within 3 weeks, our document processing was fully automated. The team is incredibly responsive."</p>
+                        <p class="testimonial-author">David Okafor</p>
+                        <p class="testimonial-role">CEO, Horizon Properties</p>
+                    </div>
+                </div>
             </div>
-            <p class="text-xs text-slate-700">&copy; 2025 Sorell. All rights reserved.</p>
+        </section>
+
+        <!-- ─── CTA ────────────────────────────────── -->
+        <section class="section" id="cta">
+            <div class="container">
+                <div class="cta-section reveal">
+                    <span class="section-label">Get Started</span>
+                    <h2 class="cta-title">Ready to Automate Your Agency?</h2>
+                    <p class="cta-desc">Book a free 30-minute strategy call. We'll map out a custom AI plan for your business — no commitment required.</p>
+                    <a href="#" class="btn btn-primary btn-lg" style="font-size:1.05rem; padding: 16px 36px;">
+                        <span class="material-icons">calendar_today</span> Book Your Free Strategy Call
+                    </a>
+                    <p style="margin-top:14px; font-size:0.78rem; color:var(--text-muted);">Typically responds within 2 hours</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ─── FOOTER ──────────────────────────────── -->
+    <footer class="footer" id="footer">
+        <div class="container footer-inner">
+            <a href="#" class="logo" style="font-size:1.2rem;" aria-label="Sorell Home">
+                <span class="logo-dot" style="width:24px;height:24px;border-radius:6px;font-size:12px;">S</span> Sorell
+            </a>
+            <div class="footer-links">
+                <a href="#services">Services</a>
+                <a href="#how-it-works">Process</a>
+                <a href="#testimonials">Results</a>
+                <a href="#cta">Contact</a>
+                <a href="#">Privacy</a>
+            </div>
+            <p style="margin-top:4px;">&copy; 2026 Sorell AI Automation. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- ========== SCRIPTS ========== -->
+    <!-- ─── SCRIPTS ─────────────────────────────── -->
     <script>
-        // ---- Mobile Menu ----
-        const menuBtn = document.getElementById('menuBtn');
-        const closeMenu = document.getElementById('closeMenu');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const mobLinks = document.querySelectorAll('.mob-link');
+        // ── Mobile Menu Toggle ──────────────────
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        const mobileNavClose = document.getElementById('mobileNavClose');
+        const mobileNavLinks = mobileNavOverlay.querySelectorAll('.mobile-nav-link');
 
-        menuBtn.addEventListener('click', () => mobileMenu.classList.add('open'));
-        closeMenu.addEventListener('click', () => mobileMenu.classList.remove('open'));
-        mobLinks.forEach(l => l.addEventListener('click', () => mobileMenu.classList.remove('open')));
+        function openMobileMenu() {
+            mobileNavOverlay.classList.add('active');
+            mobileNavOverlay.setAttribute('aria-hidden', 'false');
+            mobileMenuBtn.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
+        }
 
-        // ---- Scroll Reveal (Intersection Observer) ----
-        const fadeEls = document.querySelectorAll('.fade-up');
+        function closeMobileMenu() {
+            mobileNavOverlay.classList.remove('active');
+            mobileNavOverlay.setAttribute('aria-hidden', 'true');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
+
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        mobileNavClose.addEventListener('click', closeMobileMenu);
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+        mobileNavOverlay.addEventListener('click', function(e) {
+            if (e.target === mobileNavOverlay) closeMobileMenu();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && mobileNavOverlay.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        });
+
+        // ── Scroll Reveal (Intersection Observer) ──
+        const revealElements = document.querySelectorAll('.reveal');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -60px 0px',
+            threshold: 0.08,
+        };
+
         const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry, i) => {
+            entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    setTimeout(() => entry.target.classList.add('visible'), i * 80);
+                    entry.target.classList.add('visible');
                     revealObserver.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-        fadeEls.forEach(el => revealObserver.observe(el));
+        }, observerOptions);
 
-        // ---- Animated Glow Card Borders (JS-driven for cross-browser) ----
-        const glowCards = document.querySelectorAll('.glow-card');
-        const cardStates = Array.from(glowCards).map(card => ({
-            el: card,
-            angle: parseFloat(card.dataset.angle) || 0,
-            hovered: false,
-            speed: 72  // deg/s
-        }));
+        revealElements.forEach(el => revealObserver.observe(el));
 
-        glowCards.forEach((card, i) => {
-            card.addEventListener('mouseenter', () => cardStates[i].hovered = true);
-            card.addEventListener('mouseleave', () => cardStates[i].hovered = false);
-        });
-
-        let lastTime = performance.now();
-        function animateBorders(now) {
-            const dt = (now - lastTime) / 1000;
-            lastTime = now;
-            cardStates.forEach(state => {
-                state.speed += ((state.hovered ? 200 : 72) - state.speed) * 0.05;
-                state.angle = (state.angle + state.speed * dt) % 360;
-                state.el.style.setProperty('--border-angle', state.angle + 'deg');
-            });
-            requestAnimationFrame(animateBorders);
-        }
-        requestAnimationFrame(animateBorders);
-
-        // ---- Counter Animation ----
-        function animateCounter(el, target, suffix = '') {
-            const duration = 2000;
-            const start = performance.now();
-            const isFloat = target % 1 !== 0;
-            function tick(now) {
-                const progress = Math.min((now - start) / duration, 1);
-                const eased = 1 - Math.pow(1 - progress, 3);
-                const current = Math.round(eased * target);
-                el.textContent = (isFloat ? (eased * target).toFixed(1) : current.toLocaleString()) + suffix;
-                if (progress < 1) requestAnimationFrame(tick);
-            }
-            requestAnimationFrame(tick);
-        }
-
-        const counters = document.querySelectorAll('[data-count]');
-        const counterObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const el = entry.target;
-                    const val = parseFloat(el.dataset.count);
-                    const suffix = el.textContent.replace(/[0-9.,]/g, '') || '';
-                    animateCounter(el, val, suffix);
-                    counterObserver.unobserve(el);
+        // ── Smooth scroll for all anchor links ──
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                const targetEl = document.querySelector(targetId);
+                if (targetEl) {
+                    e.preventDefault();
+                    const headerHeight = document.getElementById('header').offsetHeight;
+                    const targetPosition = targetEl.getBoundingClientRect().top + window.pageYOffset -
+                        headerHeight - 16;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth',
+                    });
                 }
             });
-        }, { threshold: 0.5 });
-        counters.forEach(c => counterObserver.observe(c));
+        });
 
-        // ---- Navbar scroll effect ----
-        const navbar = document.getElementById('navbar');
-        let scrolled = false;
+        // ── Header shadow on scroll ──────────────
+        const header = document.getElementById('header');
         window.addEventListener('scroll', () => {
-            const shouldAdd = window.scrollY > 40;
-            if (shouldAdd !== scrolled) {
-                scrolled = shouldAdd;
-                navbar.style.borderBottomColor = scrolled ? 'rgba(56,189,248,0.1)' : 'rgba(56,189,248,0.06)';
+            if (window.scrollY > 20) {
+                header.style.boxShadow = '0 2px 24px rgba(0,0,0,0.35)';
+                header.style.borderBottomColor = 'rgba(255,255,255,0.08)';
+            } else {
+                header.style.boxShadow = 'none';
+                header.style.borderBottomColor = 'rgba(255,255,255,0.05)';
             }
-        }, { passive: true });
+        });
+
+        console.log('%c🚀 Sorell AI Automation %c— Ready to scale your real estate agency.',
+            'font-weight:bold;color:#60a5fa;font-size:1.1rem;',
+            'color:#b0c0da;');
+        console.log('%cBook a call at the CTA section above.', 'color:#93c5fd;');
     </script>
 </body>
 </html>
