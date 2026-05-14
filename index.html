@@ -2,21 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Sorell — AI Automation for Real Estate Agencies</title>
+    <meta name="description" content="AI automation workflows for real estate agencies — capture leads, nurture prospects, and close deals faster.">
 
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Google+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Fonts (optimized with display=swap) -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <!-- GSAP -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <!-- GSAP deferred -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 
-    <!-- Main Stylesheet -->
+    <!-- Main CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+    <!-- Background orbs (no lazy needed, pure CSS) -->
     <div class="bg-orb bg-orb--1" aria-hidden="true"></div>
     <div class="bg-orb bg-orb--2" aria-hidden="true"></div>
     <div class="bg-orb bg-orb--3" aria-hidden="true"></div>
@@ -32,26 +34,27 @@
                     <li><a href="#cta">Contact</a></li>
                 </ul>
             </nav>
-            <a href="#cta" class="btn btn-primary">Book a Call</a>
+            <a href="#cta" class="btn btn-primary btn-desktop">Book a Call</a>
             <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false">
                 <span class="material-icons" id="menuIcon">menu</span>
             </button>
         </div>
     </header>
 
-    <nav class="mobile-nav-pill" id="mobileNavPill" aria-hidden="true" aria-label="Mobile navigation">
+    <!-- Mobile nav pill (hidden initially) -->
+    <nav class="mobile-nav-pill" id="mobileNavPill" aria-hidden="true">
         <div class="mobile-nav-pill-header">
             <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
                 <span class="material-icons">close</span>
             </button>
         </div>
-        <a href="#services"     class="mobile-nav-link">Services</a>
+        <a href="#services" class="mobile-nav-link">Services</a>
         <div class="mobile-nav-divider"></div>
         <a href="#how-it-works" class="mobile-nav-link">How It Works</a>
         <div class="mobile-nav-divider"></div>
         <a href="#testimonials" class="mobile-nav-link">Results</a>
         <div class="mobile-nav-divider"></div>
-        <a href="#cta"          class="mobile-nav-link">Contact</a>
+        <a href="#cta" class="mobile-nav-link">Contact</a>
         <a href="#cta" class="btn btn-primary btn-lg">Book a Call</a>
     </nav>
 
@@ -76,24 +79,11 @@
                         </a>
                     </div>
                 </div>
-
                 <div class="hero-stats reveal">
-                    <div class="hero-stat">
-                        <div class="hero-stat-value">340+</div>
-                        <div class="hero-stat-label">Agents Empowered</div>
-                    </div>
-                    <div class="hero-stat">
-                        <div class="hero-stat-value">$12M+</div>
-                        <div class="hero-stat-label">Pipeline Value Generated</div>
-                    </div>
-                    <div class="hero-stat">
-                        <div class="hero-stat-value">98%</div>
-                        <div class="hero-stat-label">Client Retention</div>
-                    </div>
-                    <div class="hero-stat">
-                        <div class="hero-stat-value">4.9★</div>
-                        <div class="hero-stat-label">Average Rating</div>
-                    </div>
+                    <div class="hero-stat"><div class="hero-stat-value">340+</div><div class="hero-stat-label">Agents Empowered</div></div>
+                    <div class="hero-stat"><div class="hero-stat-value">$12M+</div><div class="hero-stat-label">Pipeline Value</div></div>
+                    <div class="hero-stat"><div class="hero-stat-value">98%</div><div class="hero-stat-label">Client Retention</div></div>
+                    <div class="hero-stat"><div class="hero-stat-value">4.9★</div><div class="hero-stat-label">Average Rating</div></div>
                 </div>
             </div>
         </section>
@@ -103,134 +93,38 @@
                 <div class="text-center reveal">
                     <span class="section-label">Our Services</span>
                     <h2 class="section-title">AI Solutions Built for<br>Real Estate</h2>
-                    <p class="section-subtitle mx-auto">
-                        Every automation is custom-tailored to your agency's workflow.
-                        No cookie-cutter templates — just results.
-                    </p>
+                    <p class="section-subtitle mx-auto">Every automation is custom-tailored to your agency's workflow. No cookie-cutter templates — just results.</p>
                 </div>
                 <div class="services-grid">
-                    <div class="card-glow-wrapper reveal reveal-delay-1">
-                        <div class="card-inner">
-                            <div class="card-icon"><span class="material-icons">psychology</span></div>
-                            <h3 class="card-title">AI Lead Qualification</h3>
-                            <p class="card-desc">Automatically score and rank inbound leads based on intent signals, budget, and timeline — so agents only talk to ready buyers.</p>
-                            <span class="card-tag">Lead Gen</span>
-                        </div>
-                    </div>
-                    <div class="card-glow-wrapper reveal reveal-delay-2">
-                        <div class="card-inner">
-                            <div class="card-icon"><span class="material-icons">forum</span></div>
-                            <h3 class="card-title">Smart Follow-Up Engine</h3>
-                            <p class="card-desc">AI-powered email & SMS sequences that adapt based on prospect behavior. Never let a lead go cold again.</p>
-                            <span class="card-tag">Nurture</span>
-                        </div>
-                    </div>
-                    <div class="card-glow-wrapper reveal reveal-delay-3">
-                        <div class="card-inner">
-                            <div class="card-icon"><span class="material-icons">apartment</span></div>
-                            <h3 class="card-title">Automated Property Matching</h3>
-                            <p class="card-desc">Match listings to buyer preferences in real-time using AI. Deliver personalized property alerts instantly.</p>
-                            <span class="card-tag">Matching</span>
-                        </div>
-                    </div>
-                    <div class="card-glow-wrapper reveal reveal-delay-4">
-                        <div class="card-inner">
-                            <div class="card-icon"><span class="material-icons">analytics</span></div>
-                            <h3 class="card-title">Market Intel & Insights</h3>
-                            <p class="card-desc">AI-driven market analysis reports delivered to your inbox. Know pricing trends before your competition does.</p>
-                            <span class="card-tag">Analytics</span>
-                        </div>
-                    </div>
-                    <div class="card-glow-wrapper reveal reveal-delay-5">
-                        <div class="card-inner">
-                            <div class="card-icon"><span class="material-icons">description</span></div>
-                            <h3 class="card-title">Document Processing AI</h3>
-                            <p class="card-desc">Auto-extract data from contracts, disclosures, and agreements. Cut paperwork time by 70%.</p>
-                            <span class="card-tag">Efficiency</span>
-                        </div>
-                    </div>
-                    <div class="card-glow-wrapper reveal reveal-delay-6">
-                        <div class="card-inner">
-                            <div class="card-icon"><span class="material-icons">support_agent</span></div>
-                            <h3 class="card-title">24/7 AI Concierge</h3>
-                            <p class="card-desc">A white-label AI chatbot that answers property questions, schedules tours, and qualifies visitors around the clock.</p>
-                            <span class="card-tag">Support</span>
-                        </div>
-                    </div>
+                    <div class="card-glow-wrapper reveal reveal-delay-1"><div class="card-inner"><div class="card-icon"><span class="material-icons">psychology</span></div><h3 class="card-title">AI Lead Qualification</h3><p class="card-desc">Automatically score and rank inbound leads based on intent signals, budget, and timeline.</p><span class="card-tag">Lead Gen</span></div></div>
+                    <div class="card-glow-wrapper reveal reveal-delay-2"><div class="card-inner"><div class="card-icon"><span class="material-icons">forum</span></div><h3 class="card-title">Smart Follow-Up Engine</h3><p class="card-desc">AI-powered email & SMS sequences that adapt based on prospect behavior. Never let a lead go cold.</p><span class="card-tag">Nurture</span></div></div>
+                    <div class="card-glow-wrapper reveal reveal-delay-3"><div class="card-inner"><div class="card-icon"><span class="material-icons">apartment</span></div><h3 class="card-title">Automated Property Matching</h3><p class="card-desc">Match listings to buyer preferences in real-time using AI. Deliver personalized property alerts instantly.</p><span class="card-tag">Matching</span></div></div>
+                    <div class="card-glow-wrapper reveal reveal-delay-4"><div class="card-inner"><div class="card-icon"><span class="material-icons">analytics</span></div><h3 class="card-title">Market Intel & Insights</h3><p class="card-desc">AI-driven market analysis reports delivered to your inbox. Know pricing trends before competition.</p><span class="card-tag">Analytics</span></div></div>
+                    <div class="card-glow-wrapper reveal reveal-delay-5"><div class="card-inner"><div class="card-icon"><span class="material-icons">description</span></div><h3 class="card-title">Document Processing AI</h3><p class="card-desc">Auto-extract data from contracts, disclosures, and agreements. Cut paperwork time by 70%.</p><span class="card-tag">Efficiency</span></div></div>
+                    <div class="card-glow-wrapper reveal reveal-delay-6"><div class="card-inner"><div class="card-icon"><span class="material-icons">support_agent</span></div><h3 class="card-title">24/7 AI Concierge</h3><p class="card-desc">White-label AI chatbot that answers property questions, schedules tours, and qualifies visitors.</p><span class="card-tag">Support</span></div></div>
                 </div>
             </div>
         </section>
 
         <section class="section" id="how-it-works">
             <div class="container">
-                <div class="text-center reveal">
-                    <span class="section-label">Process</span>
-                    <h2 class="section-title">How We Deploy Your AI</h2>
-                    <p class="section-subtitle mx-auto">
-                        From audit to launch in as little as 2 weeks. Zero disruption to your existing operations.
-                    </p>
-                </div>
+                <div class="text-center reveal"><span class="section-label">Process</span><h2 class="section-title">How We Deploy Your AI</h2><p class="section-subtitle mx-auto">From audit to launch in as little as 2 weeks. Zero disruption to your operations.</p></div>
                 <div class="steps-list">
-                    <div class="step-item reveal reveal-delay-1">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h4>Discovery & Audit</h4>
-                            <p>We map your current workflow, identify bottlenecks, and pinpoint the highest-ROI automation opportunities.</p>
-                        </div>
-                    </div>
-                    <div class="step-item reveal reveal-delay-2">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h4>Custom AI Blueprint</h4>
-                            <p>Our engineers design a tailored AI stack — integrating with your CRM, MLS, and communication tools.</p>
-                        </div>
-                    </div>
-                    <div class="step-item reveal reveal-delay-3">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h4>Build & Test</h4>
-                            <p>We build, rigorously test, and refine the automation in a sandbox environment before going live.</p>
-                        </div>
-                    </div>
-                    <div class="step-item reveal reveal-delay-4">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <h4>Launch & Optimize</h4>
-                            <p>Go live with full support. We monitor performance and continuously optimize for maximum ROI.</p>
-                        </div>
-                    </div>
+                    <div class="step-item reveal reveal-delay-1"><div class="step-number">1</div><div class="step-content"><h4>Discovery & Audit</h4><p>We map your current workflow, identify bottlenecks, and pinpoint high-ROI automation opportunities.</p></div></div>
+                    <div class="step-item reveal reveal-delay-2"><div class="step-number">2</div><div class="step-content"><h4>Custom AI Blueprint</h4><p>Our engineers design a tailored AI stack — integrating with your CRM, MLS, and communication tools.</p></div></div>
+                    <div class="step-item reveal reveal-delay-3"><div class="step-number">3</div><div class="step-content"><h4>Build & Test</h4><p>We build, rigorously test, and refine the automation in a sandbox environment before going live.</p></div></div>
+                    <div class="step-item reveal reveal-delay-4"><div class="step-number">4</div><div class="step-content"><h4>Launch & Optimize</h4><p>Go live with full support. We monitor performance and continuously optimize for maximum ROI.</p></div></div>
                 </div>
             </div>
         </section>
 
         <section class="section" id="testimonials">
             <div class="container">
-                <div class="text-center reveal">
-                    <span class="section-label">Testimonials</span>
-                    <h2 class="section-title">Trusted by Top Agencies</h2>
-                    <p class="section-subtitle mx-auto">
-                        Hear from real estate leaders who transformed their business with Sorell.
-                    </p>
-                </div>
+                <div class="text-center reveal"><span class="section-label">Testimonials</span><h2 class="section-title">Trusted by Top Agencies</h2><p class="section-subtitle mx-auto">Hear from real estate leaders who transformed their business with Sorell.</p></div>
                 <div class="testimonials-grid">
-                    <div class="testimonial-card reveal reveal-delay-1">
-                        <div class="testimonial-stars">★★★★★</div>
-                        <p class="testimonial-quote">"Sorell's AI lead qualification saved us 20+ hours per week. Our agents now only talk to pre-qualified buyers. Conversion rates are up 35%."</p>
-                        <p class="testimonial-author">Marcus Chen</p>
-                        <p class="testimonial-role">Broker-Owner, Skyline Realty Group</p>
-                    </div>
-                    <div class="testimonial-card reveal reveal-delay-2">
-                        <div class="testimonial-stars">★★★★★</div>
-                        <p class="testimonial-quote">"The automated follow-up engine is a game-changer. We recovered $480K in pipeline that would've been lost to cold leads."</p>
-                        <p class="testimonial-author">Priya Kapoor</p>
-                        <p class="testimonial-role">Managing Partner, Elevate Estates</p>
-                    </div>
-                    <div class="testimonial-card reveal reveal-delay-3">
-                        <div class="testimonial-stars">★★★★★</div>
-                        <p class="testimonial-quote">"Implementation was seamless. Within 3 weeks, our document processing was fully automated. The team is incredibly responsive."</p>
-                        <p class="testimonial-author">David Okafor</p>
-                        <p class="testimonial-role">CEO, Horizon Properties</p>
-                    </div>
+                    <div class="testimonial-card reveal reveal-delay-1"><div class="testimonial-stars">★★★★★</div><p class="testimonial-quote">"Sorell's AI lead qualification saved us 20+ hours per week. Conversion rates up 35%."</p><p class="testimonial-author">Marcus Chen</p><p class="testimonial-role">Broker-Owner, Skyline Realty</p></div>
+                    <div class="testimonial-card reveal reveal-delay-2"><div class="testimonial-stars">★★★★★</div><p class="testimonial-quote">"The automated follow-up engine recovered $480K in pipeline that would've been lost to cold leads."</p><p class="testimonial-author">Priya Kapoor</p><p class="testimonial-role">Managing Partner, Elevate Estates</p></div>
+                    <div class="testimonial-card reveal reveal-delay-3"><div class="testimonial-stars">★★★★★</div><p class="testimonial-quote">"Implementation was seamless. Document processing automated within 3 weeks. Incredibly responsive."</p><p class="testimonial-author">David Okafor</p><p class="testimonial-role">CEO, Horizon Properties</p></div>
                 </div>
             </div>
         </section>
@@ -241,18 +135,16 @@
                     <span class="section-label">Get Started</span>
                     <h2 class="cta-title">Ready to Automate Your Agency?</h2>
                     <p class="cta-desc">Book a free 30-minute strategy call. We'll map out a custom AI plan for your business — no commitment required.</p>
-                    <a href="#" class="btn btn-primary btn-lg" style="font-size:1rem; padding:15px 36px;">
-                        <span class="material-icons">calendar_today</span> Book Your Free Strategy Call
-                    </a>
-                    <p style="margin-top:14px; font-size:0.76rem; color:var(--text-muted);">Typically responds within 2 hours</p>
+                    <a href="#" class="btn btn-primary btn-lg"><span class="material-icons">calendar_today</span> Book Your Free Strategy Call</a>
+                    <p class="cta-footnote">Typically responds within 2 hours</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="footer" id="footer">
+    <footer class="footer">
         <div class="container footer-inner">
-            <a href="#" class="logo" style="font-size:1.15rem;" aria-label="Sorell Home">Sorell</a>
+            <a href="#" class="logo" aria-label="Sorell Home">Sorell</a>
             <div class="footer-links">
                 <a href="#services">Services</a>
                 <a href="#how-it-works">Process</a>
@@ -264,6 +156,6 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
