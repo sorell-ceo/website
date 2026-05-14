@@ -1,8 +1,8 @@
 // ─── Mobile Menu ─────────────────────────────────────────────────────────────
-const menuBtn   = document.getElementById('mobileMenuBtn');
-const navPill   = document.getElementById('mobileNavPill');
-const navClose  = document.getElementById('mobileNavClose');
-const menuIcon  = document.getElementById('menuIcon');
+const menuBtn     = document.getElementById('mobileMenuBtn');
+const navPill     = document.getElementById('mobileNavPill');
+const navClose    = document.getElementById('mobileNavClose');
+const menuIcon    = document.getElementById('menuIcon');
 const mobileLinks = document.querySelectorAll('.mobile-nav-link');
 const pillItems   = document.querySelectorAll('.mobile-nav-link, .btn, .mobile-nav-divider');
 let isOpen = false;
@@ -16,13 +16,14 @@ function openMenu() {
     menuIcon.textContent = 'close';
     gsap.fromTo(navPill,
         { opacity: 0, scaleX: 0.72, scaleY: 0.6, y: -14, transformOrigin: 'top right' },
-        { opacity: 1, scaleX: 1, scaleY: 1, y: 0, duration: 0.42, ease: 'back.out(1.4)' }
+        { opacity: 1, scaleX: 1, scaleY: 1, y: 0, duration: 0.38, ease: 'back.out(1.4)' }
     );
     gsap.fromTo(pillItems,
         { opacity: 0, y: -10 },
-        { opacity: 1, y: 0, duration: 0.26, stagger: 0.045, ease: 'power2.out', delay: 0.16 }
+        { opacity: 1, y: 0, duration: 0.24, stagger: 0.04, ease: 'power2.out', delay: 0.14 }
     );
 }
+
 function closeMenu() {
     isOpen = false;
     menuBtn.setAttribute('aria-expanded', 'false');
@@ -31,7 +32,7 @@ function closeMenu() {
     gsap.to(navPill, {
         opacity: 0, scaleX: 0.8, scaleY: 0.7, y: -10,
         transformOrigin: 'top right',
-        duration: 0.26, ease: 'power2.in',
+        duration: 0.24, ease: 'power2.in',
         onComplete() {
             navPill.classList.remove('open');
             navPill.setAttribute('aria-hidden', 'true');
@@ -39,6 +40,7 @@ function closeMenu() {
         }
     });
 }
+
 menuBtn.addEventListener('click', () => isOpen ? closeMenu() : openMenu());
 navClose.addEventListener('click', closeMenu);
 mobileLinks.forEach(l => l.addEventListener('click', closeMenu));
@@ -47,37 +49,33 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && isOpen) cl
 
 
 // ─── 3D Card Tilt ─────────────────────────────────────────────────────────────
-// FIX 1: Using pointermove instead of mousemove.
-//         mousemove requires a prior click to fire on some browsers/touch devices.
-//         pointermove fires natively for mouse, touch, and stylus without needing
-//         a prior interaction.
-//
-// FIX 2: Removed transformPerspective from GSAP — perspective: 1000px is set on
-//         the parent grid containers in CSS, which gives the cards a shared
-//         vanishing point and makes the 3D tilt visually obvious.
-//
-// FIX 3: scale goes slightly DOWN (0.97) on hover to simulate the card pressing
-//         into the screen rather than popping toward you.
+// FIX — Snappy/instantaneous tilt:
+//   • duration 0.06s on pointermove  → feels instant, tracks the cursor 1:1
+//   • overwrite: 'auto'              → GSAP kills any in-progress tween on same
+//     props immediately (was the main cause of perceived lag — queued tweens
+//     accumulating as the mouse moved fast)
+//   • ease: 'none' on move           → no easing = pure cursor tracking
+//   • duration 0.45s on pointerleave → smooth, calm return to flat
 
 const tiltEls = document.querySelectorAll('.card-glow-wrapper, .testimonial-card');
 const MAX_TILT = 10;
 
 tiltEls.forEach(el => {
     el.addEventListener('pointermove', e => {
-        // Only apply tilt for mouse/trackpad — skip touch to avoid interfering with scroll
         if (e.pointerType === 'touch') return;
 
         const rect = el.getBoundingClientRect();
-        const dx = ((e.clientX - rect.left) / rect.width  - 0.5) * 2;
-        const dy = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;
+        const dx   = ((e.clientX - rect.left)  / rect.width  - 0.5) * 2;
+        const dy   = ((e.clientY - rect.top)   / rect.height - 0.5) * 2;
 
         gsap.to(el, {
             rotateY:  dx * MAX_TILT,
             rotateX: -dy * MAX_TILT,
             scale: 0.97,
-            duration: 0.22,
-            ease: 'power1.out',
-            boxShadow: `${-dx * 12}px ${dy * 8}px 42px rgba(59,130,246,0.22), 0 14px 44px rgba(10,20,40,0.55)`
+            duration: 0.06,
+            ease: 'none',
+            overwrite: 'auto',
+            boxShadow: `${-dx * 10}px ${dy * 7}px 36px rgba(20,60,140,0.14), 0 12px 36px rgba(20,60,140,0.10)`
         });
     });
 
@@ -85,7 +83,9 @@ tiltEls.forEach(el => {
         if (e.pointerType === 'touch') return;
         gsap.to(el, {
             rotateX: 0, rotateY: 0, scale: 1,
-            duration: 0.55, ease: 'power3.out',
+            duration: 0.45,
+            ease: 'power3.out',
+            overwrite: 'auto',
             boxShadow: 'none'
         });
     });
@@ -119,8 +119,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 
-// ─── Nav Pill Scroll Shadow ───────────────────────────────────────────────────
-// Shadow attaches to header-inner (pill), not the outer header — stays pill-shaped
+// ─── Nav Shadow on Scroll ─────────────────────────────────────────────────────
 const headerInner = document.querySelector('.header-inner');
 window.addEventListener('scroll', () => {
     headerInner.classList.toggle('scrolled', window.scrollY > 20);
