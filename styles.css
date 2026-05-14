@@ -15,20 +15,26 @@
     --radius-xl: 28px;
     --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; font-size: 16px; }
+
 body {
     font-family: 'DM Sans', system-ui, sans-serif;
     background: var(--bg-deep);
     color: var(--text-primary);
     line-height: 1.65;
     overflow-x: hidden;
+    /* Removed background-attachment: fixed — causes full repaint on every scroll
+       frame on mobile, significant perf hit */
     background-image: radial-gradient(circle at 50% 0%, rgba(59,130,246,0.055) 0%, transparent 55%),
                       radial-gradient(circle at 85% 30%, rgba(96,165,250,0.035) 0%, transparent 50%);
-    background-attachment: fixed;
 }
-h1, h2, h3, h4, h5 { font-family: 'Google Sans', 'DM Sans', sans-serif; font-weight: 500; line-height: 1.2; }
 
+/* Plus Jakarta Sans replaces Google Sans (not on public Google Fonts API) */
+h1, h2, h3, h4, h5 { font-family: 'Plus Jakarta Sans', 'DM Sans', sans-serif; font-weight: 500; line-height: 1.2; }
+
+/* ─── Background Orbs ─────────────────────────────────────────────────────── */
 .bg-orb {
     position: fixed;
     border-radius: 50%;
@@ -57,14 +63,19 @@ h1, h2, h3, h4, h5 { font-family: 'Google Sans', 'DM Sans', sans-serif; font-wei
     z-index: 1;
 }
 
-/* Header & Pill Shadow Fix */
+/* ─── Header ──────────────────────────────────────────────────────────────── */
 .header {
     position: sticky;
     top: 0;
     z-index: 100;
     padding: 14px clamp(18px, 4vw, 34px);
     pointer-events: none;
+    /* FIX: explicit transparent bg + isolation prevents browser from promoting
+       this element to a compositor layer that renders as a full-width rectangle */
+    background: transparent;
+    isolation: isolate;
 }
+
 .header-inner {
     display: flex;
     align-items: center;
@@ -74,29 +85,33 @@ h1, h2, h3, h4, h5 { font-family: 'Google Sans', 'DM Sans', sans-serif; font-wei
     margin: 0 auto;
     background: rgba(6,11,20,0.78);
     backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 50px;
     transition: box-shadow 0.3s var(--ease), border-color 0.3s;
     pointer-events: auto;
 }
-/* Shadow now on the pill itself, not the outer header */
+
+/* Shadow sits on the pill shape, not the outer header */
 .header-inner.scrolled {
     box-shadow: 0 4px 28px rgba(0,0,0,0.45);
 }
 
 .logo {
-    font-family: 'Google Sans', sans-serif;
-    font-weight: 600;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
     font-size: 1.42rem;
     letter-spacing: -0.025em;
     color: var(--text-primary);
     text-decoration: none;
     white-space: nowrap;
+    flex-shrink: 0;
 }
 .nav-links { display: flex; align-items: center; gap: clamp(18px, 3vw, 34px); list-style: none; }
 .nav-links a { color: var(--text-secondary); text-decoration: none; font-weight: 400; font-size: 0.94rem; transition: color 0.22s; }
 .nav-links a:hover { color: var(--accent-3); }
 
+/* ─── Buttons ─────────────────────────────────────────────────────────────── */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -110,6 +125,7 @@ h1, h2, h3, h4, h5 { font-family: 'Google Sans', 'DM Sans', sans-serif; font-wei
     text-decoration: none;
     white-space: nowrap;
     transition: all 0.3s var(--ease);
+    flex-shrink: 0;
 }
 .btn-primary {
     background: var(--gradient-primary);
@@ -128,7 +144,7 @@ h1, h2, h3, h4, h5 { font-family: 'Google Sans', 'DM Sans', sans-serif; font-wei
 .btn-outline:hover { border-color: var(--accent-2); color: var(--accent-3); }
 .btn-lg { padding: 14px 30px; font-size: 0.98rem; }
 
-/* Mobile Menu Button */
+/* ─── Mobile Menu Button ──────────────────────────────────────────────────── */
 .mobile-menu-btn {
     display: none;
     background: none;
@@ -138,11 +154,12 @@ h1, h2, h3, h4, h5 { font-family: 'Google Sans', 'DM Sans', sans-serif; font-wei
     padding: 6px;
     border-radius: 8px;
     z-index: 110;
+    flex-shrink: 0;
 }
-.mobile-menu-btn .material-icons { font-size: 28px; transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1); }
+.mobile-menu-btn .material-icons { font-size: 26px; transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1); }
 .mobile-menu-btn.open .material-icons { transform: rotate(90deg); }
 
-/* Mobile Nav Pill */
+/* ─── Mobile Nav Pill ─────────────────────────────────────────────────────── */
 .mobile-nav-pill {
     position: fixed;
     top: 66px;
@@ -151,6 +168,7 @@ h1, h2, h3, h4, h5 { font-family: 'Google Sans', 'DM Sans', sans-serif; font-wei
     z-index: 200;
     background: rgba(8,15,30,0.93);
     backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
     border: 1px solid rgba(96,165,250,0.14);
     border-radius: 22px;
     padding: 10px 12px 18px;
@@ -196,17 +214,26 @@ h1, h2, h3, h4, h5 { font-family: 'Google Sans', 'DM Sans', sans-serif; font-wei
 .mobile-nav-divider { height: 1px; background: rgba(255,255,255,0.05); margin: 2px 18px; }
 .mobile-nav-pill .btn-primary { margin: 10px 8px 4px; justify-content: center; }
 
-/* Responsive fixes for mobile alignment */
+/* ─── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
     .nav-links, .btn-desktop { display: none; }
     .mobile-menu-btn { display: flex; }
-    .header-inner { padding: 12px 16px; }  /* tighter padding on mobile */
-    .logo { font-size: 1.3rem; }  /* slightly smaller to fit */
+
+    /* FIX: double padding was squeezing the pill on small screens.
+       Reduce outer header padding so inner pill has room to breathe. */
+    .header { padding: 10px 10px; }
+    .header-inner {
+        padding: 9px 14px;
+        width: 100%;
+        max-width: 100%;
+    }
+    .logo { font-size: 1.25rem; }
 }
 @media (min-width: 769px) {
     .mobile-menu-btn, .mobile-nav-pill { display: none !important; }
 }
 
+/* ─── Sections ────────────────────────────────────────────────────────────── */
 .section { padding: clamp(70px, 10vw, 110px) 0; }
 .section-label {
     display: inline-block;
@@ -226,7 +253,7 @@ h1, h2, h3, h4, h5 { font-family: 'Google Sans', 'DM Sans', sans-serif; font-wei
 .text-center { text-align: center; }
 .mx-auto { margin-left: auto; margin-right: auto; }
 
-/* Hero */
+/* ─── Hero ────────────────────────────────────────────────────────────────── */
 .hero { background: var(--gradient-hero); position: relative; z-index: 1; }
 .hero-main { min-height: 100dvh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 90px 0 50px; }
 .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(59,130,246,0.09); border: 1px solid rgba(96,165,250,0.28); border-radius: 50px; padding: 7px 18px; font-size: 0.81rem; color: var(--accent-3); margin-bottom: 30px; }
@@ -243,18 +270,25 @@ h1, h2, h3, h4, h5 { font-family: 'Google Sans', 'DM Sans', sans-serif; font-wei
 .hero-desc { font-size: clamp(1rem, 2vw, 1.13rem); color: var(--text-secondary); max-width: 540px; margin: 0 auto 38px; }
 .hero-buttons { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
 .hero-stats { display: flex; flex-wrap: wrap; gap: clamp(28px, 5vw, 64px); justify-content: center; padding: 54px 0 80px; border-top: 1px solid rgba(255,255,255,0.055); }
-.hero-stat-value { font-family: 'Google Sans', sans-serif; font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 600; color: var(--accent-3); }
+.hero-stat-value {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    color: var(--accent-3);
+}
 .hero-stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
 
-/* Cards & 3D tilt */
+/* ─── Cards ───────────────────────────────────────────────────────────────── */
+/* FIX: Removed transform-style: preserve-3d and will-change: transform.
+   Together they create a complex compositing stacking context that blocks
+   mousemove/pointermove events until the element receives focus (click).
+   GSAP sets these properties inline on demand — no need to pre-declare. */
 .card-glow-wrapper, .testimonial-card {
     position: relative;
     border-radius: var(--radius);
     background: var(--bg-card);
     border: 1px solid rgba(255,255,255,0.055);
-    transition: border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
-    transform-style: preserve-3d;
-    will-change: transform;
+    transition: border-color 0.35s var(--ease);
 }
 .card-glow-wrapper::before, .testimonial-card::before {
     content: '';
@@ -264,8 +298,9 @@ h1, h2, h3, h4, h5 { font-family: 'Google Sans', 'DM Sans', sans-serif; font-wei
     background: linear-gradient(90deg, transparent, rgba(96,165,250,0.55) 35%, rgba(167,215,255,0.9) 50%, rgba(96,165,250,0.55) 65%, transparent);
     opacity: 0.65;
     transition: opacity 0.35s;
+    pointer-events: none;
 }
-.card-glow-wrapper:hover, .testimonial-card:hover { border-color: rgba(96,165,250,0.22); box-shadow: var(--shadow-card-hover); }
+.card-glow-wrapper:hover, .testimonial-card:hover { border-color: rgba(96,165,250,0.22); }
 .card-glow-wrapper:hover::before, .testimonial-card:hover::before { opacity: 1; }
 .card-inner { position: relative; z-index: 2; padding: clamp(22px, 3.5vw, 30px); display: flex; flex-direction: column; gap: 13px; height: 100%; }
 .card-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(59,130,246,0.11); border: 1px solid rgba(59,130,246,0.2); display: flex; align-items: center; justify-content: center; }
@@ -274,22 +309,46 @@ h1, h2, h3, h4, h5 { font-family: 'Google Sans', 'DM Sans', sans-serif; font-wei
 .card-desc { font-size: 0.87rem; color: var(--text-secondary); line-height: 1.57; flex-grow: 1; }
 .card-tag { font-size: 0.71rem; font-weight: 600; color: var(--accent-2); text-transform: uppercase; opacity: 0.75; }
 
-.services-grid { display: grid; gap: clamp(14px, 2.5vw, 20px); grid-template-columns: 1fr; }
+/* FIX: perspective on the grid container gives GSAP's rotateX/Y a proper
+   vanishing point. Without this, transforms happen but depth is barely visible. */
+.services-grid {
+    display: grid;
+    gap: clamp(14px, 2.5vw, 20px);
+    grid-template-columns: 1fr;
+    perspective: 1000px;
+}
 @media (min-width: 600px) { .services-grid { grid-template-columns: repeat(2,1fr); } }
 @media (min-width: 960px) { .services-grid { grid-template-columns: repeat(3,1fr); } }
 
+/* ─── Steps ───────────────────────────────────────────────────────────────── */
 .steps-list { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
 .step-item { display: flex; gap: 16px; background: var(--bg-card); border-radius: var(--radius); padding: clamp(18px, 3vw, 24px); border: 1px solid rgba(255,255,255,0.05); position: relative; }
 .step-item::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, rgba(96,165,250,0.45) 35%, rgba(147,197,253,0.7) 50%, rgba(96,165,250,0.45) 65%, transparent); opacity: 0.5; }
-.step-number { width: 36px; height: 36px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-family: 'Google Sans', sans-serif; font-weight: 600; color: #fff; flex-shrink: 0; }
+.step-number {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--gradient-primary);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
 
-.testimonials-grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
+/* ─── Testimonials ────────────────────────────────────────────────────────── */
+.testimonials-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr;
+    perspective: 1000px;
+}
 @media (min-width: 700px) { .testimonials-grid { grid-template-columns: repeat(2,1fr); } }
 @media (min-width: 1000px) { .testimonials-grid { grid-template-columns: repeat(3,1fr); } }
 
+.testimonial-card { padding: clamp(22px, 3.5vw, 28px); }
 .testimonial-quote { font-size: 0.87rem; color: var(--text-secondary); font-style: italic; line-height: 1.62; margin-bottom: 16px; }
 .testimonial-stars { color: #f59e0b; letter-spacing: 1.5px; margin-bottom: 12px; }
 
+/* ─── CTA ─────────────────────────────────────────────────────────────────── */
 .cta-section {
     text-align: center;
     background: var(--bg-card);
@@ -304,12 +363,14 @@ h1, h2, h3, h4, h5 { font-family: 'Google Sans', 'DM Sans', sans-serif; font-wei
 .cta-desc { color: var(--text-secondary); margin-bottom: 30px; }
 .cta-footnote { margin-top: 14px; font-size: 0.76rem; color: var(--text-muted); }
 
+/* ─── Footer ──────────────────────────────────────────────────────────────── */
 .footer { border-top: 1px solid rgba(255,255,255,0.048); padding: 38px 0; text-align: center; color: var(--text-muted); font-size: 0.8rem; }
 .footer-inner { display: flex; flex-direction: column; gap: 12px; align-items: center; }
 .footer-links { display: flex; gap: 22px; flex-wrap: wrap; justify-content: center; }
 .footer-links a { color: var(--text-muted); text-decoration: none; }
 .footer-links a:hover { color: var(--accent-3); }
 
+/* ─── Scroll Reveal ───────────────────────────────────────────────────────── */
 .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.72s ease, transform 0.72s cubic-bezier(0.22,0.61,0.36,1); }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 .reveal-delay-1 { transition-delay: 0.07s; }
