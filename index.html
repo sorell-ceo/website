@@ -6,26 +6,33 @@
     <title>Sorell — AI Automation for Real Estate Agencies</title>
     <meta name="description" content="AI automation workflows for real estate agencies — capture leads, nurture prospects, and close deals faster.">
 
-    <!-- Performance: DNS + TCP pre-warm for Google Fonts -->
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="favicon%20(2).png">
+    <link rel="apple-touch-icon" href="apple-touch-icon%20(1).png">
+
+    <!-- DNS Pre-warm -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- Fonts: Plus Jakarta Sans replaces Google Sans (not on public Fonts API) -->
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <!--
+        Fonts:
+        · Stack Sans Headline  → all headings (h1–h5) + stat numbers
+        · DM Sans              → body, nav, buttons, UI text
+        (Google Sans is proprietary — not available on the public Google Fonts API)
+    -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Stack+Sans+Headline:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Material Icons: non-blocking — avoids render-blocking for icon font -->
+    <!-- Material Icons non-blocking -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></noscript>
 
     <!-- GSAP deferred -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 
-    <!-- Main CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- Background orbs (pure CSS, no lazy needed) -->
     <div class="bg-orb bg-orb--1" aria-hidden="true"></div>
     <div class="bg-orb bg-orb--2" aria-hidden="true"></div>
     <div class="bg-orb bg-orb--3" aria-hidden="true"></div>
@@ -48,7 +55,6 @@
         </div>
     </header>
 
-    <!-- Mobile nav pill -->
     <nav class="mobile-nav-pill" id="mobileNavPill" aria-hidden="true">
         <div class="mobile-nav-pill-header">
             <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
@@ -115,7 +121,11 @@
 
         <section class="section" id="how-it-works">
             <div class="container">
-                <div class="text-center reveal"><span class="section-label">Process</span><h2 class="section-title">How We Deploy Your AI</h2><p class="section-subtitle mx-auto">From audit to launch in as little as 2 weeks. Zero disruption to your operations.</p></div>
+                <div class="text-center reveal">
+                    <span class="section-label">Process</span>
+                    <h2 class="section-title">How We Deploy Your AI</h2>
+                    <p class="section-subtitle mx-auto">From audit to launch in as little as 2 weeks. Zero disruption to your operations.</p>
+                </div>
                 <div class="steps-list">
                     <div class="step-item reveal reveal-delay-1"><div class="step-number">1</div><div class="step-content"><h4>Discovery & Audit</h4><p>We map your current workflow, identify bottlenecks, and pinpoint high-ROI automation opportunities.</p></div></div>
                     <div class="step-item reveal reveal-delay-2"><div class="step-number">2</div><div class="step-content"><h4>Custom AI Blueprint</h4><p>Our engineers design a tailored AI stack — integrating with your CRM, MLS, and communication tools.</p></div></div>
@@ -127,7 +137,11 @@
 
         <section class="section" id="testimonials">
             <div class="container">
-                <div class="text-center reveal"><span class="section-label">Testimonials</span><h2 class="section-title">Trusted by Top Agencies</h2><p class="section-subtitle mx-auto">Hear from real estate leaders who transformed their business with Sorell.</p></div>
+                <div class="text-center reveal">
+                    <span class="section-label">Testimonials</span>
+                    <h2 class="section-title">Trusted by Top Agencies</h2>
+                    <p class="section-subtitle mx-auto">Hear from real estate leaders who transformed their business with Sorell.</p>
+                </div>
                 <div class="testimonials-grid">
                     <div class="testimonial-card reveal reveal-delay-1"><div class="testimonial-stars">★★★★★</div><p class="testimonial-quote">"Sorell's AI lead qualification saved us 20+ hours per week. Conversion rates up 35%."</p><p class="testimonial-author">Marcus Chen</p><p class="testimonial-role">Broker-Owner, Skyline Realty</p></div>
                     <div class="testimonial-card reveal reveal-delay-2"><div class="testimonial-stars">★★★★★</div><p class="testimonial-quote">"The automated follow-up engine recovered $480K in pipeline that would've been lost to cold leads."</p><p class="testimonial-author">Priya Kapoor</p><p class="testimonial-role">Managing Partner, Elevate Estates</p></div>
