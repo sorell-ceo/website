@@ -6,9 +6,16 @@
     <title>Sorell — AI Automation for Real Estate Agencies</title>
     <meta name="description" content="AI automation workflows for real estate agencies — capture leads, nurture prospects, and close deals faster.">
 
-    <!-- Fonts (optimized with display=swap) -->
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Performance: DNS + TCP pre-warm for Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Fonts: Plus Jakarta Sans replaces Google Sans (not on public Fonts API) -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Material Icons: non-blocking — avoids render-blocking for icon font -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></noscript>
 
     <!-- GSAP deferred -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
@@ -18,13 +25,13 @@
 </head>
 <body>
 
-    <!-- Background orbs (no lazy needed, pure CSS) -->
+    <!-- Background orbs (pure CSS, no lazy needed) -->
     <div class="bg-orb bg-orb--1" aria-hidden="true"></div>
     <div class="bg-orb bg-orb--2" aria-hidden="true"></div>
     <div class="bg-orb bg-orb--3" aria-hidden="true"></div>
 
     <header class="header" id="header">
-        <div class="container header-inner">
+        <div class="header-inner">
             <a href="#" class="logo" aria-label="Sorell Home">Sorell</a>
             <nav aria-label="Main navigation">
                 <ul class="nav-links">
@@ -41,7 +48,7 @@
         </div>
     </header>
 
-    <!-- Mobile nav pill (hidden initially) -->
+    <!-- Mobile nav pill -->
     <nav class="mobile-nav-pill" id="mobileNavPill" aria-hidden="true">
         <div class="mobile-nav-pill-header">
             <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
