@@ -6,553 +6,232 @@
     <title>Sorell — AI Automation for Real Estate Agencies</title>
     <meta name="description" content="AI automation workflows for real estate agencies — capture leads, nurture prospects, and close deals faster.">
 
-    <!-- Favicons -->
     <link rel="icon" type="image/png" href="favicon%20(2).png">
     <link rel="apple-touch-icon" href="apple-touch-icon%20(1).png">
 
-    <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <!-- Fonts: Stack Sans Headline + DM Sans -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Stack+Sans+Headline:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Material Icons + Font Awesome 6 (social icons) -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <noscript><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></noscript>
 
-    <!-- GSAP deferred -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 
     <style>
-        /* ─────────────────────────────────────────────────────────────────────────────
-           SORELL — Light Theme (enhanced)
-        ────────────────────────────────────────────────────────────────────────────── */
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+        html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;font-size:16px}
+
+        body{
+            font-family:'DM Sans',system-ui,sans-serif;
+            background-color:#f3f6fd;
+            color:#0b1a35;
+            line-height:1.65;
+            overflow-x:hidden;
+            background-image:
+                linear-gradient(rgba(37,99,235,0.045) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(37,99,235,0.045) 1px,transparent 1px),
+                radial-gradient(ellipse 70% 50% at 50% 0%,rgba(59,130,246,0.07) 0%,transparent 65%),
+                radial-gradient(ellipse 40% 30% at 90% 30%,rgba(96,165,250,0.05) 0%,transparent 60%);
+            background-size:44px 44px,44px 44px,100% 100%,100% 100%;
         }
 
-        html {
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased;
-            font-size: 16px;
+        h1,h2,h3,h4,h5,.hero-stat-value,.step-number{
+            font-family:'Stack Sans Headline','DM Sans',system-ui,sans-serif;
+            line-height:1.15;
         }
 
-        body {
-            font-family: 'DM Sans', system-ui, sans-serif;
-            background-color: #f3f6fd;
-            color: #0b1a35;
-            line-height: 1.65;
-            overflow-x: hidden;
-            background-image: linear-gradient(rgba(37, 99, 235, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(37, 99, 235, 0.045) 1px, transparent 1px), radial-gradient(ellipse 70% 50% at 50% 0%, rgba(59,130,246,0.07) 0%, transparent 65%), radial-gradient(ellipse 40% 30% at 90% 30%, rgba(96,165,250,0.05) 0%, transparent 60%);
-            background-size: 44px 44px, 44px 44px, 100% 100%, 100% 100%;
+        /* Orbs */
+        .bg-orb{position:fixed;border-radius:50%;filter:blur(140px);opacity:.35;pointer-events:none;z-index:0;animation:orbFloat 20s ease-in-out infinite}
+        .bg-orb--1{width:480px;height:480px;background:rgba(59,130,246,.12);top:-150px;right:-120px}
+        .bg-orb--2{width:360px;height:360px;background:rgba(147,197,253,.09);bottom:-100px;left:-80px;animation-delay:-8s;animation-duration:23s}
+        .bg-orb--3{width:300px;height:300px;background:rgba(29,78,216,.07);top:48%;left:42%;animation-delay:-4s;animation-duration:26s}
+        @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(44px,-54px) scale(1.08)}50%{transform:translate(-32px,34px) scale(.93)}75%{transform:translate(-52px,-28px) scale(1.05)}}
+
+        .container{width:100%;max-width:1180px;margin:0 auto;padding:0 clamp(18px,4vw,34px);position:relative;z-index:1}
+
+        /* ── Header ── */
+        .header{position:sticky;top:0;z-index:100;padding:14px clamp(18px,4vw,34px);pointer-events:none;background:transparent;isolation:isolate}
+
+        .header-inner{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:10px 22px;
+            max-width:940px;
+            margin:0 auto;
+            background:rgba(255,255,255,.88);
+            backdrop-filter:blur(24px);
+            border:1px solid rgba(37,99,235,.10);
+            border-radius:50px;
+            box-shadow:0 1px 4px rgba(20,60,140,.06);
+            transition:box-shadow .3s,border-color .3s;
+            pointer-events:auto;
+        }
+        .header-inner.scrolled{box-shadow:0 4px 28px rgba(20,60,140,.10);border-color:rgba(37,99,235,.24)}
+
+        /* Logo — pinned left, padding-right creates gap from nav */
+        .logo{
+            font-family:'Stack Sans Headline','DM Sans',sans-serif;
+            font-weight:550;
+            font-size:1.38rem;
+            letter-spacing:-.02em;
+            color:#0b1a35;
+            text-decoration:none;
+            white-space:nowrap;
+            flex-shrink:0;
+            padding-right:28px; /* breathing room between logo and nav links */
         }
 
-        h1, h2, h3, h4, h5,
-        .hero-stat-value,
-        .step-number {
-            font-family: 'Stack Sans Headline', 'DM Sans', system-ui, sans-serif;
-            line-height: 1.15;
-        }
+        /* Nav — takes flex space, centers its links */
+        .header-inner nav[aria-label="Main navigation"]{flex:1;display:flex;justify-content:center}
 
-        /* Background orbs */
-        .bg-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(140px);
-            opacity: 0.35;
-            pointer-events: none;
-            z-index: 0;
-            animation: orbFloat 20s ease-in-out infinite;
-        }
-        .bg-orb--1 { width: 480px; height: 480px; background: rgba(59,130,246,0.12); top: -150px; right: -120px; }
-        .bg-orb--2 { width: 360px; height: 360px; background: rgba(147,197,253,0.09); bottom: -100px; left: -80px; animation-delay:-8s; animation-duration:23s; }
-        .bg-orb--3 { width: 300px; height: 300px; background: rgba(29,78,216,0.07); top: 48%; left: 42%; animation-delay:-4s; animation-duration:26s; }
-
-        @keyframes orbFloat {
-            0%,100% { transform: translate(0,0) scale(1); }
-            25%  { transform: translate(44px,-54px) scale(1.08); }
-            50%  { transform: translate(-32px,34px) scale(0.93); }
-            75%  { transform: translate(-52px,-28px) scale(1.05); }
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1180px;
-            margin: 0 auto;
-            padding: 0 clamp(18px, 4vw, 34px);
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Header */
-        .header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            padding: 14px clamp(18px, 4vw, 34px);
-            pointer-events: none;
-            background: transparent;
-            isolation: isolate;
-        }
-        .header-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 22px;
-            max-width: 860px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(24px);
-            border: 1px solid rgba(37, 99, 235, 0.10);
-            border-radius: 50px;
-            box-shadow: 0 1px 4px rgba(20, 60, 140, 0.06);
-            transition: box-shadow 0.3s, border-color 0.3s;
-            pointer-events: auto;
-        }
-        .header-inner.scrolled {
-            box-shadow: 0 4px 28px rgba(20, 60, 140, 0.10);
-            border-color: rgba(37, 99, 235, 0.24);
-        }
-        .logo {
-            font-family: 'Stack Sans Headline', 'DM Sans', sans-serif;
-            font-weight: 550;
-            font-size: 1.42rem;
-            letter-spacing: -0.02em;
-            color: #0b1a35;
-            text-decoration: none;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: clamp(18px, 3vw, 34px);
-            list-style: none;
-        }
-        .nav-links a {
-            color: #44607e;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-        .nav-links a:hover { color: #1d4ed8; }
+        .nav-links{display:flex;align-items:center;gap:clamp(18px,3vw,34px);list-style:none}
+        .nav-links a{color:#44607e;text-decoration:none;font-weight:500;font-size:.9rem;transition:color .2s}
+        .nav-links a:hover{color:#1d4ed8}
 
         /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 11px 22px;
-            border-radius: 10px;
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            border: none;
-            text-decoration: none;
-            white-space: nowrap;
-            transition: all 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            flex-shrink: 0;
+        .btn{
+            display:inline-flex;align-items:center;gap:7px;
+            padding:11px 22px;border-radius:10px;
+            font-family:'DM Sans',sans-serif;font-weight:600;font-size:.9rem;
+            cursor:pointer;border:none;text-decoration:none;white-space:nowrap;
+            transition:all .28s cubic-bezier(.25,.46,.45,.94);
+            flex-shrink:0;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #1d4ed8, #3b82f6, #60a5fa);
-            color: #fff;
-            box-shadow: 0 4px 18px rgba(37,99,235,0.28);
-        }
-        .btn-primary:hover {
-            box-shadow: 0 8px 30px rgba(37,99,235,0.40);
-            transform: translateY(-2px);
-        }
-        .btn-outline {
-            background: transparent;
-            border: 1.5px solid rgba(37,99,235,0.28);
-            color: #1d4ed8;
-        }
-        .btn-outline:hover {
-            border-color: #2563eb;
-            background: rgba(37,99,235,0.05);
-        }
-        .btn-lg { padding: 14px 30px; font-size: 0.97rem; }
+        .btn-primary{background:linear-gradient(135deg,#1d4ed8,#3b82f6,#60a5fa);color:#fff;box-shadow:0 4px 18px rgba(37,99,235,.28)}
+        .btn-primary:hover{box-shadow:0 8px 30px rgba(37,99,235,.40);transform:translateY(-2px)}
 
-        /* Mobile menu button */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: #0b1a35;
-            cursor: pointer;
-            padding: 6px;
-            border-radius: 8px;
-            flex-shrink: 0;
-        }
-        .mobile-menu-btn .material-icons { font-size: 26px; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
-        .mobile-menu-btn.open .material-icons { transform: rotate(90deg); }
+        /* Outline btn — same lift + glow as primary, keeps its own color */
+        .btn-outline{background:transparent;border:1.5px solid rgba(37,99,235,.28);color:#1d4ed8}
+        .btn-outline:hover{border-color:#2563eb;background:rgba(37,99,235,.05);box-shadow:0 8px 30px rgba(37,99,235,.18);transform:translateY(-2px)}
 
-        /* Mobile nav pill (improved, no extra close button) */
-        .mobile-nav-pill {
-            position: fixed;
-            top: 66px;
-            left: 14px;
-            right: 14px;
-            z-index: 200;
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(28px);
-            border: 1px solid rgba(37, 99, 235, 0.10);
-            border-radius: 22px;
-            padding: 10px 12px 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            opacity: 0;
-            pointer-events: none;
-            transform: scaleY(0.88) translateY(-8px);
-            transform-origin: top right;
-            box-shadow: 0 24px 64px rgba(20, 60, 140, 0.14), inset 0 1px 0 rgba(255,255,255,0.9);
-        }
-        .mobile-nav-pill.open { pointer-events: auto; }
-        .mobile-nav-pill::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 12%; right: 12%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(37,99,235,0.5) 40%, rgba(96,165,250,0.8) 50%, rgba(37,99,235,0.5) 60%, transparent);
-        }
-        .mobile-nav-link {
-            color: #44607e;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 500;
-            padding: 11px 18px;
-            border-radius: 12px;
-            display: block;
-            transition: color 0.18s, background 0.18s;
-        }
-        .mobile-nav-link:hover { color: #1d4ed8; background: rgba(37,99,235,0.06); }
-        .mobile-nav-divider { height: 1px; background: rgba(37, 99, 235, 0.10); margin: 2px 18px; }
-        .mobile-nav-pill .btn-primary { margin: 10px 8px 4px; justify-content: center; }
+        .btn-lg{padding:14px 30px;font-size:.97rem}
 
-        /* Responsive: mobile-specific */
-        @media (max-width: 768px) {
-            .nav-links, .btn-desktop { display: none; }
-            .mobile-menu-btn { display: flex; }
-            .header { padding: 10px 10px; }
-            /* Bring logo and hamburger closer to center */
-            .header-inner {
-                justify-content: space-between;
-                padding: 9px 18px;
-                width: 100%;
-                max-width: 100%;
-            }
-            .logo { font-size: 1.22rem; margin-left: 0; }
-            .mobile-menu-btn { margin-right: 0; }
+        /* Nav CTA — only visible on desktop */
+        .btn-nav-cta{flex-shrink:0;margin-left:4px}
+
+        /* Hamburger */
+        .mobile-menu-btn{display:none;background:none;border:none;color:#0b1a35;cursor:pointer;padding:6px;border-radius:8px;flex-shrink:0}
+        .mobile-menu-btn .material-icons{font-size:26px;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+        .mobile-menu-btn.open .material-icons{transform:rotate(90deg)}
+
+        /* Mobile pill */
+        .mobile-nav-pill{
+            position:fixed;top:66px;left:14px;right:14px;z-index:200;
+            background:rgba(255,255,255,.96);backdrop-filter:blur(28px);
+            border:1px solid rgba(37,99,235,.10);border-radius:22px;
+            padding:10px 12px 18px;display:flex;flex-direction:column;gap:2px;
+            opacity:0;pointer-events:none;
+            transform:scaleY(.88) translateY(-8px);transform-origin:top right;
+            box-shadow:0 24px 64px rgba(20,60,140,.14),inset 0 1px 0 rgba(255,255,255,.9);
         }
-        @media (min-width: 769px) {
-            .logo {
-                flex: 1;
-                text-align: center;
-                font-size: 1.22rem;
-            }
+        .mobile-nav-pill.open{pointer-events:auto}
+        .mobile-nav-pill::before{content:'';position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(37,99,235,.5) 40%,rgba(96,165,250,.8) 50%,rgba(37,99,235,.5) 60%,transparent)}
+        .mobile-nav-link{color:#44607e;text-decoration:none;font-size:1rem;font-weight:500;padding:11px 18px;border-radius:12px;display:block;transition:color .18s,background .18s}
+        .mobile-nav-link:hover{color:#1d4ed8;background:rgba(37,99,235,.06)}
+        .mobile-nav-divider{height:1px;background:rgba(37,99,235,.10);margin:2px 18px}
+        .mobile-nav-pill .btn-primary{margin:10px 8px 4px;justify-content:center}
+
+        /* ── Breakpoints ── */
+        @media(max-width:768px){
+            /* Hide desktop nav AND the nav CTA — hamburger pill has its own CTA */
+            .nav-links,.btn-nav-cta,.header-inner nav[aria-label="Main navigation"]{display:none}
+            .mobile-menu-btn{display:flex}
+            .header{padding:10px}
+            .header-inner{justify-content:space-between;padding:9px 18px;width:100%;max-width:100%}
+            .logo{font-size:1.22rem;padding-right:0}
         }
 
         /* Sections */
-        .section { padding: clamp(70px, 10vw, 110px) 0; }
-        .section-label {
-            display: inline-block;
-            font-size: 0.73rem;
-            font-weight: 600;
-            letter-spacing: 0.13em;
-            text-transform: uppercase;
-            color: #1d4ed8;
-            margin-bottom: 14px;
-            background: rgba(37,99,235,0.08);
-            padding: 5px 16px;
-            border-radius: 50px;
-            border: 1px solid rgba(37,99,235,0.18);
-        }
-        .section-title {
-            font-size: clamp(2rem, 4.5vw, 2.55rem); /* bigger on mobile */
-            letter-spacing: -0.025em;
-            margin-bottom: 16px;
-            color: #0b1a35;
-        }
-        .section-subtitle {
-            font-size: clamp(0.93rem, 2vw, 1.04rem);
-            color: #44607e;
-            max-width: 580px;
-            margin: 0 auto 48px;
-        }
-        .text-center { text-align: center; }
-        .mx-auto { margin-left: auto; margin-right: auto; }
+        .section{padding:clamp(70px,10vw,110px) 0}
+        .section-label{display:inline-block;font-size:.73rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:#1d4ed8;margin-bottom:14px;background:rgba(37,99,235,.08);padding:5px 16px;border-radius:50px;border:1px solid rgba(37,99,235,.18)}
+        .section-title{font-size:clamp(2rem,4.5vw,2.55rem);letter-spacing:-.025em;margin-bottom:16px;color:#0b1a35}
+        .section-subtitle{font-size:clamp(.93rem,2vw,1.04rem);color:#44607e;max-width:580px;margin:0 auto 48px}
+        .text-center{text-align:center}
+        .mx-auto{margin-left:auto;margin-right:auto}
 
         /* Hero */
-        .hero { background: radial-gradient(ellipse 80% 55% at 50% 0%, rgba(59,130,246,0.10) 0%, transparent 70%), radial-gradient(ellipse 50% 40% at 85% 55%, rgba(96,165,250,0.07) 0%, transparent 70%), radial-gradient(ellipse 40% 35% at 15% 70%, rgba(29,78,216,0.06) 0%, transparent 70%); position: relative; z-index: 1; }
-        .hero-main {
-            min-height: 82dvh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            text-align: center;
-            padding: 58px 0 44px;
-        }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            background: rgba(37,99,235,0.08);
-            border: 1px solid rgba(37,99,235,0.20);
-            border-radius: 50px;
-            padding: 7px 18px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #1d4ed8;
-            margin-bottom: 28px;
-        }
-        .hero-title {
-            font-family: 'Stack Sans Headline', 'DM Sans', sans-serif;
-            font-size: clamp(2.6rem, 7vw, 3.9rem);
-            font-weight: 550;  /* reduced weight for elegance */
-            letter-spacing: -0.03em;
-            line-height: 1.08;
-            margin-bottom: 22px;
-            color: #0b1a35;
-        }
-        .hero-desc {
-            font-size: clamp(1rem, 2vw, 1.12rem);
-            color: #44607e;
-            max-width: 530px;
-            margin: 0 auto 36px;
-        }
-        .hero-buttons { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+        .hero{background:radial-gradient(ellipse 80% 55% at 50% 0%,rgba(59,130,246,.10) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 85% 55%,rgba(96,165,250,.07) 0%,transparent 70%),radial-gradient(ellipse 40% 35% at 15% 70%,rgba(29,78,216,.06) 0%,transparent 70%);position:relative;z-index:1}
+        .hero-main{min-height:82dvh;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;padding:58px 0 44px}
+        .hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.20);border-radius:50px;padding:7px 18px;font-size:.8rem;font-weight:500;color:#1d4ed8;margin-bottom:28px}
+        .hero-title{font-family:'Stack Sans Headline','DM Sans',sans-serif;font-size:clamp(2.6rem,7vw,3.9rem);font-weight:550;letter-spacing:-.03em;line-height:1.08;margin-bottom:22px;color:#0b1a35}
+        .hero-desc{font-size:clamp(1rem,2vw,1.12rem);color:#44607e;max-width:530px;margin:0 auto 36px}
+        .hero-buttons{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
 
-        /* Stats — dark background, dividers */
-        .hero-stats {
-            display: flex;
-            flex-wrap: wrap;
-            gap: clamp(20px, 4vw, 48px);
-            justify-content: center;
-            padding: 32px 28px;
-            margin-top: 20px;
-            background: #0b1730;
-            border-radius: 15px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
-            backdrop-filter: blur(2px);
-        }
-        .hero-stat {
-            flex: 1;
-            min-width: 100px;
-            text-align: center;
-            position: relative;
-            padding: 0 16px;
-        }
-        /* vertical dividers (except last) */
-        .hero-stat:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            right: -20px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 1px;
-            height: 48px;
-            background: rgba(255,255,255,0.2);
-        }
-        .hero-stat-value {
-            font-size: clamp(1.8rem, 3.5vw, 2.4rem);
-            font-weight: 700;
-            color: #90cdf4;
-            letter-spacing: -0.02em;
-        }
-        .hero-stat-label {
-            font-size: 0.78rem;
-            color: #b9d0f0;
-            margin-top: 6px;
-            font-weight: 500;
-        }
-        @media (max-width: 640px) {
-            .hero-stats {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 16px;
-                padding: 28px 20px;
-            }
-            .hero-stat:not(:last-child)::after {
-                display: none;
-            }
-            .hero-stat {
-                border-bottom: 1px solid rgba(255,255,255,0.12);
-                padding-bottom: 12px;
-            }
-            .hero-stat:last-child { border-bottom: none; }
+        /* Stats */
+        .hero-stats{display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,48px);justify-content:center;padding:32px 28px;margin-top:20px;background:#0b1730;border-radius:15px;box-shadow:0 12px 30px rgba(0,0,0,.2);backdrop-filter:blur(2px)}
+        .hero-stat{flex:1;min-width:100px;text-align:center;position:relative;padding:0 16px}
+        .hero-stat:not(:last-child)::after{content:'';position:absolute;right:-20px;top:50%;transform:translateY(-50%);width:1px;height:48px;background:rgba(255,255,255,.2)}
+        .hero-stat-value{font-size:clamp(1.8rem,3.5vw,2.4rem);font-weight:700;color:#90cdf4;letter-spacing:-.02em}
+        .hero-stat-label{font-size:.78rem;color:#b9d0f0;margin-top:6px;font-weight:500}
+        @media(max-width:640px){
+            .hero-stats{flex-direction:column;align-items:stretch;gap:16px;padding:28px 20px}
+            .hero-stat:not(:last-child)::after{display:none}
+            .hero-stat{border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:12px}
+            .hero-stat:last-child{border-bottom:none}
         }
 
-        .cta-btn-short { display: none; }
-        @media (max-width: 520px) {
-            .cta-btn-short {display: inline; }
-            .cta-btn-full { display: none; }
-            .cta-section .btn{
-                width: 100%;
-                max-width: 100%;
-                justify-content: center;
-            }
-        }
+        /* Cards */
+        .card-glow-wrapper{background:#f7f7f7!important;border-radius:16px;border:1px solid rgba(37,99,235,.20);box-shadow:0 2px 12px rgba(20,60,140,.07);transition:border-color .3s,box-shadow .3s}
+        .card-inner{position:relative;z-index:2;padding:clamp(22px,3.5vw,30px);display:flex;flex-direction:column;gap:13px;height:100%}
+        .card-icon{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.7);border:1px solid rgba(37,99,235,.2);display:flex;align-items:center;justify-content:center}
+        .card-icon .material-icons{font-size:21px;color:#1d4ed8}
+        .card-title{font-size:1.03rem;font-weight:600;color:#0b1a35}
+        .card-desc{font-size:.87rem;color:#2c4a6e;line-height:1.58;flex-grow:1}
+        .card-tag{font-size:.70rem;font-weight:600;color:#2563eb;text-transform:uppercase;opacity:.8}
+        .services-grid{display:grid;gap:clamp(14px,2.5vw,20px);grid-template-columns:1fr;perspective:1000px}
+        @media(min-width:600px){.services-grid{grid-template-columns:repeat(2,1fr)}}
+        @media(min-width:960px){.services-grid{grid-template-columns:repeat(3,1fr)}}
 
-        /* Cards background (light blue) */
-        .card-glow-wrapper {
-            background: #f7f7f7 !important;
-            border-radius: 16px;
-            border: 1px solid rgba(37, 99, 235, 0.20);
-            box-shadow: 0 2px 12px rgba(20, 60, 140, 0.07);
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        .card-inner {
-            position: relative;
-            z-index: 2;
-            padding: clamp(22px, 3.5vw, 30px);
-            display: flex;
-            flex-direction: column;
-            gap: 13px;
-            height: 100%;
-        }
-        .card-icon {
-            width: 44px; height: 44px;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.7);
-            border: 1px solid rgba(37,99,235,0.2);
-            display: flex; align-items: center; justify-content: center;
-        }
-        .card-icon .material-icons { font-size: 21px; color: #1d4ed8; }
-        .card-title { font-size: 1.03rem; font-weight: 600; color: #0b1a35; }
-        .card-desc { font-size: 0.87rem; color: #2c4a6e; line-height: 1.58; flex-grow: 1; }
-        .card-tag { font-size: 0.70rem; font-weight: 600; color: #2563eb; text-transform: uppercase; opacity: 0.8; }
+        /* Steps */
+        .steps-list{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+        .step-item{display:flex;gap:18px;background:#fff;border-radius:16px;padding:clamp(18px,3vw,24px);border:1px solid rgba(37,99,235,.10);box-shadow:0 1px 4px rgba(20,60,140,.06);position:relative}
+        .step-number{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#3b82f6);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;color:#fff;flex-shrink:0}
 
-        .services-grid {
-            display: grid;
-            gap: clamp(14px, 2.5vw, 20px);
-            grid-template-columns: 1fr;
-            perspective: 1000px;
-        }
-        @media (min-width: 600px) { .services-grid { grid-template-columns: repeat(2,1fr); } }
-        @media (min-width: 960px) { .services-grid { grid-template-columns: repeat(3,1fr); } }
+        /* Testimonials */
+        .testimonials-grid{display:grid;gap:20px;grid-template-columns:1fr;perspective:1000px}
+        @media(min-width:700px){.testimonials-grid{grid-template-columns:repeat(2,1fr)}}
+        @media(min-width:1000px){.testimonials-grid{grid-template-columns:repeat(3,1fr)}}
+        .testimonial-card{background:#f7f7f7;border-radius:16px;padding:clamp(22px,3.5vw,28px);border:1px solid rgba(37,99,235,.10);transition:all .2s}
+        .testimonial-stars{color:#f59e0b;letter-spacing:1.5px;margin-bottom:12px}
 
-        /* Steps & Testimonials */
-        .steps-list { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
-        .step-item {
-            display: flex;
-            gap: 18px;
-            background: #ffffff;
-            border-radius: 16px;
-            padding: clamp(18px, 3vw, 24px);
-            border: 1px solid rgba(37, 99, 235, 0.10);
-            box-shadow: 0 1px 4px rgba(20,60,140,0.06);
-            position: relative;
-        }
-        .step-number {
-            width: 36px; height: 36px; border-radius: 50%;
-            background: linear-gradient(135deg, #1d4ed8, #3b82f6);
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 0.9rem; color: #fff;
-            flex-shrink: 0;
-        }
-        .testimonials-grid {
-            display: grid;
-            gap: 20px;
-            grid-template-columns: 1fr;
-            perspective: 1000px;
-        }
-        @media (min-width: 700px) { .testimonials-grid { grid-template-columns: repeat(2,1fr); } }
-        @media (min-width: 1000px) { .testimonials-grid { grid-template-columns: repeat(3,1fr); } }
-        .testimonial-card {
-            background: #f7f7f7;
-            border-radius: 16px;
-            padding: clamp(22px, 3.5vw, 28px);
-            border: 1px solid rgba(37, 99, 235, 0.10);
-            transition: all 0.2s;
-        }
-        .testimonial-stars { color: #f59e0b; letter-spacing: 1.5px; margin-bottom: 12px; }
+        /* CTA section */
+        .cta-section{text-align:center;background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border-radius:28px;padding:clamp(44px,7vw,72px) clamp(22px,5vw,52px);border:1px solid rgba(37,99,235,.14)}
+        .cta-title{font-size:clamp(1.6rem,3.8vw,2.1rem);margin-bottom:14px}
+        /* Gap between description and button */
+        .cta-desc{color:#44607e;font-size:clamp(.93rem,2vw,1.04rem);max-width:520px;margin:0 auto 36px;line-height:1.7}
+        .cta-footnote{margin-top:16px;font-size:.78rem;color:#6b8ab0;opacity:.85}
 
-        /* CTA */
-        .cta-section {
-            text-align: center;
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-            border-radius: 28px;
-            padding: clamp(44px, 7vw, 72px) clamp(22px, 5vw, 52px);
-            border: 1px solid rgba(37,99,235,0.14);
-        }
-        .cta-title { font-size: clamp(1.6rem, 3.8vw, 2.1rem); margin-bottom: 14px; }
+        @media(max-width:520px){.cta-section .btn{width:100%;max-width:100%;justify-content:center}}
 
-        /* Footer (enhanced) */
-        .footer {
-            background: #0a1128;
-            color: #a0b5d9;
-            padding: 48px 0 32px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            margin-top: 40px;
-        }
-        .footer-inner {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 32px;
-        }
-        .footer-col { flex: 1; min-width: 160px; }
-        .footer-col .logo { color: white; font-size: 1.5rem; display: inline-block; margin-bottom: 12px; }
-        .footer-tagline { font-size: 0.8rem; opacity: 0.7; margin-top: 6px; }
-        .footer-links {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .footer-links a, .footer-social a {
-            color: #b9d0f0;
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: color 0.2s;
-        }
-        .footer-links a:hover, .footer-social a:hover { color: #3b82f6; }
-        .footer-social {
-            display: flex;
-            gap: 20px;
-            margin-top: 12px;
-        }
-        .footer-social a { font-size: 1.4rem; }
-        .footer-copyright {
-            width: 100%;
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 24px;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            font-size: 0.75rem;
-            opacity: 0.6;
-        }
-        @media (max-width: 768px) {
-            .footer-inner { flex-direction: column; text-align: center; align-items: center; }
-            .footer-social { justify-content: center; }
-        }
+        /* Footer */
+        .footer{background:#0a1128;color:#a0b5d9;padding:48px 0 32px;border-top:1px solid rgba(255,255,255,.05);margin-top:40px}
+        .footer-inner{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:32px}
+        .footer-col{flex:1;min-width:160px}
+        .footer-col .logo{color:white;font-size:1.5rem;display:inline-block;margin-bottom:12px;padding-right:0}
+        .footer-tagline{font-size:.8rem;opacity:.7;margin-top:6px}
+        .footer-links{display:flex;flex-direction:column;gap:12px}
+        .footer-links a,.footer-social a{color:#b9d0f0;text-decoration:none;font-size:.85rem;transition:color .2s}
+        .footer-links a:hover,.footer-social a:hover{color:#3b82f6}
+        .footer-social{display:flex;gap:20px;margin-top:12px}
+        .footer-social a{font-size:1.4rem}
+        .footer-copyright{width:100%;text-align:center;margin-top:40px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);font-size:.75rem;opacity:.6}
+        @media(max-width:768px){.footer-inner{flex-direction:column;text-align:center;align-items:center}.footer-social{justify-content:center}}
 
-        /* Reveal animations */
-        .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,0.61,0.36,1); }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
-        .reveal-delay-1 { transition-delay: 0.07s; }
-        .reveal-delay-2 { transition-delay: 0.14s; }
-        .reveal-delay-3 { transition-delay: 0.21s; }
-        .reveal-delay-4 { transition-delay: 0.28s; }
-        .reveal-delay-5 { transition-delay: 0.35s; }
-        .reveal-delay-6 { transition-delay: 0.42s; }
+        /* Reveals */
+        .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s cubic-bezier(.22,.61,.36,1)}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+        .reveal-delay-1{transition-delay:.07s}
+        .reveal-delay-2{transition-delay:.14s}
+        .reveal-delay-3{transition-delay:.21s}
+        .reveal-delay-4{transition-delay:.28s}
+        .reveal-delay-5{transition-delay:.35s}
+        .reveal-delay-6{transition-delay:.42s}
 
-        .highlight {
-            background: linear-gradient(135deg, #1d4ed8, #3b82f6 60%, #60a5fa);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
+        .highlight{background:linear-gradient(135deg,#1d4ed8,#3b82f6 60%,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent}
     </style>
 </head>
 <body>
@@ -561,9 +240,18 @@
 <div class="bg-orb bg-orb--2" aria-hidden="true"></div>
 <div class="bg-orb bg-orb--3" aria-hidden="true"></div>
 
+<!--
+    HEADER LAYOUT
+    Desktop : [Sorell ←gap→]  [Services · How It Works · Results · Contact]  [Book a Free Call]
+    Mobile  : [Sorell]                                                          [☰]
+-->
 <header class="header" id="header">
     <div class="header-inner">
+
+        <!-- Logo — always left-pinned -->
         <a href="#" class="logo" aria-label="Sorell Home">Sorell</a>
+
+        <!-- Nav — flex:1 so it centres between logo and CTA (hidden on mobile) -->
         <nav aria-label="Main navigation">
             <ul class="nav-links">
                 <li><a href="#services">Services</a></li>
@@ -572,30 +260,39 @@
                 <li><a href="#cta">Contact</a></li>
             </ul>
         </nav>
-        <a href="https://wa.me/917876748412?text=I%20want%20to%20know%20how%20can%20I%20scale%20my%20Agency%21" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-Ig">
-            <span class="material-icons">calendar_today</span>
-            <span class="cta-btn-full">Book Your Free Strategy Call</span>
-            <span class="cta-btn-short">Book a Free Call</span>>
+
+        <!-- CTA button — desktop only, hidden ≤768px -->
+        <a href="https://wa.me/917876748412?text=I%20want%20to%20know%20how%20can%20I%20scale%20my%20Agency%21"
+           target="_blank" rel="noopener noreferrer"
+           class="btn btn-primary btn-nav-cta">
+            <span class="material-icons" style="font-size:16px;">calendar_today</span>
+            Book a Free Call
         </a>
+
+        <!-- Hamburger — mobile only -->
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false">
             <span class="material-icons" id="menuIcon">menu</span>
         </button>
+
     </div>
 </header>
 
-<!-- Mobile nav pill (no extra close button inside) -->
+<!-- Mobile nav pill — the only CTA on mobile lives here -->
 <nav class="mobile-nav-pill" id="mobileNavPill" aria-hidden="true">
-    <a href="#services" class="mobile-nav-link">Services</a>
+    <a href="#services"     class="mobile-nav-link">Services</a>
     <div class="mobile-nav-divider"></div>
     <a href="#how-it-works" class="mobile-nav-link">How It Works</a>
     <div class="mobile-nav-divider"></div>
     <a href="#testimonials" class="mobile-nav-link">Results</a>
     <div class="mobile-nav-divider"></div>
-    <a href="#cta" class="mobile-nav-link">Contact</a>
-    <a href="https://wa.me/917876748412?text=I%20want%20to%20know%20how%20can%20I%20scale%20my%20Agency%21" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">Book a Call</a>
+    <a href="#cta"          class="mobile-nav-link">Contact</a>
+    <a href="https://wa.me/917876748412?text=I%20want%20to%20know%20how%20can%20I%20scale%20my%20Agency%21"
+       target="_blank" rel="noopener noreferrer"
+       class="btn btn-primary btn-lg">Book a Call</a>
 </nav>
 
 <main>
+    <!-- Hero -->
     <section class="hero" id="hero">
         <div class="container">
             <div class="hero-main">
@@ -603,8 +300,12 @@
                 <h1 class="hero-title reveal reveal-delay-1">Scale Your Real Estate Agency<br>With <span class="highlight">Intelligent AI</span></h1>
                 <p class="hero-desc reveal reveal-delay-2">We build custom AI automation workflows that capture leads, nurture prospects, and close deals — so your agents can focus on what they do best.</p>
                 <div class="hero-buttons reveal reveal-delay-3">
-                    <a href="https://wa.me/917876748412?text=I%20want%20to%20know%20how%20can%20I%20scale%20my%20Agency%21" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">Start Automating Today</a>
-                    <a href="#how-it-works" class="btn btn-outline btn-lg"><span class="material-icons" style="font-size:17px;">play_circle</span> See How It Works</a>
+                    <a href="https://wa.me/917876748412?text=I%20want%20to%20know%20how%20can%20I%20scale%20my%20Agency%21"
+                       target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">Start Automating Today</a>
+                    <!-- Same hover lift/glow as primary, outline styling preserved -->
+                    <a href="#how-it-works" class="btn btn-outline btn-lg">
+                        <span class="material-icons" style="font-size:17px;">play_circle</span> See How It Works
+                    </a>
                 </div>
             </div>
             <div class="hero-stats reveal">
@@ -616,6 +317,7 @@
         </div>
     </section>
 
+    <!-- Services -->
     <section class="section" id="services">
         <div class="container">
             <div class="text-center reveal"><span class="section-label">Our Services</span><h2 class="section-title">AI Solutions Built for<br>Real Estate</h2><p class="section-subtitle mx-auto">Every automation is custom-tailored to your agency's workflow. No cookie-cutter templates — just results.</p></div>
@@ -630,28 +332,47 @@
         </div>
     </section>
 
+    <!-- How It Works -->
     <section class="section" id="how-it-works">
-        <div class="container"><div class="text-center reveal"><span class="section-label">Process</span><h2 class="section-title">How We Deploy Your AI</h2><p class="section-subtitle mx-auto">From audit to launch in as little as 2 weeks. Zero disruption to your operations.</p></div>
-            <div class="steps-list"><div class="step-item reveal reveal-delay-1"><div class="step-number">1</div><div class="step-content"><h4>Discovery & Audit</h4><p>We map your current workflow, identify bottlenecks, and pinpoint high-ROI automation opportunities.</p></div></div>
-            <div class="step-item reveal reveal-delay-2"><div class="step-number">2</div><div class="step-content"><h4>Custom AI Blueprint</h4><p>Our engineers design a tailored AI stack — integrating with your CRM, MLS, and communication tools.</p></div></div>
-            <div class="step-item reveal reveal-delay-3"><div class="step-number">3</div><div class="step-content"><h4>Build & Test</h4><p>We build, rigorously test, and refine the automation in a sandbox environment before going live.</p></div></div>
-            <div class="step-item reveal reveal-delay-4"><div class="step-number">4</div><div class="step-content"><h4>Launch & Optimize</h4><p>Go live with full support. We monitor performance and continuously optimize for maximum ROI.</p></div></div></div>
+        <div class="container">
+            <div class="text-center reveal"><span class="section-label">Process</span><h2 class="section-title">How We Deploy Your AI</h2><p class="section-subtitle mx-auto">From audit to launch in as little as 2 weeks. Zero disruption to your operations.</p></div>
+            <div class="steps-list">
+                <div class="step-item reveal reveal-delay-1"><div class="step-number">1</div><div class="step-content"><h4>Discovery & Audit</h4><p>We map your current workflow, identify bottlenecks, and pinpoint high-ROI automation opportunities.</p></div></div>
+                <div class="step-item reveal reveal-delay-2"><div class="step-number">2</div><div class="step-content"><h4>Custom AI Blueprint</h4><p>Our engineers design a tailored AI stack — integrating with your CRM, MLS, and communication tools.</p></div></div>
+                <div class="step-item reveal reveal-delay-3"><div class="step-number">3</div><div class="step-content"><h4>Build & Test</h4><p>We build, rigorously test, and refine the automation in a sandbox environment before going live.</p></div></div>
+                <div class="step-item reveal reveal-delay-4"><div class="step-number">4</div><div class="step-content"><h4>Launch & Optimize</h4><p>Go live with full support. We monitor performance and continuously optimize for maximum ROI.</p></div></div>
+            </div>
         </div>
     </section>
 
+    <!-- Testimonials -->
     <section class="section" id="testimonials">
-        <div class="container"><div class="text-center reveal"><span class="section-label">Testimonials</span><h2 class="section-title">Trusted by Top Agencies</h2><p class="section-subtitle mx-auto">Hear from real estate leaders who transformed their business with Sorell.</p></div>
-            <div class="testimonials-grid"><div class="testimonial-card reveal reveal-delay-1"><div class="testimonial-stars">★★★★★</div><p class="testimonial-quote">"Sorell's AI lead qualification saved us 20+ hours per week. Conversion rates up 35%."</p><p class="testimonial-author">Marcus Chen</p><p class="testimonial-role">Broker-Owner, Skyline Realty</p></div>
-            <div class="testimonial-card reveal reveal-delay-2"><div class="testimonial-stars">★★★★★</div><p class="testimonial-quote">"The automated follow-up engine recovered $480K in pipeline that would've been lost to cold leads."</p><p class="testimonial-author">Priya Kapoor</p><p class="testimonial-role">Managing Partner, Elevate Estates</p></div>
-            <div class="testimonial-card reveal reveal-delay-3"><div class="testimonial-stars">★★★★★</div><p class="testimonial-quote">"Implementation was seamless. Document processing automated within 3 weeks. Incredibly responsive."</p><p class="testimonial-author">David Okafor</p><p class="testimonial-role">CEO, Horizon Properties</p></div></div>
+        <div class="container">
+            <div class="text-center reveal"><span class="section-label">Testimonials</span><h2 class="section-title">Trusted by Top Agencies</h2><p class="section-subtitle mx-auto">Hear from real estate leaders who transformed their business with Sorell.</p></div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card reveal reveal-delay-1"><div class="testimonial-stars">★★★★★</div><p class="testimonial-quote">"Sorell's AI lead qualification saved us 20+ hours per week. Conversion rates up 35%."</p><p class="testimonial-author">Marcus Chen</p><p class="testimonial-role">Broker-Owner, Skyline Realty</p></div>
+                <div class="testimonial-card reveal reveal-delay-2"><div class="testimonial-stars">★★★★★</div><p class="testimonial-quote">"The automated follow-up engine recovered $480K in pipeline that would've been lost to cold leads."</p><p class="testimonial-author">Priya Kapoor</p><p class="testimonial-role">Managing Partner, Elevate Estates</p></div>
+                <div class="testimonial-card reveal reveal-delay-3"><div class="testimonial-stars">★★★★★</div><p class="testimonial-quote">"Implementation was seamless. Document processing automated within 3 weeks. Incredibly responsive."</p><p class="testimonial-author">David Okafor</p><p class="testimonial-role">CEO, Horizon Properties</p></div>
+            </div>
         </div>
     </section>
 
+    <!-- CTA -->
     <section class="section" id="cta">
-        <div class="container"><div class="cta-section reveal"><span class="section-label">Get Started</span><h2 class="cta-title">Ready to Automate Your Agency?</h2><p class="cta-desc">Book a free 30-minute strategy call. We'll map out a custom AI plan for your business — no commitment required.</p>
-            <a href="https://wa.me/917876748412?text=I%20want%20to%20know%20how%20can%20I%20scale%20my%20Agency%21" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg"><span class="material-icons">calendar_today</span> Book Your Free Strategy Call</a>
-            <p class="cta-footnote">Typically responds within 2 hours</p>
-        </div></div>
+        <div class="container">
+            <div class="cta-section reveal">
+                <span class="section-label">Get Started</span>
+                <h2 class="cta-title">Ready to Automate Your Agency?</h2>
+                <!-- 36px margin-bottom on .cta-desc creates the aesthetic gap before the button -->
+                <p class="cta-desc">Book a free 30-minute strategy call. We'll map out a custom AI plan for your business — no commitment required.</p>
+                <a href="https://wa.me/917876748412?text=I%20want%20to%20know%20how%20can%20I%20scale%20my%20Agency%21"
+                   target="_blank" rel="noopener noreferrer"
+                   class="btn btn-primary btn-lg">
+                    <span class="material-icons">calendar_today</span> Book Your Free Strategy Call
+                </a>
+                <p class="cta-footnote">Typically responds within 2 hours</p>
+            </div>
+        </div>
     </section>
 </main>
 
@@ -672,7 +393,7 @@
         </div>
         <div class="footer-col">
             <div class="footer-social">
-                <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.linkedin.com/"  target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                 <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 <a href="https://wa.me/917876748412?text=I%20want%20to%20know%20how%20can%20I%20scale%20my%20Agency%21" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
             </div>
@@ -682,100 +403,73 @@
 </footer>
 
 <script>
-    // ─── Mobile Menu (no extra close button inside) ─────────────────────────────────
-    const menuBtn     = document.getElementById('mobileMenuBtn');
-    const navPill     = document.getElementById('mobileNavPill');
-    const menuIcon    = document.getElementById('menuIcon');
+    // Mobile menu
+    const menuBtn   = document.getElementById('mobileMenuBtn');
+    const navPill   = document.getElementById('mobileNavPill');
+    const menuIcon  = document.getElementById('menuIcon');
     const mobileLinks = document.querySelectorAll('.mobile-nav-link');
-    // Only target items INSIDE the mobile pill to avoid reanimating hero buttons
     const pillItems   = document.querySelectorAll('.mobile-nav-pill .mobile-nav-link, .mobile-nav-pill .btn, .mobile-nav-pill .mobile-nav-divider');
     let isOpen = false;
 
-    function openMenu() {
-        if (isOpen) return;
-        isOpen = true;
+    function openMenu(){
+        if(isOpen)return; isOpen=true;
         navPill.classList.add('open');
-        navPill.setAttribute('aria-hidden', 'false');
-        menuBtn.setAttribute('aria-expanded', 'true');
+        navPill.setAttribute('aria-hidden','false');
+        menuBtn.setAttribute('aria-expanded','true');
         menuBtn.classList.add('open');
-        menuIcon.textContent = 'close';
-        gsap.fromTo(navPill,
-            { opacity: 0, scaleX: 0.72, scaleY: 0.6, y: -14, transformOrigin: 'top right' },
-            { opacity: 1, scaleX: 1, scaleY: 1, y: 0, duration: 0.38, ease: 'back.out(1.4)' }
-        );
-        gsap.fromTo(pillItems,
-            { opacity: 0, y: -10 },
-            { opacity: 1, y: 0, duration: 0.24, stagger: 0.04, ease: 'power2.out', delay: 0.14 }
-        );
+        menuIcon.textContent='close';
+        gsap.fromTo(navPill,{opacity:0,scaleX:.72,scaleY:.6,y:-14,transformOrigin:'top right'},{opacity:1,scaleX:1,scaleY:1,y:0,duration:.38,ease:'back.out(1.4)'});
+        gsap.fromTo(pillItems,{opacity:0,y:-10},{opacity:1,y:0,duration:.24,stagger:.04,ease:'power2.out',delay:.14});
     }
-
-    function closeMenu() {
-        if (!isOpen) return;
-        isOpen = false;
-        menuBtn.setAttribute('aria-expanded', 'false');
+    function closeMenu(){
+        if(!isOpen)return; isOpen=false;
+        menuBtn.setAttribute('aria-expanded','false');
         menuBtn.classList.remove('open');
-        menuIcon.textContent = 'menu';
-        gsap.to(navPill, {
-            opacity: 0, scaleX: 0.8, scaleY: 0.7, y: -10,
-            transformOrigin: 'top right',
-            duration: 0.24, ease: 'power2.in',
-            onComplete() {
-                navPill.classList.remove('open');
-                navPill.setAttribute('aria-hidden', 'true');
-                gsap.set(navPill, { clearProps: 'all' });
-            }
-        });
+        menuIcon.textContent='menu';
+        gsap.to(navPill,{opacity:0,scaleX:.8,scaleY:.7,y:-10,transformOrigin:'top right',duration:.24,ease:'power2.in',onComplete(){navPill.classList.remove('open');navPill.setAttribute('aria-hidden','true');gsap.set(navPill,{clearProps:'all'})}});
     }
 
-    menuBtn.addEventListener('click', () => isOpen ? closeMenu() : openMenu());
-    mobileLinks.forEach(l => l.addEventListener('click', closeMenu));
-    document.querySelectorAll('#mobileNavPill .btn').forEach(b => b.addEventListener('click', closeMenu));
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && isOpen) closeMenu(); });
+    menuBtn.addEventListener('click',()=>isOpen?closeMenu():openMenu());
+    mobileLinks.forEach(l=>l.addEventListener('click',closeMenu));
+    document.querySelectorAll('#mobileNavPill .btn').forEach(b=>b.addEventListener('click',closeMenu));
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&isOpen)closeMenu()});
 
-    // ─── 3D Card Tilt (snappy) ─────────────────────────────────────────────────────
-    const tiltEls = document.querySelectorAll('.card-glow-wrapper, .testimonial-card');
-    const MAX_TILT = 10;
-    tiltEls.forEach(el => {
-        el.addEventListener('pointermove', e => {
-            if (e.pointerType === 'touch') return;
-            const rect = el.getBoundingClientRect();
-            const dx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-            const dy = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-            gsap.to(el, {
-                rotateY: dx * MAX_TILT, rotateX: -dy * MAX_TILT, scale: 0.97,
-                duration: 0.06, ease: 'none', overwrite: 'auto',
-                boxShadow: `${-dx * 10}px ${dy * 7}px 36px rgba(20,60,140,0.14), 0 12px 36px rgba(20,60,140,0.10)`
-            });
+    // 3D card tilt
+    const tiltEls=document.querySelectorAll('.card-glow-wrapper,.testimonial-card');
+    const MAX_TILT=10;
+    tiltEls.forEach(el=>{
+        el.addEventListener('pointermove',e=>{
+            if(e.pointerType==='touch')return;
+            const r=el.getBoundingClientRect();
+            const dx=((e.clientX-r.left)/r.width-.5)*2;
+            const dy=((e.clientY-r.top)/r.height-.5)*2;
+            gsap.to(el,{rotateY:dx*MAX_TILT,rotateX:-dy*MAX_TILT,scale:.97,duration:.06,ease:'none',overwrite:'auto',boxShadow:`${-dx*10}px ${dy*7}px 36px rgba(20,60,140,.14),0 12px 36px rgba(20,60,140,.10)`});
         });
-        el.addEventListener('pointerleave', e => {
-            if (e.pointerType === 'touch') return;
-            gsap.to(el, { rotateX: 0, rotateY: 0, scale: 1, duration: 0.45, ease: 'power3.out', overwrite: 'auto', boxShadow: 'none' });
+        el.addEventListener('pointerleave',e=>{
+            if(e.pointerType==='touch')return;
+            gsap.to(el,{rotateX:0,rotateY:0,scale:1,duration:.45,ease:'power3.out',overwrite:'auto',boxShadow:'none'});
         });
     });
 
     // Scroll reveal
-    const revealObserver = new IntersectionObserver(entries => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
-    }, { rootMargin: '0px 0px -55px 0px', threshold: 0.07 });
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    const revealObs=new IntersectionObserver(entries=>{
+        entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObs.unobserve(e.target)}});
+    },{rootMargin:'0px 0px -55px 0px',threshold:.07});
+    document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
 
-    // Smooth scroll + offset
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const hash = this.getAttribute('href');
-            if (hash === '#' || hash === '#cta' && this.classList.contains('btn-primary')) return; // allow cta to WhatsApp only
-            const target = document.querySelector(hash);
-            if (target && hash !== '#') {
-                e.preventDefault();
-                const headerOffset = document.getElementById('header').offsetHeight + 14;
-                window.scrollTo({ top: target.offsetTop - headerOffset, behavior: 'smooth' });
-            }
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
+        anchor.addEventListener('click',function(e){
+            const hash=this.getAttribute('href');
+            if(hash==='#')return;
+            const target=document.querySelector(hash);
+            if(target){e.preventDefault();const off=document.getElementById('header').offsetHeight+14;window.scrollTo({top:target.offsetTop-off,behavior:'smooth'})}
         });
     });
 
     // Nav shadow
-    const headerInner = document.querySelector('.header-inner');
-    window.addEventListener('scroll', () => { headerInner.classList.toggle('scrolled', window.scrollY > 20); }, { passive: true });
+    const headerInner=document.querySelector('.header-inner');
+    window.addEventListener('scroll',()=>{headerInner.classList.toggle('scrolled',window.scrollY>20)},{passive:true});
 </script>
 </body>
 </html>
