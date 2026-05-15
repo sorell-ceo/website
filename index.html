@@ -254,7 +254,11 @@
             .mobile-menu-btn { margin-right: 0; }
         }
         @media (min-width: 769px) {
-            .mobile-menu-btn, .mobile-nav-pill { display: none !important; }
+            .logo {
+                flex: 1;
+                text-align: center;
+                font-size: 1.22rem;
+            }
         }
 
         /* Sections */
@@ -386,6 +390,17 @@
                 padding-bottom: 12px;
             }
             .hero-stat:last-child { border-bottom: none; }
+        }
+
+        .cta-btn-short { display: none; }
+        @media (max-width: 520px) {
+            .cta-btn-short {display: inline; }
+            .cta-btn-full { display: none; }
+            .cta-section .btn{
+                width: 100%;
+                max-width: 100%;
+                justify-content: center;
+            }
         }
 
         /* Cards background (light blue) */
@@ -557,7 +572,11 @@
                 <li><a href="#cta">Contact</a></li>
             </ul>
         </nav>
-        <a href="https://wa.me/917876748412?text=I%20want%20to%20know%20how%20can%20I%20scale%20my%20Agency%21" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-desktop">Book a Call</a>
+        <a href="https://wa.me/917876748412?text=I%20want%20to%20know%20how%20can%20I%20scale%20my%20Agency%21" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-Ig">
+            <span class="material-icons">calendar_today</span>
+            <span class="cta-btn-full">Book Your Free Strategy Call</span>
+            <span class="cta-btn-short">Book a Free Call</span>>
+        </a>
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false">
             <span class="material-icons" id="menuIcon">menu</span>
         </button>
