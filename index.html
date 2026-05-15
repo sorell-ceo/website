@@ -162,6 +162,8 @@
         .hero-main{min-height:82dvh;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;padding:58px 0 44px}
         .hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.20);border-radius:50px;padding:7px 18px;font-size:.8rem;font-weight:500;color:#1d4ed8;margin-bottom:28px}
         .hero-title{font-family:'Stack Sans Headline','Google Sans Flex',sans-serif;font-size:clamp(2.6rem,7vw,3.9rem);font-weight:550;letter-spacing:-.03em;line-height:1.08;margin-bottom:22px;color:#0b1a35}
+        .mobile-br{display:none}
+        @media(max-width:640px){.mobile-br{display:block}}
         .hero-desc{font-size:clamp(1rem,2vw,1.12rem);color:#44607e;max-width:530px;margin:0 auto 36px}
         .hero-buttons{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
 
@@ -326,7 +328,7 @@
         <div class="container">
             <div class="hero-main">
                 <div class="hero-badge reveal"><span class="material-icons">bolt</span> AI Automation for Real Estate</div>
-                <h1 class="hero-title reveal reveal-delay-1">Scale Your <span class="hero-highlight-agency">Real Estate Agency</span><br>With <span class="highlight">Intelligent AI</span></h1>
+                <h1 class="hero-title reveal reveal-delay-1">Scale Your<br class="mobile-br"> <span class="hero-highlight-agency">Real Estate Agency</span><br>With <span class="highlight">Intelligent AI</span></h1>
                 <p class="hero-desc reveal reveal-delay-2">We build custom AI automation workflows that capture leads, nurture prospects, and close deals — so your agents can focus on what they do best.</p>
                 <div class="hero-buttons reveal reveal-delay-3">
                     <a href="https://wa.me/917876748412?text=I%20want%20to%20know%20how%20can%20I%20scale%20my%20Agency%21"
