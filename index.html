@@ -263,6 +263,44 @@
             transform:translate(5px,-5px);
             opacity:0.85;
         }
+        /* ── Pain / Agitation Section ── */
+.pain-grid{display:grid;gap:clamp(14px,2.5vw,20px);grid-template-columns:1fr}
+@media(min-width:600px){.pain-grid{grid-template-columns:repeat(2,1fr)}}
+
+.card-icon--pain{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.22)}
+.card-icon--pain .material-icons{color:#dc2626}
+
+.pain-card-number{
+    font-family:'Stack Sans Headline','Google Sans Flex',sans-serif;
+    font-size:clamp(1.7rem,3.5vw,2.1rem);
+    font-weight:700;
+    color:#dc2626;
+    letter-spacing:-.03em;
+    line-height:1;
+}
+
+/* Reality bar — mirrors hero-stats dark strip */
+.pain-reality-bar{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    margin-top:clamp(24px,4vw,36px);
+    padding:22px 28px;
+    background:#0b1730;
+    border-radius:15px;
+    box-shadow:0 12px 30px rgba(0,0,0,.2);
+    text-align:center;
+    flex-wrap:wrap;
+}
+.pain-reality-bar .material-icons{color:#f87171;font-size:22px;flex-shrink:0}
+.pain-reality-bar-text{
+    font-family:'Stack Sans Headline','Google Sans Flex',sans-serif;
+    font-size:clamp(.95rem,2.2vw,1.12rem);
+    color:#e2eaf8;
+    letter-spacing:-.01em;
+}
+.pain-reality-bar-text strong{color:#f87171}
     </style>
 </head>
 <body>
@@ -348,6 +386,66 @@
                 <div class="hero-stat"><div class="hero-stat-value">98%</div><div class="hero-stat-label">Client Retention</div></div>
                 <div class="hero-stat"><div class="hero-stat-value">4.9★</div><div class="hero-stat-label">Average Rating</div></div>
             </div>
+            <!-- Pain / Agitation -->
+<section class="section" id="pain">
+    <div class="container">
+        <div class="text-center reveal">
+            <span class="section-label">The Hard Truth</span>
+            <h2 class="section-title">Your Pipeline Is Leaking<br><span class="highlight">Right Now</span></h2>
+            <p class="section-subtitle mx-auto">Every hour your agency runs without automation, deals slip to the agent who picked up the phone 4 minutes faster than you.</p>
+        </div>
+
+        <div class="pain-grid">
+            <div class="card-glow-wrapper reveal reveal-delay-1">
+                <div class="card-inner">
+                    <div class="card-icon card-icon--pain"><span class="material-icons">timer_off</span></div>
+                    <div class="pain-card-number">5 min</div>
+                    <h3 class="card-title">That's All You Have</h3>
+                    <p class="card-desc">Lead response after 5 minutes drops conversion by over 80%. Your competitor isn't smarter — they just replied first. Every. Single. Time.</p>
+                    <span class="card-tag" style="color:#dc2626;opacity:.9">Response Window</span>
+                </div>
+            </div>
+
+            <div class="card-glow-wrapper reveal reveal-delay-2">
+                <div class="card-inner">
+                    <div class="card-icon card-icon--pain"><span class="material-icons">money_off</span></div>
+                    <div class="pain-card-number">₹15K+</div>
+                    <h3 class="card-title">Wasted on Portals Monthly</h3>
+                    <p class="card-desc">You're paying for leads on 99acres, MagicBricks, and Housing. Without a follow-up system, 7 out of 10 of those leads are buried and forgotten within 48 hours.</p>
+                    <span class="card-tag" style="color:#dc2626;opacity:.9">Burning Budget</span>
+                </div>
+            </div>
+
+            <div class="card-glow-wrapper reveal reveal-delay-3">
+                <div class="card-inner">
+                    <div class="card-icon card-icon--pain"><span class="material-icons">person_off</span></div>
+                    <div class="pain-card-number">3 hrs</div>
+                    <h3 class="card-title">Lost to Manual Follow-ups Daily</h3>
+                    <p class="card-desc">Your agents spend half their morning chasing cold leads on WhatsApp and calls — time that should be spent closing. They're tired. Leads are annoyed. Nothing converts.</p>
+                    <span class="card-tag" style="color:#dc2626;opacity:.9">Wasted Hustle</span>
+                </div>
+            </div>
+
+            <div class="card-glow-wrapper reveal reveal-delay-4">
+                <div class="card-inner">
+                    <div class="card-icon card-icon--pain"><span class="material-icons">trending_down</span></div>
+                    <div class="pain-card-number">6 tabs</div>
+                    <h3 class="card-title">Open on Every Serious Buyer's Phone</h3>
+                    <p class="card-desc">That ₹2 Cr buyer has enquired on six platforms at once. Whoever follows up fastest — with the right property — wins the deal. Silence from your side is a referral to your competitor.</p>
+                    <span class="card-tag" style="color:#dc2626;opacity:.9">Lost to Competition</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="pain-reality-bar reveal">
+            <span class="material-icons">warning</span>
+            <p class="pain-reality-bar-text">
+                The agency closing deals in Gurugram today isn't working harder than you —
+                <strong>they automated what you're still doing manually.</strong>
+            </p>
+        </div>
+    </div>
+</section>
         </div>
     </section>
 
